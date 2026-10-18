@@ -1,0 +1,3018 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OP Points × ELLIS × Giftronaut — Integration BRD/PRD</title><style>
+:root{color-scheme:light;--ink:#182B3A;--muted:#607080;--line:#D8E1E8;--brand:#006C70;--nav:#12343B;--soft:#EDF7F6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#F2F5F6;color:var(--ink);font:16px/1.72 "Segoe UI",Arial,sans-serif}
+aside{position:fixed;inset:0 auto 0 0;width:292px;padding:27px 22px;overflow:auto;background:var(--nav);color:white}aside strong{display:block;font-size:21px;line-height:1.3;margin-bottom:5px}aside small{display:block;color:#B9D3D2;margin-bottom:20px}
+nav a{display:block;color:#D9E8E7;text-decoration:none;font-size:13px;line-height:1.4;padding:5px 0}nav a.h1{font-weight:700;margin-top:10px;color:white}nav a:hover{text-decoration:underline}
+main{margin:30px 30px 60px 322px;max-width:1280px;padding:42px 50px;background:white;border:1px solid var(--line);border-radius:12px}h1,h2,h3{line-height:1.34;scroll-margin-top:18px}h1{font-size:34px;letter-spacing:-.6px;margin-top:0}h2{font-size:25px;margin-top:52px;padding-top:22px;border-top:1px solid var(--line)}h3{font-size:19px;margin-top:30px}p{margin:13px 0}a{color:var(--brand);overflow-wrap:anywhere}blockquote{margin:20px 0;background:var(--soft);border-left:4px solid var(--brand);padding:11px 20px}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;line-height:1.55}th,td{border:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top;overflow-wrap:anywhere}th{background:#E8F1F2;font-weight:650}tbody tr:nth-child(even){background:#F8FAFB}
+img{display:block;max-width:100%;height:auto;margin:24px auto;border:1px solid var(--line);border-radius:8px;padding:10px;background:white}pre{overflow:auto;padding:17px 19px;border:1px solid var(--line);border-radius:7px;background:#F4F7F8;font-size:13px;line-height:1.6}code{font-family:Consolas,monospace}li{margin:6px 0}.source{color:var(--muted);font-size:13px;border-bottom:1px solid var(--line);padding-bottom:18px;margin-bottom:30px}
+@media(max-width:1100px){aside{position:static;width:auto}nav{columns:2}main{margin:18px;padding:25px}}@media(max-width:650px){body{font-size:15px}nav{columns:1}main{margin:0;border:0;border-radius:0;padding:22px 15px}table{display:block;overflow-x:auto}h1{font-size:28px}}
+@media print{aside,.source{display:none}body{background:white;font-size:9.5pt}main{margin:0;padding:0;border:0;max-width:none}h2,h3{break-after:avoid}img,tr{break-inside:avoid}a{color:inherit}table{font-size:7.8pt}}
+
+:not(pre)>code{overflow-wrap:anywhere}
+aside{width:230px;padding:22px 16px}main{margin:20px 20px 50px 250px;max-width:none;padding:28px}
+nav a.h3,nav a.h4{padding-left:10px;font-size:12px}h4{font-size:18px;scroll-margin-top:20px}
+.flow-pair{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(320px,1fr);gap:20px;align-items:start;margin:20px 0 32px}
+.diagram-panel{margin:0;position:sticky;top:18px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:12px;min-width:0}
+.diagram-panel img{width:100%;max-height:76vh;object-fit:contain;padding:0;border:0;margin:0}
+.diagram-panel figcaption{font-size:12px;color:var(--muted);margin-top:8px;text-align:center}
+.flow-notes{max-height:84vh;overflow:auto;scrollbar-gutter:stable;padding:0 5px 3px 0;min-width:0}
+.flow-notes details{border:1px solid var(--line);border-radius:9px;margin-bottom:12px;background:#fff}
+.flow-notes summary{cursor:pointer;font-weight:650;padding:13px 15px;background:var(--soft);border-radius:9px;position:sticky;top:0;z-index:1}
+.flow-notes summary:hover{background:#dcefeb}.flow-notes summary:focus-visible,.flow-map a:focus-visible rect{outline:3px solid #d98200}
+.api-ref{font-weight:700;text-decoration-style:dotted}.plain-read{background:#fff8df;border-left:3px solid #d98200;padding:9px 10px;border-radius:4px;font-size:13px}
+.detail-body{padding:4px 15px 14px;font-size:14px}.detail-body table{font-size:12px}.detail-body th,.detail-body td{padding:8px}
+.detail-body h3{font-size:17px;margin-top:20px}.detail-body h2{font-size:19px}
+.flow-map{width:100%;height:auto;display:block}.flow-map rect{fill:#edf7f6;stroke:#006c70;stroke-width:1.5;rx:10}
+.flow-map a:hover rect,.flow-map a:focus rect{fill:#cceae7;stroke-width:3}.flow-map text{font-family:Segoe UI,Arial,sans-serif;fill:#182b3a;font-size:16px;text-anchor:middle}
+.flow-map .map-sub{font-size:12px;fill:#607080}.flow-map .route{fill:none;stroke:#607080;stroke-width:2;marker-end:url(#map-arrow)}
+.api-map-regular{margin:20px 0 30px;padding:18px;border:1px solid var(--line);border-radius:10px;background:#fff}.api-map-regular .flow-map{max-height:640px}.api-map-regular .api-omh{fill:#e6f3fb;stroke:#2d6f9d}.api-map-regular .api-gf{fill:#f0eafb;stroke:#754a9e}.api-map-regular .api-store{fill:#fff7e5;stroke:#9b6a19}.api-map-regular .api-core{fill:#edf7f6;stroke:#006c70}.api-map-regular .map-note{margin:14px 4px 0;font-size:14px}
+.map-caption{font-size:12px;color:var(--muted)}.back-map{font-size:12px;display:inline-block;margin-top:4px}
+@media(min-width:1900px){main{padding:35px 45px}.flow-pair{grid-template-columns:minmax(0,1.4fr) minmax(420px,1fr)}}
+@media(max-width:1200px){aside{position:static;width:auto}nav{columns:3}main{margin:15px;padding:20px}}
+@media(max-width:800px){nav{columns:1}.flow-pair{grid-template-columns:1fr}.diagram-panel{position:static}.flow-notes{max-height:none;overflow:visible}.diagram-panel img{max-height:none}main{margin:0;padding:16px}}
+@media print{.flow-pair{display:block}.diagram-panel{position:static}.diagram-panel img{max-height:none}.flow-notes{max-height:none;overflow:visible}.flow-notes summary{position:static}.back-map{display:none}}
+</style></head><body><aside><strong>OP Points × ELLIS × Giftronaut</strong><small>Đặc tả tích hợp · v2.6 · 18/10/2026</small><nav><a class="h1" href="#tích-hợp-giftronaut--đặc-tả-tích-hợp-cho-op-points--ellis">Tích hợp Giftronaut — Đặc tả tích hợp cho OP Points &amp; ELLIS</a><a class="h2" href="#1-phạm-vi-và-quy-tắc-nghiệp-vụ">1. Phạm vi và quy tắc nghiệp vụ</a><a class="h2" href="#2-các-flow-và-thứ-tự-gọi-api">2. Các flow và thứ tự gọi API</a><a class="h3" href="#f0-setup-môi-trường-sandbox-và-authentication">F0. Setup môi trường, sandbox và authentication</a><a class="h3" href="#f1-chuẩn-bị-quà-để-cho-phép-đổi">F1. Chuẩn bị quà để cho phép đổi</a><a class="h3" href="#f2-op-đổi-điểm--luồng-chính">F2. OP đổi điểm — luồng chính</a><a class="h4" href="#f2a-tạo-yêu-cầu-nội-bộ-rồi-mới-tạo-đơn-giftronaut">F2a. Tạo yêu cầu nội bộ rồi mới tạo đơn Giftronaut</a><a class="h4" href="#f2b-nhận-callback-hoặc-chủ-động-hỏi-kết-quả-rồi-chốt-điểm">F2b. Nhận callback hoặc chủ động hỏi kết quả, rồi chốt điểm</a><a class="h3" href="#f3-lỗi-hoặc-chưa-rõ-đơn-đã-tạo-hay-chưa">F3. Lỗi hoặc chưa rõ đơn đã tạo hay chưa</a><a class="h3" href="#f4-email-bounce-và-gửi-lại">F4. Email bounce và gửi lại</a><a class="h3" href="#f5-kiểm-tra-số-dư-và-hỗ-trợ-vận-hành">F5. Kiểm tra số dư và hỗ trợ vận hành</a><a class="h2" href="#3-api-giftronaut-cần-tích-hợp">3. API Giftronaut cần tích hợp</a><a class="h3" href="#g1-lấy-access-token">G1. Lấy access token</a><a class="h3" href="#g2-đọc-choice-card-để-cấu-hình-quà">G2. Đọc Choice Card để cấu hình quà</a><a class="h3" href="#g3-tạo-đơn-choice-card">G3. Tạo đơn Choice Card</a><a class="h3" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình">G4. Tìm lại đơn theo mã yêu cầu của mình</a><a class="h3" href="#g5-xem-kết-quả-đơn">G5. Xem kết quả đơn</a><a class="h3" href="#g6-gửi-lại-email-cùng-đơn">G6. Gửi lại email cùng đơn</a><a class="h3" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất">G7. Nhận webhook từ Giftronaut — endpoint OMH Đề xuất</a><a class="h3" href="#g8-đọc-số-dư-tài-khoản-giftronaut">G8. Đọc số dư tài khoản Giftronaut</a><a class="h2" href="#4-api-nội-bộ-ohmyhotel-đề-xuất">4. API nội bộ Ohmyhotel đề xuất</a><a class="h2" href="#5-exception-và-mã-lỗi">5. Exception và mã lỗi</a><a class="h2" href="#6-state-machine-của-yêu-cầu-đổi-điểm">6. State machine của yêu cầu đổi điểm</a><a class="h2" href="#7-đề-xuất-dữ-liệu-và-mapping-omh--giftronaut">7. Đề xuất dữ liệu và mapping OMH ↔ Giftronaut</a><a class="h2" href="#8-checklist-nghiệm-thu-ba--qa">8. Checklist nghiệm thu BA / QA</a><a class="h2" href="#9-các-điểm-cần-chốt-trước-khi-build--go-live">9. Các điểm cần chốt trước khi build / go-live</a><a class="h2" href="#10-nguồn-và-phạm-vi-bản-cập-nhật">10. Nguồn và phạm vi bản cập nhật</a></nav></aside><main><p class="source">Bản đọc cục bộ · <a href="OP-POINTS-ELLIS-GIFTRONAUT-INTEGRATION-BRD-PRD.md">Markdown</a> · Flow, API, exception, trạng thái và dữ liệu bàn giao Dev.</p><h1 id="tích-hợp-giftronaut--đặc-tả-tích-hợp-cho-op-points--ellis">Tích hợp Giftronaut — Đặc tả tích hợp cho OP Points &amp; ELLIS</h1>
+<blockquote>
+<p><strong>Luồng chính:</strong> OP xác nhận đổi quà → Ohmyhotel tạo yêu cầu và giữ điểm → gọi Giftronaut tạo Choice Card → xác minh kết quả → chốt điểm và cập nhật email. Nếu chưa rõ kết quả, tiếp tục xác minh; chỉ trả điểm khi chắc chắn không phát quà.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Thuộc tính</th>
+<th>Nội dung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Phiên bản / cập nhật</td>
+<td>2.6 · 18/10/2026 — bổ sung rule BA cho vận hành quà, số dư và báo cáo</td>
+</tr>
+<tr>
+<td>Mục đích</td>
+<td>BA bàn giao flow, API, ngoại lệ, trạng thái và dữ liệu cho Dev/QA</td>
+</tr>
+<tr>
+<td>Phạm vi</td>
+<td>Một người nhận / yêu cầu; Choice Card; gửi ngay qua email; OP tự resend, ELLIS hỗ trợ</td>
+</tr>
+<tr>
+<td>Cách đọc</td>
+<td>Mục 1–2: nghiệp vụ; 3: API Giftronaut; 4: API nội bộ; 5: lỗi; 6: state machine; 7: dữ liệu; 8–9: nghiệm thu và điểm cần chốt</td>
+</tr>
+<tr>
+<td>Quy ước</td>
+<td><strong>[GF]</strong> có trong tài liệu Giftronaut; <strong>[OMH — Đề xuất]</strong> contract/quy tắc đề xuất cho Ohmyhotel; <strong>[CẦN CHỐT]</strong> chưa đủ bằng chứng hoặc cần quyết định nghiệp vụ</td>
+</tr>
+<tr>
+<td>Giới hạn bằng chứng</td>
+<td>Đã đối chiếu tài liệu công khai; chưa gọi sandbox có credentials. Không khẳng định backend hiện tại đã có các API đề xuất</td>
+</tr>
+</tbody>
+</table>
+<h3 id="cách-gọi-đơn-giản-trong-tài-liệu">Cách gọi đơn giản trong tài liệu</h3>
+<table>
+<thead>
+<tr>
+<th>Từ trong tài liệu</th>
+<th>Hiểu đơn giản</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP</td>
+<td>Người dùng tích điểm và đổi quà trên OP Points</td>
+</tr>
+<tr>
+<td>Ops</td>
+<td>Nhân viên vận hành/hỗ trợ dùng ELLIS</td>
+</tr>
+<tr>
+<td>Backend Ohmyhotel</td>
+<td>Phần xử lý chạy trên server; giữ điểm, gọi Giftronaut và lưu kết quả. Người dùng không nhìn thấy phần này</td>
+</tr>
+<tr>
+<td>Redemption</td>
+<td>Một lần yêu cầu đổi điểm lấy quà; có mã <code>redemptionId</code></td>
+</tr>
+<tr>
+<td>Provider</td>
+<td>Giftronaut, bên phát Choice Card</td>
+</tr>
+<tr>
+<td>Hold điểm</td>
+<td>Tạm khóa điểm để OP không dùng lại trong khi chờ kết quả</td>
+</tr>
+<tr>
+<td>Chốt điểm</td>
+<td>Trừ điểm vĩnh viễn sau khi Giftronaut xác nhận quà đã hoàn tất</td>
+</tr>
+<tr>
+<td>Trả điểm</td>
+<td>Mở lại điểm đã tạm khóa khi chắc chắn không có quà được phát</td>
+</tr>
+<tr>
+<td>Mã chống trùng</td>
+<td>Mã giúp bấm lại/retry không tạo thêm quà; trong API gọi là <code>Idempotency-Key</code></td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a>, <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a>…</td>
+<td>API nội bộ Ohmyhotel, đều là <strong>Đề xuất</strong>; bấm mã để tới spec</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#g1-lấy-access-token" title="Mở đặc tả G1">G1</a>, <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a>…</td>
+<td>API do Giftronaut cung cấp; bấm mã để tới spec và nguồn chính thức</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-phạm-vi-và-quy-tắc-nghiệp-vụ">1. Phạm vi và quy tắc nghiệp vụ</h2>
+<table>
+<thead>
+<tr>
+<th>Hệ thống / vai trò</th>
+<th>Trách nhiệm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP Points</td>
+<td>Chọn mệnh giá, xác nhận số điểm/email, tạo yêu cầu, xem lịch sử, gửi lại email khi bounce</td>
+</tr>
+<tr>
+<td>Backend Ohmyhotel</td>
+<td>Tạo redemption trước khi gọi đối tác; tính/giữ/chốt/trả điểm; gọi API; lưu kết quả và cập nhật trạng thái</td>
+</tr>
+<tr>
+<td>Giftronaut</td>
+<td>Tạo đơn Choice Card, xử lý gửi email, cung cấp kết quả và số dư tài khoản đối tác</td>
+</tr>
+<tr>
+<td>ELLIS / Ops</td>
+<td>Cấu hình quà, tra cứu và xử lý yêu cầu bị kẹt, hỗ trợ resend có lưu người thao tác</td>
+</tr>
+<tr>
+<td>Finance</td>
+<td>Kiểm tra số dư, nạp tiền thủ công qua portal, đối chiếu giao dịch</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Baseline từ <a href="../../02-domain-specifications/op-points/OP-Points-BRD-PRD.md">OP Points BRD/PRD, mục 9</a>:</strong> các lựa chọn 10/20/50/100 USD; điểm thuộc từng OP; không hủy đơn đổi đã gửi; email lỗi không đồng nghĩa phát quà thất bại. Mệnh giá, tỷ giá và mức tối thiểu trong prototype vẫn cần duyệt trước production.</p>
+<p>Quy tắc bàn giao [OMH — Đề xuất]:</p>
+<ol>
+<li>Một redemption chỉ gắn với một đơn Giftronaut. Bấm lại/retry không tạo quà hoặc trừ điểm lần hai.</li>
+<li>Lưu yêu cầu và giữ điểm thành công <strong>trước</strong> khi gửi đơn sang Giftronaut. Không đủ điểm thì không gọi đối tác.</li>
+<li><code>COMPLETE</code> được dùng để chốt điểm; email thành công/bounce được theo dõi riêng. Không coi <code>201 Created</code> là đã gửi quà.</li>
+<li>Timeout hoặc lỗi chưa rõ kết quả: giữ điểm, tra cứu đơn cũ. Không tự trả điểm theo thời gian hết hạn.</li>
+<li>Chỉ trả phần điểm đang giữ khi chắc chắn không có quà được phát; không tự hoàn điểm sau khi đã chốt.</li>
+<li>Resend dùng cùng order, không tạo redemption mới và không trừ thêm điểm.</li>
+<li>Backend tính điểm theo cấu hình được duyệt, lưu tỷ lệ tại lúc xác nhận; đổi cấu hình sau đó không làm đổi giao dịch cũ.</li>
+</ol>
+<h3 id="11-quy-tắc-vận-hành-bổ-sung-cho-quà-số-dư-và-báo-cáo">1.1. Quy tắc vận hành bổ sung cho quà, số dư và báo cáo</h3>
+<p>Các quy tắc dưới đây là <strong>[OMH — Đề xuất]</strong> để xử lý các tình huống vận hành đã được nêu ra. Chúng không khẳng định Giftronaut đã cung cấp dữ liệu tương ứng; các điểm cần xác nhận với Giftronaut/PO được ghi rõ ở mục 9.</p>
+<table>
+<thead>
+<tr>
+<th>Chủ đề</th>
+<th>Quy tắc nghiệp vụ đề xuất</th>
+<th>Điều người dùng/Ops thấy</th>
+<th>Dữ liệu hoặc quyết định cần có</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quốc gia, mệnh giá và lựa chọn quà</td>
+<td>Chỉ bật một option khi Ops đã xác nhận Choice Card và các lựa chọn người nhận có thể dùng tại thị trường mục tiêu. Nếu chưa có xác nhận, không hiển thị option cho OP thuộc thị trường đó. Không suy đoán quốc gia chỉ từ email; dùng country trong hồ sơ OP khi hồ sơ có dữ liệu đáng tin cậy.</td>
+<td>OP chỉ thấy quà đã được phép đổi. Nếu thị trường chưa hỗ trợ, hiển thị “Quà này hiện chưa khả dụng tại khu vực của bạn”, không giữ điểm.</td>
+<td>Ops lưu thị trường được phép, mệnh giá và ngày xác nhận; PO chốt có cho phép đổi khi chưa xác nhận được lựa chọn phù hợp hay không.</td>
+</tr>
+<tr>
+<td>Hạn mức tổng giá trị quà</td>
+<td>Trước khi có quota chính thức từ Giftronaut, OMH không tự đặt hạn mức ngày/tháng để từ chối OP. ELLIS theo dõi tổng USD quà đã phát hành theo ngày/tháng. Nếu Giftronaut từ chối chắc chắn vì quota/số dư, trả điểm đang giữ và hiển thị lý do an toàn cho OP.</td>
+<td>Ops/Finance thấy số đã phát hành và các đơn bị từ chối. OP không bị giữ điểm khi đơn bị từ chối chắc chắn.</td>
+<td>Giftronaut cần xác nhận quota, mã lỗi và phạm vi áp dụng; PO/Finance quyết định có đặt hạn mức nội bộ sau khi có thông tin này.</td>
+</tr>
+<tr>
+<td>Cảnh báo số dư thấp</td>
+<td>ELLIS hiển thị cảnh báo cho Finance/Ops khi <code>availableBalance</code> thấp hơn ngưỡng đã duyệt. Đề xuất mặc định pilot: bằng hai lần mệnh giá nhỏ nhất đang bật; Finance có thể thay đổi ngưỡng theo quy trình vận hành. <code>pendingBalance</code> không tính vào ngưỡng.</td>
+<td>Cảnh báo “Số dư thấp — cần nạp tài khoản Giftronaut”, kèm số dư và thời điểm kiểm tra. Cảnh báo tự mất khi số dư mới đạt/vượt ngưỡng.</td>
+<td>Ngưỡng, người nhận cảnh báo và lịch kiểm tra do Finance/Ops chốt. Không giả định có webhook số dư nếu Giftronaut chưa xác nhận.</td>
+</tr>
+<tr>
+<td>Tổng USD đã phát hành và đối soát</td>
+<td>Chỉ cộng các redemption đã <code>SUCCEEDED</code> và có giá trị provider xác nhận. Không cộng <code>PROCESSING</code>, <code>VERIFYING</code> hoặc <code>FAILED</code>. Báo cáo phải luôn có khoảng thời gian; mặc định là khoảng thời gian người dùng chọn, không phải “từ trước đến nay”.</td>
+<td>ELLIS ghi rõ “Tổng USD quà đã phát hành trong kỳ”. Finance có thể đối chiếu từng dòng với order Giftronaut.</td>
+<td>Cần chốt nguồn giá trị thực trả khi API không trả <code>providerTotalCost</code>, và chu kỳ đối soát, đề xuất hằng ngày trong pilot.</td>
+</tr>
+<tr>
+<td>Hạn dùng và trạng thái đã sử dụng</td>
+<td>Ngày hết hạn chỉ hiển thị khi nhận được từ Giftronaut hoặc điều kiện quà đã được Product phê duyệt. Nếu chưa có dữ liệu usage đáng tin cậy, hiển thị <code>Đã sử dụng: Chưa rõ</code>; không kết luận quà chưa dùng. Thống kê sắp hết hạn/hết hạn chỉ phản ánh hạn dùng, không khẳng định usage.</td>
+<td>Audit log phân biệt rõ “sắp hết hạn”, “đã hết hạn” và “trạng thái sử dụng chưa rõ”.</td>
+<td>Giftronaut xác nhận field expiry và khả năng cung cấp usage/event <code>recipient.redeemed</code>; PO chốt cách tính các chỉ số trên báo cáo.</td>
+</tr>
+</tbody>
+</table>
+<p>Ngoài phạm vi lần này: branded card tùy chỉnh, nhiều người nhận, gửi theo lịch, hủy đơn, ACH API và đối soát tự động nâng cao. Kiểm tra giao dịch thủ công hằng ngày vẫn cần trong pilot. Không cần gọi API tạo recipient riêng vì thông tin người nhận nằm ngay trong create order.</p>
+<h2 id="2-các-flow-và-thứ-tự-gọi-api">2. Các flow và thứ tự gọi API</h2><div id="integration-map"><div class="flow-pair"><figure class="diagram-panel"><svg class="flow-map" viewBox="0 0 810 490" role="img" aria-labelledby="map-title map-desc"><title id="map-title">Bản đồ tích hợp Giftronaut</title><desc id="map-desc">Bấm bước để tới flow: setup, cấu hình, đổi điểm, kết quả, xử lý lỗi, gửi lại và số dư.</desc><defs><marker id="map-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#607080"/></marker></defs><path class="route" d="M250 65 H290"/><path class="route" d="M520 65 H560"/><path class="route" d="M675 110 V200"/><path class="route" d="M560 90 L405 200"/><path class="route" d="M520 245 H560"/><path class="route" d="M675 290 V380"/><path class="route" d="M290 245 H250"/><path class="route" d="M135 200 V145 H405 V110"/><text class="map-sub" x="725" y="155">Có kết quả</text><text class="map-sub" x="435" y="155">Lỗi / chưa rõ</text><text class="map-sub" x="725" y="342">Email lỗi</text><text class="map-sub" x="180" y="175">Sẵn sàng vận hành</text><text class="map-sub" x="270" y="318">F3 ↔ F5: phối hợp khi thiếu tiền</text><a href="#f0-setup-môi-trường-sandbox-và-authentication" aria-label="Tới F0: Setup &amp; auth"><rect x="20" y="20" width="230" height="90"/><text x="135" y="48">F0</text><text x="135" y="71">Setup &amp; auth</text><text class="map-sub" x="135" y="92">Sandbox → Production</text></a><a href="#f1-chuẩn-bị-quà-để-cho-phép-đổi" aria-label="Tới F1: Cấu hình quà"><rect x="290" y="20" width="230" height="90"/><text x="405" y="48">F1</text><text x="405" y="71">Cấu hình quà</text><text class="map-sub" x="405" y="92">Publish lựa chọn đổi</text></a><a href="#f2a-tạo-yêu-cầu-nội-bộ-rồi-mới-tạo-đơn-giftronaut" aria-label="Tới F2a: Yêu cầu đổi điểm"><rect x="560" y="20" width="230" height="90"/><text x="675" y="48">F2a</text><text x="675" y="71">Yêu cầu đổi điểm</text><text class="map-sub" x="675" y="92">Lưu yêu cầu → đặt quà</text></a><a href="#f5-kiểm-tra-số-dư-và-hỗ-trợ-vận-hành" aria-label="Tới F5: Kiểm tra số dư"><rect x="20" y="200" width="230" height="90"/><text x="135" y="228">F5</text><text x="135" y="251">Kiểm tra số dư</text><text class="map-sub" x="135" y="272">Finance / nạp thủ công</text></a><a href="#f3-lỗi-hoặc-chưa-rõ-đơn-đã-tạo-hay-chưa" aria-label="Tới F3: Xác minh / xử lý lỗi"><rect x="290" y="200" width="230" height="90"/><text x="405" y="228">F3</text><text x="405" y="251">Xác minh / xử lý lỗi</text><text class="map-sub" x="405" y="272">Chưa rõ kết quả hoặc từ chối</text></a><a href="#f2b-nhận-callback-hoặc-chủ-động-hỏi-kết-quả-rồi-chốt-điểm" aria-label="Tới F2b: Nhận kết quả"><rect x="560" y="200" width="230" height="90"/><text x="675" y="228">F2b</text><text x="675" y="251">Nhận kết quả</text><text class="map-sub" x="675" y="272">Xác minh → chốt điểm</text></a><a href="#f4-email-bounce-và-gửi-lại" aria-label="Tới F4: Gửi lại email"><rect x="560" y="380" width="230" height="90"/><text x="675" y="408">F4</text><text x="675" y="431">Gửi lại email</text><text class="map-sub" x="675" y="452">Cùng quà, không trừ thêm điểm</text></a></svg><figcaption>Bấm một ô để tới flow tương ứng. Mũi tên là quan hệ nghiệp vụ, không phải lời gọi API.</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p>Mã <strong>G</strong> là API Giftronaut ở mục 3; mã <strong>I</strong> là API nội bộ ở mục 4. Token hợp lệ được tái sử dụng, không cần xin mới trong mọi bước.</p>
+<p><strong>Cách đọc sơ đồ:</strong> mỗi cột là một hệ thống tham gia; mũi tên ghi mã API + method/path; khung <code>alt/else</code> là các nhánh kết quả, <code>opt</code> là bước chỉ chạy khi đủ điều kiện. Backend OMH bao gồm xử lý redemption và sổ điểm ở mức nghiệp vụ; sơ đồ không yêu cầu tách thành nhiều service. Host và payload đầy đủ xem mục 3–4.</p>
+<table>
+<thead>
+<tr>
+<th>Flow</th>
+<th>Khi bắt đầu</th>
+<th>Hệ thống tham gia</th>
+<th>Kết quả / flow tiếp theo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>F0 — Setup &amp; auth</td>
+<td>Chuẩn bị sandbox hoặc production</td>
+<td>Engineering → GF Portal; Backend OMH ↔ GF API</td>
+<td>Credentials, token, callback và kiểm thử sẵn sàng</td>
+</tr>
+<tr>
+<td>F1 — Cấu hình quà</td>
+<td>Ops mở/bật cấu hình đổi quà</td>
+<td>ELLIS → Backend OMH ↔ Giftronaut API; OP Points đọc option</td>
+<td>Quà được publish hoặc trả lỗi cấu hình</td>
+</tr>
+<tr>
+<td>F2a — Tạo yêu cầu</td>
+<td>OP xác nhận đổi điểm</td>
+<td>OP Points → Backend OMH → Giftronaut API</td>
+<td>Yêu cầu đã lưu, giữ điểm, có order; sang F2b hoặc F3</td>
+</tr>
+<tr>
+<td>F2b — Hoàn tất</td>
+<td>Có webhook hoặc tới lịch kiểm tra</td>
+<td>Giftronaut ↔ Backend OMH; OP Points/ELLIS xem kết quả</td>
+<td>Chốt điểm và trạng thái; bounce sang F4</td>
+</tr>
+<tr>
+<td>F3 — Xác minh/lỗi</td>
+<td>Create bị từ chối hoặc không rõ kết quả</td>
+<td>Backend OMH ↔ Giftronaut API; ELLIS cho Ops/Finance xử lý</td>
+<td>Dùng đơn gốc, tiếp tục xác minh hoặc trả điểm khi đủ bằng chứng</td>
+</tr>
+<tr>
+<td>F4 — Resend</td>
+<td>Quà đã phát nhưng email bounce</td>
+<td>OP Points <strong>hoặc</strong> ELLIS → Backend OMH ↔ Giftronaut</td>
+<td>Gửi lại cùng quà; cập nhật email, không trừ thêm điểm</td>
+</tr>
+<tr>
+<td>F5 — Số dư</td>
+<td>Finance kiểm tra theo lịch</td>
+<td>ELLIS → Backend OMH → Giftronaut API; Finance dùng GF Portal</td>
+<td>Hiển thị số dư hoặc dữ liệu cũ có cảnh báo; nạp thủ công</td>
+</tr>
+</tbody>
+</table>
+<p>Bản đồ tổng quan cho phép bấm vào từng bước để tới flow tương ứng. Trong HTML, sơ đồ nằm bên trái; giải thích và ví dụ nằm bên phải, có thể bấm để đóng/mở. Các thao tác/API/mapping OMH đều là <strong>Đề xuất</strong>; API GF dẫn tới nguồn chính thức.</p>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> Bắt đầu F0 để cấu hình sandbox, F1 mở quà, F2a đổi 20 USD, F2b xác nhận kết quả. Nếu timeout đi F3; email bounce đi F4; thiếu số dư thì Finance xử lý F5. Bấm từng ô để tới phần tương ứng; API/mapping OMH đều là Đề xuất.</p></div></details></div></div></div><h3 id="f0-setup-môi-trường-sandbox-và-authentication">F0. Setup môi trường, sandbox và authentication</h3><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/24-environment-auth.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/24-environment-auth.svg" alt="F0 — Setup App, token, callback và kiểm thử theo môi trường" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p><strong>Người khởi tạo:</strong> Engineering/Admin. <strong>Kết quả cần có:</strong> môi trường được nhận diện đúng, token dùng được, webhook đã đăng ký và bộ dữ liệu kiểm thử riêng. Cấu hình/lưu trữ bên OMH dưới đây là <strong>Đề xuất</strong>.</p>
+
+<p><a href="assets/24-environment-auth.png">Mở ảnh PNG</a> · <a href="diagrams/24-environment-auth.puml">PlantUML source</a></p>
+<table>
+<thead>
+<tr>
+<th>Bước</th>
+<th>Hệ thống / API</th>
+<th>Kết quả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Tạo App</td>
+<td>Admin → Giftronaut Portal, chọn Sandbox</td>
+<td>Credentials riêng; chọn orders.read, orders.write, catalog.read, balance.read</td>
+</tr>
+<tr>
+<td>2. Cấu hình kết nối</td>
+<td>Backend OMH — <strong>Đề xuất</strong></td>
+<td>Lưu environment, organization/app reference, client ID/secret, webhook URL/signing secret, không đưa secret xuống OP Points/ELLIS</td>
+</tr>
+<tr>
+<td>3. Lấy token</td>
+<td><a class="api-ref" href="#g1-lấy-access-token" title="Mở đặc tả G1">G1</a> <code>POST https://api.giftronaut.com/oauth2/token</code></td>
+<td>Client Credentials → access_token, expires_in, scope; không dùng token đăng nhập OP để gọi GF</td>
+</tr>
+<tr>
+<td>4. Kiểm tra quyền</td>
+<td><a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a> catalog; <a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a> balance</td>
+<td>Xác nhận truy cập đúng dữ liệu môi trường; chưa gọi tạo đơn nếu auth chưa đạt</td>
+</tr>
+<tr>
+<td>5. Đăng ký callback</td>
+<td>Portal → HTTPS endpoint OMH <strong>Đề xuất:</strong> <code>/webhooks/giftronaut/v1</code></td>
+<td>Nhận challengeToken, trả 200 với cùng token để xác minh đăng ký</td>
+</tr>
+<tr>
+<td>6. Kiểm tra event</td>
+<td>Portal Send Test → <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a></td>
+<td>Kiểm tra chữ ký test.ping; event hợp lệ được lưu và ACK; test.ping không cập nhật redemption</td>
+</tr>
+<tr>
+<td>7. Kiểm thử nghiệp vụ</td>
+<td>F1 → F2a → F2b, F3/F4 theo khả năng sandbox</td>
+<td>Ghi request/response đã che secret; kiểm tra một lần giữ/chốt điểm, duplicate, timeout và callback</td>
+</tr>
+<tr>
+<td>8. Chuẩn bị production</td>
+<td>App Production riêng; GF duyệt server-to-server và IP allowlist</td>
+<td>Đổi cấu hình credential, callback và dữ liệu riêng; xác nhận quyền, tiền thật và checklist trước khi bật đổi quà</td>
+</tr>
+</tbody>
+</table>
+<p>Nguồn GF: <a href="https://api.giftronaut.com/docs/guides/sandbox">Sandbox &amp; Production</a>, <a href="https://api.giftronaut.com/docs/guides/authentication">Authentication</a>, <a href="https://api.giftronaut.com/docs/guides/webhooks">Webhook setup</a>.</p>
+<p><strong>Khác biệt cần nhớ:</strong> cùng host API nhưng credential quyết định môi trường. Sandbox dùng tiền ảo và không gửi email thật; production có tác động thật. Không lấy kết quả sandbox làm bằng chứng giao email thật. Production Client Credentials cần được GF duyệt; <code>unauthorized_client</code> có thể xuất hiện trước khi được cấp quyền, IP ngoài allowlist có thể bị 403. Nguồn: <a href="https://api.giftronaut.com/docs/guides/sandbox">Sandbox &amp; Production</a>.</p>
+<p><strong>Đề xuất vận hành token OMH:</strong> dùng expires_in để biết hạn; trước khi hết hạn xin token mới bằng <a class="api-ref" href="#g1-lấy-access-token" title="Mở đặc tả G1">G1</a>. Business API trả 401 thì xin token mới và thử lại tối đa một lần, giữ nguyên key/body nếu là create. Client Credentials không dùng refresh_token. Nếu 403, kiểm tra scope, organization và IP allowlist thay vì liên tục xin token. Nguồn auth: <a href="https://api.giftronaut.com/docs/guides/authentication">Authentication</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Edge case</th>
+<th>Xử lý / điều kiện hoàn tất</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>App production chưa được duyệt</td>
+<td>Kiểm tra trạng thái server-to-server trên portal; chưa bật đổi quà</td>
+</tr>
+<tr>
+<td>Sai secret / thiếu scope / sai môi trường</td>
+<td>Sửa cấu hình đúng App; không đổi credential tùy ý để tìm order cũ</td>
+</tr>
+<tr>
+<td>Challenge không thành công</td>
+<td>Kiểm tra public HTTPS và response echo; chưa coi webhook là hoạt động</td>
+</tr>
+<tr>
+<td>Challenge và business event khác envelope</td>
+<td>OMH <strong>Đề xuất</strong> phân biệt bước đăng ký với event; challenge không chứa eventId, không đưa vào xử lý điểm. Cách xác thực challenge cần xác nhận với GF, không tự bỏ kiểm tra chữ ký cho mọi request</td>
+</tr>
+<tr>
+<td>Signing secret sai</td>
+<td>Event bị từ chối; cập nhật đúng secret môi trường rồi Send Test lại</td>
+</tr>
+<tr>
+<td>Cần test bounce/402 nhưng sandbox không tái hiện</td>
+<td>QA <strong>Đề xuất</strong> dùng mock có ghi nhãn để kiểm tra nhánh lỗi; xác nhận hành vi thật với GF trước nghiệm thu production</td>
+</tr>
+<tr>
+<td>Mất callback</td>
+<td>Tiếp tục F2b qua <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>; xem Delivery History trên portal</td>
+</tr>
+</tbody>
+</table>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> Engineering tạo App sandbox, cấu hình backend test riêng, lấy token và gọi <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a> thành công. GF gửi challenge <code>abc-test</code> → OMH trả <code>{&quot;challengeToken&quot;:&quot;abc-test&quot;}</code>; Send Test được ACK nhưng không trừ điểm. Sau đó mới chạy đổi 20 USD bằng dữ liệu demo. Trước production phải làm lại cấu hình App/quyền/callback cho môi trường thật.</p></div></details></div></div><h3 id="f1-chuẩn-bị-quà-để-cho-phép-đổi">F1. Chuẩn bị quà để cho phép đổi</h3><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/18-ba-setup.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/18-ba-setup.svg" alt="F1 — ELLIS cấu hình, backend kiểm tra catalog và OP Points đọc quà" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p><strong>Người khởi tạo:</strong> Product Ops trên ELLIS. <strong>Điều kiện:</strong> có quyền cấu hình; credential GF được cấp; thông số quy đổi được duyệt. <strong>Kết thúc:</strong> cấu hình được publish hoặc giữ nguyên cấu hình đang có và báo lý do chưa cập nhật được.</p>
+
+<p><a href="assets/18-ba-setup.png">Mở ảnh PNG</a> · <a href="diagrams/18-ba-setup.puml">PlantUML source</a></p>
+<table>
+<thead>
+<tr>
+<th>Bước</th>
+<th>Ai gọi / thao tác</th>
+<th>API</th>
+<th>Kết quả cần có</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Backend lấy token</td>
+<td><a class="api-ref" href="#g1-lấy-access-token" title="Mở đặc tả G1">G1</a></td>
+<td>Token có quyền catalog/order/balance tương ứng</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Backend đọc Choice Card</td>
+<td><a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a></td>
+<td><code>productId</code>, khoảng giá và bước giá hợp lệ cho organization</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Ops cấu hình; Finance/Product duyệt</td>
+<td><a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a></td>
+<td>Mệnh giá OMH nằm trong khoảng GF; tỷ giá, giá trị 1P, điểm tối thiểu, email template, phiên bản policy</td>
+</tr>
+<tr>
+<td>4</td>
+<td>OP mở trang đổi điểm</td>
+<td><a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a></td>
+<td>Chỉ hiện option đã publish; không gọi catalog GF trực tiếp từ browser</td>
+</tr>
+</tbody>
+</table>
+<p>Không publish khi catalog lỗi hoặc chưa xác nhận product/mệnh giá. Catalog được kiểm tra lúc cấu hình và định kỳ; không phải một bước bắt buộc của mỗi lần đổi.</p>
+<p>Trước khi publish, Ops ghi nhận thêm thị trường được phép đổi và ngày xác nhận khả dụng. Nếu không có xác nhận rằng người nhận ở một thị trường có thể dùng quà, option đó không được mở cho OP ở thị trường này. Đây là rule nghiệp vụ của OMH; cần xác nhận danh sách quốc gia/lựa chọn thực tế với Giftronaut.</p>
+<table>
+<thead>
+<tr>
+<th>Edge case</th>
+<th>Phát hiện tại API</th>
+<th>Hệ thống xử lý / kết quả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Hai Ops cùng sửa cấu hình</td>
+<td><a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a> <strong>Đề xuất:</strong> <code>PUT /v1/ellis/redemption-config</code></td>
+<td>Backend trả <code>409 CONFIG_VERSION_CONFLICT</code>; ELLIS tải lại bằng <a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a> GET; không ghi đè bản mới</td>
+</tr>
+<tr>
+<td>Product không có hoặc mệnh giá ngoài range</td>
+<td><a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a> <code>GET /api/v1/catalog/choice-cards</code> khi xử lý <a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a></td>
+<td>Backend không bật cấu hình, trả <code>422 CONFIG_NOT_VERIFIED</code>; Ops sửa product/mệnh giá</td>
+</tr>
+<tr>
+<td>Chưa xác nhận khả dụng tại thị trường OP</td>
+<td><a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a> <strong>Đề xuất:</strong> kiểm tra cấu hình thị trường đã duyệt</td>
+<td>Không publish cho thị trường đó; ELLIS nêu rõ cần Ops/Giftronaut xác nhận, không giữ điểm của OP</td>
+</tr>
+<tr>
+<td>Token sai / thiếu scope / GF tạm lỗi</td>
+<td><a class="api-ref" href="#g1-lấy-access-token" title="Mở đặc tả G1">G1</a> hoặc <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a></td>
+<td>Backend xử lý E02/E03/E07/E08; ELLIS thấy chưa xác minh, không báo publish thành công</td>
+</tr>
+</tbody>
+</table>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> Ops chọn product <code>55</code>, cấu hình 20 USD và tỷ lệ demo 1.480 KRW/USD, 1.000 KRW/P. Nếu <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a> xác nhận range chứa 20 USD, <a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a> (<strong>Đề xuất</strong>) lưu version mới và <a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a> (<strong>Đề xuất</strong>) hiển thị quà. Nếu người khác vừa sửa cùng version, ELLIS nhận 409 và tải lại cấu hình.</p></div></details></div></div><h3 id="f2-op-đổi-điểm--luồng-chính">F2. OP đổi điểm — luồng chính</h3>
+<h4 id="f2a-tạo-yêu-cầu-nội-bộ-rồi-mới-tạo-đơn-giftronaut">F2a. Tạo yêu cầu nội bộ rồi mới tạo đơn Giftronaut</h4><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/19-ba-create.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/19-ba-create.svg" alt="F2a — OP lấy quote, backend lưu yêu cầu và giữ điểm trước khi gọi create order" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p><strong>Người khởi tạo:</strong> OP trên OP Points. <strong>Điều kiện:</strong> option đã publish; OP được đổi điểm. <strong>Dữ liệu đi qua flow:</strong> option → quote → redemption → provider order. <code>redemptionId</code> gắn xuyên suốt việc giữ điểm và <code>idempotencyKey</code> gửi GF.</p>
+
+<p><a href="assets/19-ba-create.png">Mở ảnh PNG</a> · <a href="diagrams/19-ba-create.puml">PlantUML source</a></p>
+<table>
+<thead>
+<tr>
+<th>Bước</th>
+<th>Ai gọi / thao tác</th>
+<th>API</th>
+<th>Dữ liệu và kết quả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>OP chọn quà, lấy báo giá</td>
+<td><a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a></td>
+<td>Gửi option; nhận <code>quoteId</code>, điểm cần dùng, tỷ lệ, thời hạn quote</td>
+</tr>
+<tr>
+<td>2</td>
+<td>OP xác nhận email và số điểm</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a></td>
+<td>Gửi <code>quoteId</code>, email, khóa chống trùng</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Backend kiểm tra và lưu</td>
+<td>Xử lý nội bộ</td>
+<td>Xác định OP/company từ đăng nhập; kiểm tra quote/quyền/số dư; tạo <code>redemptionId</code> + giữ điểm cùng một thao tác; trả <code>202 PROCESSING</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Backend đặt quà</td>
+<td><a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+<td>Dùng <code>redemptionId</code> làm <code>idempotencyKey</code>, product/mệnh giá/email từ dữ liệu đã lưu</td>
+</tr>
+<tr>
+<td>5</td>
+<td>GF trả đơn đã nhận</td>
+<td>Response <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+<td>Lưu <code>orderId</code>, <code>status</code>; <code>PENDING/IN_PROGRESS</code> vẫn giữ điểm</td>
+</tr>
+<tr>
+<td>6</td>
+<td>GF báo kết quả; backend xác minh</td>
+<td><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> → <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a></td>
+<td>Nhận webhook rồi đọc trạng thái đơn; nếu không có webhook thì backend chủ động <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a></td>
+</tr>
+<tr>
+<td>7</td>
+<td>Backend chốt kết quả</td>
+<td>Xử lý nội bộ</td>
+<td><code>COMPLETE</code>: chốt điểm đúng một lần → <code>SUCCEEDED</code>; lưu trạng thái email riêng</td>
+</tr>
+<tr>
+<td>8</td>
+<td>OP/ELLIS xem tiến độ</td>
+<td><a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> / <a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7">I7</a></td>
+<td>Đọc cùng redemption; UI không tự quyết định trạng thái</td>
+</tr>
+</tbody>
+</table>
+<p>Nếu provider từ chối chắc chắn ở bước 4, đi F3 và trả điểm. Nếu chốt điểm nội bộ lỗi sau khi GF đã COMPLETE, giữ <code>PROCESSING</code>, chuyển Ops xử lý; không tạo đơn GF mới.</p>
+<table>
+<thead>
+<tr>
+<th>Edge case trước/sau submit</th>
+<th>API liên quan</th>
+<th>Xử lý và điều OP thấy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Quote hết hạn</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> trả <code>409 QUOTE_EXPIRED</code> → <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a> lấy quote mới</td>
+<td>OP xác nhận lại số điểm; chưa giữ điểm, chưa gọi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+</tr>
+<tr>
+<td>Điểm vừa được dùng bởi yêu cầu khác</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> trả <code>409 INSUFFICIENT_POINTS</code></td>
+<td>Backend không giữ thêm điểm; UI hiển thị số dư mới</td>
+</tr>
+<tr>
+<td>Double click / client mất response</td>
+<td>Gọi lại <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> cùng key/body</td>
+<td>Trả redemption cũ; không gọi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> lần nữa do thao tác UI</td>
+</tr>
+<tr>
+<td>Cùng key nhưng đổi email/quote</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> trả <code>409 IDEMPOTENCY_PAYLOAD_MISMATCH</code></td>
+<td>Không tạo yêu cầu mới; UI dùng lại request gốc hoặc bắt đầu ý định đổi mới hợp lệ</td>
+</tr>
+<tr>
+<td>Quote đã dùng với key khác</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> trả <code>409 QUOTE_ALREADY_USED</code></td>
+<td>Mở yêu cầu cũ; không giữ điểm lần hai</td>
+</tr>
+<tr>
+<td>Lưu yêu cầu/giữ điểm lỗi</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> lỗi nội bộ</td>
+<td>Không gửi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> trước khi lưu/giữ thành công; retry kiểm tra lại record cũ</td>
+</tr>
+<tr>
+<td>GF 402, 409, timeout hoặc 5xx</td>
+<td><a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+<td>Đi F3; OP tiếp tục xem <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a>, không tự bấm tạo đơn thay thế</td>
+</tr>
+</tbody>
+</table>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> OP có 50P; quote demo 20 USD cần 29,6P. <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> (<strong>Đề xuất</strong>) tạo <code>rdm_001</code>, giữ 29,6P, còn 20,4P khả dụng. <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> gửi key <code>rdm_001</code>; OP bấm lại cùng key thì vẫn nhận một yêu cầu. Chưa có COMPLETE thì chưa chốt điểm.</p></div></details></div></div><h4 id="f2b-nhận-callback-hoặc-chủ-động-hỏi-kết-quả-rồi-chốt-điểm">F2b. Nhận callback hoặc chủ động hỏi kết quả, rồi chốt điểm</h4><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/20-ba-completion.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/20-ba-completion.svg" alt="F2b — Webhook, query order, chốt điểm và cập nhật OP Points cùng ELLIS" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p><strong>Bên kích hoạt:</strong> Giftronaut gọi webhook hoặc backend đến lịch kiểm tra. <strong>Điều kiện:</strong> có redemption đang xử lý; có orderId để gọi <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>. Nếu chưa có orderId thì dùng F3/<a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> trước. <strong>Kết thúc:</strong> SUCCEEDED sau khi chốt điểm, hoặc giữ trạng thái xử lý/xác minh cùng lý do.</p>
+
+<p><a href="assets/20-ba-completion.png">Mở ảnh PNG</a> · <a href="diagrams/20-ba-completion.puml">PlantUML source</a></p>
+<table>
+<thead>
+<tr>
+<th>Nhánh</th>
+<th>API / thứ tự</th>
+<th>Hành động và điểm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Callback hợp lệ</td>
+<td><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> <strong>Đề xuất:</strong> <code>POST /webhooks/giftronaut/v1</code> → <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> <code>GET /api/v1/orders/{orderId}</code></td>
+<td>Lưu event rồi xác minh đơn; COMPLETE mới chốt điểm</td>
+</tr>
+<tr>
+<td>Callback không đến</td>
+<td>Backend chủ động <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a></td>
+<td>Xử lý cùng quy tắc như có webhook; không tạo order mới</td>
+</tr>
+<tr>
+<td>Sai chữ ký / không lưu được</td>
+<td><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> trả 401 / 503</td>
+<td>Không cập nhật điểm; 503 không được coi là đã nhận thành công</td>
+</tr>
+<tr>
+<td>Callback trùng</td>
+<td><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> trả 204</td>
+<td>Không xử lý lại tác động điểm; không suy ra có thêm một lần phát quà</td>
+</tr>
+<tr>
+<td>Callback đến trước response create</td>
+<td><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> lưu event; ghép khi có orderId hoặc sau <a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a></td>
+<td>Giữ event chờ xử lý, không bỏ chỉ vì chưa tìm thấy redemption</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> vẫn PENDING/IN_PROGRESS</td>
+<td>Tiếp tục <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> theo lịch</td>
+<td>HELD, OP thấy đang xử lý</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> COMPLETE nhưng chốt điểm nội bộ lỗi</td>
+<td>Retry thao tác chốt trên cùng redemption</td>
+<td><code>POINT_FINALIZATION_PENDING</code>; không gửi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> lại</td>
+</tr>
+<tr>
+<td>COMPLETE nhưng email bounce</td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>/<a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> → <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a>/<a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7">I7</a> hiển thị kết quả</td>
+<td>SUCCEEDED + SPENT + BOUNCED; cho đi F4</td>
+</tr>
+<tr>
+<td>Callback cũ/mâu thuẫn hoặc <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> lỗi</td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> xác minh + lưu case nếu chưa giải được</td>
+<td>Không lùi trạng thái cuối hoặc tự hoàn điểm; áp dụng F3/mục 5</td>
+</tr>
+</tbody>
+</table>
+<p>Sau xử lý, OP Points gọi <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> <strong>Đề xuất:</strong> <code>GET /v1/op-points/redemptions/{id}</code>; ELLIS gọi <a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7">I7</a> <strong>Đề xuất:</strong> <code>GET /v1/ellis/redemptions/{id}</code>. Cả hai đọc cùng bản ghi, ELLIS có thêm lỗi GF và timeline theo quyền.</p>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> báo delivery_complete cho <code>OT_001</code>; <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> trả COMPLETE. Backend chốt 29,6P một lần, lưu SUCCEEDED + SENT. Nếu cùng eventId đến lại, trả ACK nhưng không chốt thêm. Nếu ghi sổ điểm lỗi, tiếp tục PROCESSING và xử lý lại chốt điểm trên cùng yêu cầu. Đây là mapping OMH <strong>Đề xuất</strong>.</p></div></details></div></div><h3 id="f3-lỗi-hoặc-chưa-rõ-đơn-đã-tạo-hay-chưa">F3. Lỗi hoặc chưa rõ đơn đã tạo hay chưa</h3><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/21-ba-recovery.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/21-ba-recovery.svg" alt="F3 — Phân nhánh từ chối chắc chắn và xác minh order sau timeout hoặc duplicate" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p><strong>Bên kích hoạt:</strong> Backend nhận lỗi/mất response <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> hoặc không xác minh được đơn. <strong>Hệ thống:</strong> Backend OMH và GF trao đổi API; ELLIS phục vụ Ops/Finance khi cần can thiệp. <strong>Điểm quyết định:</strong> có bằng chứng “không phát quà” hay chỉ “chưa biết kết quả”.</p>
+
+<p><a href="assets/21-ba-recovery.png">Mở ảnh PNG</a> · <a href="diagrams/21-ba-recovery.puml">PlantUML source</a></p>
+<table>
+<thead>
+<tr>
+<th>Tình huống</th>
+<th>Thứ tự xử lý [OMH — Đề xuất]</th>
+<th>Điểm / kết quả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bị từ chối trước khi gọi GF</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> trả lỗi validation/quyền/số dư</td>
+<td>Không giữ điểm; không tạo redemption thành công</td>
+</tr>
+<tr>
+<td>GF từ chối chắc chắn, ví dụ lần gọi đầu trả 402</td>
+<td>Lưu lỗi → trả điểm → đánh dấu <code>FAILED</code></td>
+<td>Điểm về khả dụng; OP có thể tạo yêu cầu mới sau khi vấn đề được xử lý</td>
+</tr>
+<tr>
+<td>Timeout, 5xx, mất response hoặc 409 duplicate</td>
+<td>Đặt <code>VERIFYING</code> → <a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> theo khóa đã lưu → có đơn thì <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a></td>
+<td>Giữ điểm; dùng đơn cũ</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> chưa thấy đơn</td>
+<td>Tiếp tục tra cứu; nếu retry <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> thì giữ nguyên key <strong>và payload</strong></td>
+<td>Một kết quả rỗng/404 không đủ để hoàn điểm</td>
+</tr>
+<tr>
+<td>Có <code>orderId</code> nhưng callback chậm</td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> → cập nhật theo trạng thái thực</td>
+<td>Không cần gọi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> lại</td>
+</tr>
+<tr>
+<td>Quá thời gian xác minh</td>
+<td>Đưa vào danh sách ELLIS cần hỗ trợ; Ops xác nhận với GF</td>
+<td>Vẫn giữ điểm; chỉ chuyển <code>FAILED</code> khi có bằng chứng không phát quà</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Đề xuất thời gian:</strong> kiểm tra sau 30 giây, sau đó mỗi 60 giây trong 15 phút, có điều chỉnh theo rate-limit toàn hệ thống. Quá 15 phút cần Ops tiếp nhận; đây là ngưỡng hỗ trợ, không phải thời điểm tự hoàn điểm. Mức thời gian/SLA cần chốt tại mục 9.</p>
+<p><strong>Chuỗi API tra cứu cụ thể:</strong> <a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> <code>GET /api/v1/orders?clientOrderId={redemptionId}</code> → lấy <code>orderId</code> → <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> <code>GET /api/v1/orders/{orderId}</code>. Nếu đã biết orderId thì gọi thẳng <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>. Một lần query rỗng, 404 hay lỗi query không phải bằng chứng để trả điểm.</p>
+<table>
+<thead>
+<tr>
+<th>Edge case</th>
+<th>Bên xử lý</th>
+<th>Quyết định</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>402 nhận được sau một lần create trước đó đã timeout</td>
+<td>Backend → <a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a>/<a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a></td>
+<td>Phải xác minh lần trước; không áp dụng “402 là hoàn ngay”</td>
+</tr>
+<tr>
+<td>401 khi query/create</td>
+<td>Backend → <a class="api-ref" href="#g1-lấy-access-token" title="Mở đặc tả G1">G1</a> rồi gọi lại API tương ứng tối đa một lần</td>
+<td>Giữ key/body; nếu vẫn lỗi thì Engineering kiểm tra credentials</td>
+</tr>
+<tr>
+<td>403 thiếu scope/org</td>
+<td>Backend / Engineering</td>
+<td>Dừng retry tự động; không dùng credential khác môi trường để tìm đơn</td>
+</tr>
+<tr>
+<td>429 trong khi xác minh</td>
+<td>Backend</td>
+<td>Đợi reset rồi gọi lại; điểm vẫn HELD</td>
+</tr>
+<tr>
+<td>Tìm thấy nhiều đơn bất thường</td>
+<td>Backend / Ops</td>
+<td>Không tự chọn đơn hoặc phát thêm quà; tạo case có bằng chứng</td>
+</tr>
+<tr>
+<td>Đã xác nhận không phát quà nhưng release lỗi</td>
+<td>Backend</td>
+<td>Retry trả hold cùng redemption; chưa hiển thị FAILED/đã trả điểm</td>
+</tr>
+<tr>
+<td>Hết ngưỡng hỗ trợ vẫn chưa rõ</td>
+<td>Ops xem <a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7">I7</a> trên ELLIS, xác minh với GF theo runbook</td>
+<td>Giao dịch giữ VERIFYING; chưa bổ sung API manual-resolve trong phạm vi spec này</td>
+</tr>
+</tbody>
+</table>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> đã tạo <code>OT_001</code> nhưng response timeout. Backend giữ 29,6P ở VERIFYING và gọi <a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> với <code>clientOrderId=rdm_001</code>; tìm thấy <code>OT_001</code> thì tiếp tục <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>/F2b. Nếu lần gọi đầu bị từ chối chắc chắn vì 402, trả đúng 29,6P rồi FAILED. Không đổi key để thử phát quà mới. Mapping trạng thái/điểm OMH là <strong>Đề xuất</strong>.</p></div></details></div></div><h3 id="f4-email-bounce-và-gửi-lại">F4. Email bounce và gửi lại</h3><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/22-ba-resend.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/22-ba-resend.svg" alt="F4 — OP hoặc Ops yêu cầu resend, backend gọi cùng order và theo dõi lần gửi" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p><strong>Người khởi tạo:</strong> OP trên OP Points hoặc Ops trên ELLIS. <strong>Điều kiện:</strong> redemption SUCCEEDED, email BOUNCED, đúng quyền, chưa có lần gửi lại đang xử lý/chưa rõ kết quả. <strong>Kết thúc:</strong> email được gửi lại hoặc có lỗi hỗ trợ; trạng thái phát quà và điểm không thay đổi.</p>
+
+<p><a href="assets/22-ba-resend.png">Mở ảnh PNG</a> · <a href="diagrams/22-ba-resend.puml">PlantUML source</a></p>
+<ol>
+<li><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> báo <code>order.bounced</code> hoặc <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> xác nhận bounce → <code>deliveryStatus=BOUNCED</code>; nếu đơn đã hoàn tất thì điểm vẫn <code>SPENT</code>.</li>
+<li>OP xác nhận/sửa email và gọi <a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a>; Ops có thể làm qua <a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a> với lý do hỗ trợ.</li>
+<li>Backend kiểm tra chủ giao dịch, quyền và trạng thái → gọi <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> với email hiện tại tại GF và <code>updatedEmail</code> nếu đổi.</li>
+<li>GF trả số người nhận được đưa vào hàng chờ. Với MVP phải là <code>requeued=1</code>; lúc này chỉ hiển thị đang gửi lại.</li>
+<li>Chờ <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a>/<a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> cập nhật email. Nếu resend timeout, lưu lần gửi là chưa rõ kết quả và xác minh trước khi cho gửi tiếp. Không giả định <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> có idempotency như <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a>.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>Nhánh / edge case</th>
+<th>API</th>
+<th>Xử lý</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OP tự resend</td>
+<td><a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a> <strong>Đề xuất:</strong> <code>POST /v1/op-points/redemptions/{id}/resend</code></td>
+<td>Kiểm tra chủ giao dịch; body email + header key</td>
+</tr>
+<tr>
+<td>Ops hỗ trợ</td>
+<td><a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a> <strong>Đề xuất:</strong> <code>POST /v1/ellis/redemptions/{id}/resend</code></td>
+<td>Kiểm tra quyền Support; bắt buộc reason, lưu người thao tác</td>
+</tr>
+<tr>
+<td>Gửi lại đúng đơn</td>
+<td><a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> <code>POST /api/v1/orders/{orderId}/resend</code></td>
+<td>Email hiện tại của GF + updatedEmail nếu đổi; không gọi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+</tr>
+<tr>
+<td>Bấm resend hai lần</td>
+<td><a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a>/<a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a> cùng key</td>
+<td>Trả lần gửi cũ; không gọi <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> thêm chỉ vì UI gửi lặp</td>
+</tr>
+<tr>
+<td>Không đúng chủ / chưa đủ điều kiện / vượt giới hạn</td>
+<td><a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a>/<a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a></td>
+<td>Trả 404/403, 409 hoặc 429 tương ứng; không gọi <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a></td>
+</tr>
+<tr>
+<td>GF trả <code>requeued=1</code></td>
+<td>Response <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a></td>
+<td>Chờ delivery; chỉ cập nhật email GF xác nhận, chưa báo SENT</td>
+</tr>
+<tr>
+<td><code>requeued=0</code> hoặc từ chối chắc chắn</td>
+<td>Response <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a></td>
+<td>Lần resend thất bại; BOUNCED nếu còn bằng chứng, không trừ/hoàn điểm</td>
+</tr>
+<tr>
+<td>Timeout hoặc dữ liệu không rõ</td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> rồi Ops nếu cần</td>
+<td>UNKNOWN, chưa cho gửi tiếp; <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> chưa chắc phân biệt được từng lần resend — xem D7</td>
+</tr>
+<tr>
+<td>Bounce cũ tới sau khi đổi email</td>
+<td><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a></td>
+<td>Đối chiếu email/thời điểm/lần gửi; không ghi đè trạng thái mới bằng event cũ</td>
+</tr>
+</tbody>
+</table>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> <code>OT_001</code> đã phát quà nhưng email <code>an@example.com</code> bounce. OP nhập <code>an.corrected@example.com</code>; <a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a> (<strong>Đề xuất</strong>) gửi yêu cầu đến backend, <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> dùng email cũ + updatedEmail mới. Response requeued=1 chỉ là đã xếp hàng; chờ event mới để hiển thị SENT. Điểm vẫn SPENT = 29,6P.</p></div></details></div></div><h3 id="f5-kiểm-tra-số-dư-và-hỗ-trợ-vận-hành">F5. Kiểm tra số dư và hỗ trợ vận hành</h3><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/23-ba-balance.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/23-ba-balance.svg" alt="F5 — ELLIS xem số dư, Finance nạp thủ công trên portal và kiểm tra lại" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p><strong>Người khởi tạo:</strong> Finance/Ops trên ELLIS. <strong>Hệ thống tham gia:</strong> ELLIS, Backend OMH, Giftronaut API và Giftronaut Portal nếu nạp tiền. <strong>Kết thúc:</strong> số dư có timestamp rõ ràng hoặc báo chưa cập nhật được.</p>
+
+<p><a href="assets/23-ba-balance.png">Mở ảnh PNG</a> · <a href="diagrams/23-ba-balance.puml">PlantUML source</a></p>
+<p>ELLIS <a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> → Backend <a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a> → hiển thị số dư và thời điểm kiểm tra. Finance nạp thủ công trên portal nếu cần. Số dư GF là tiền của organization, không phải số điểm OP. Kiểm tra số dư không bảo đảm đơn tiếp theo thành công vì có thể có giao dịch khác; kết quả <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> vẫn quyết định cách xử lý.</p>
+<table>
+<thead>
+<tr>
+<th>Nhánh / edge case</th>
+<th>API / thao tác</th>
+<th>Kết quả</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Đọc thành công</td>
+<td><a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> <strong>Đề xuất:</strong> <code>GET /v1/ellis/provider-balance</code> → <a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a> <code>GET /api/v1/balance</code></td>
+<td>available/pending + checkedAt + stale=false</td>
+</tr>
+<tr>
+<td>Provider lỗi nhưng có dữ liệu cũ</td>
+<td><a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> đọc cache</td>
+<td>Trả stale=true và checkedAt cũ; ELLIS báo chưa cập nhật được</td>
+</tr>
+<tr>
+<td>Provider lỗi và chưa có cache</td>
+<td><a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> trả 503</td>
+<td>Hiển thị lỗi; không tự đặt số dư 0</td>
+</tr>
+<tr>
+<td>Tiền đang pending</td>
+<td>Finance xem portal, sau đó kiểm tra lại <a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> → <a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a></td>
+<td>Chưa coi pending là tiền khả dụng</td>
+</tr>
+<tr>
+<td>Số dư thấp hơn ngưỡng cảnh báo</td>
+<td><a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> so sánh <code>availableBalance</code> với ngưỡng đã duyệt</td>
+<td>ELLIS cảnh báo Finance/Ops, hiển thị số dư và thời điểm kiểm tra; không tự chặn OP nếu chưa có rule quota đã duyệt</td>
+</tr>
+<tr>
+<td>Vừa xem đủ tiền nhưng <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> trả 402</td>
+<td>F3 xử lý giao dịch; Finance kiểm tra/nạp thủ công</td>
+<td>Không tự retry redemption đã FAILED sau khi nạp tiền</td>
+</tr>
+</tbody>
+</table>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> ELLIS đọc số dư 500 USD lúc 09:00. Lần đọc 09:10 timeout: <a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> (<strong>Đề xuất</strong>) trả bản 500 USD với stale=true và checkedAt=09:00; UI ghi rõ dữ liệu cũ. Finance nạp trên portal và kiểm tra lại sau khi tiền được ghi nhận; không cộng tiền pending vào available.</p></div></details></div></div><h2 id="3-api-giftronaut-cần-tích-hợp">3. API Giftronaut cần tích hợp</h2><div id="api-integration-map" class="api-map-regular"><svg class="flow-map" viewBox="0 0 1080 405" role="img" aria-labelledby="api-map-title api-map-desc"><title id="api-map-title">Bản đồ API Ohmyhotel và Giftronaut</title><desc id="api-map-desc">Bấm từng ô để mở đặc tả API. Cột xanh là Ohmyhotel đề xuất, cột tím là Giftronaut.</desc><defs><marker id="api-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#607080"/></marker></defs><text x="102" y="35">OP Points</text><text x="292" y="35">ELLIS</text><text x="560" y="35">Backend Ohmyhotel</text><text x="782" y="35">Giftronaut API</text><text x="972" y="35">Portal / callback</text><path d="M185 211 H195 V180 H455 V211" class="route" style="marker-end:url(#api-arrow)"/><path d="M650 211 H700" class="route" style="marker-end:url(#api-arrow)"/><text class="map-sub" x="328" y="201">Tạo yêu cầu</text><text class="map-sub" x="676" y="201">Tạo đơn</text><a href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" aria-label="Mở I1: Danh sách quà"><rect class="api-omh" x="20" y="72" width="165" height="45"/><text x="102.5" y="91">I1</text><text class="map-sub" x="102.5" y="107">Danh sách quà</text></a><a href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" aria-label="Mở I2: Báo giá điểm"><rect class="api-omh" x="20" y="130" width="165" height="45"/><text x="102.5" y="149">I2</text><text class="map-sub" x="102.5" y="165">Báo giá điểm</text></a><a href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" aria-label="Mở I3: Tạo yêu cầu"><rect class="api-omh" x="20" y="188" width="165" height="45"/><text x="102.5" y="207">I3</text><text class="map-sub" x="102.5" y="223">Tạo yêu cầu</text></a><a href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" aria-label="Mở I4: Xem giao dịch"><rect class="api-omh" x="20" y="246" width="165" height="45"/><text x="102.5" y="265">I4 / I5</text><text class="map-sub" x="102.5" y="281">Xem giao dịch</text></a><a href="#i6-op-gửi-lại-email--đề-xuất" aria-label="Mở I6: OP gửi lại email"><rect class="api-omh" x="20" y="304" width="165" height="45"/><text x="102.5" y="323">I6</text><text class="map-sub" x="102.5" y="339">OP gửi lại email</text></a><a href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" aria-label="Mở I7: Ops tra cứu"><rect class="api-omh" x="210" y="72" width="165" height="45"/><text x="292.5" y="91">I7</text><text class="map-sub" x="292.5" y="107">Ops tra cứu</text></a><a href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" aria-label="Mở I7-resend: Ops gửi lại email"><rect class="api-omh" x="210" y="130" width="165" height="45"/><text x="292.5" y="149">I7-resend</text><text class="map-sub" x="292.5" y="165">Ops gửi lại email</text></a><a href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" aria-label="Mở I8: Cấu hình quà"><rect class="api-omh" x="210" y="188" width="165" height="45"/><text x="292.5" y="207">I8</text><text class="map-sub" x="292.5" y="223">Cấu hình quà</text></a><a href="#i9-số-dư-provider-cho-ellis--đề-xuất" aria-label="Mở I9: Xem số dư"><rect class="api-omh" x="210" y="246" width="165" height="45"/><text x="292.5" y="265">I9</text><text class="map-sub" x="292.5" y="281">Xem số dư</text></a><a href="#g1-lấy-access-token" aria-label="Mở G1: Lấy token"><rect class="api-gf" x="700" y="72" width="165" height="45"/><text x="782.5" y="91">G1</text><text class="map-sub" x="782.5" y="107">Lấy token</text></a><a href="#g2-đọc-choice-card-để-cấu-hình-quà" aria-label="Mở G2: Đọc Choice Card"><rect class="api-gf" x="700" y="130" width="165" height="45"/><text x="782.5" y="149">G2</text><text class="map-sub" x="782.5" y="165">Đọc Choice Card</text></a><a href="#g3-tạo-đơn-choice-card" aria-label="Mở G3: Tạo đơn quà"><rect class="api-gf" x="700" y="188" width="165" height="45"/><text x="782.5" y="207">G3</text><text class="map-sub" x="782.5" y="223">Tạo đơn quà</text></a><a href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" aria-label="Mở G4: Tìm và xem đơn"><rect class="api-gf" x="700" y="246" width="165" height="45"/><text x="782.5" y="265">G4 / G5</text><text class="map-sub" x="782.5" y="281">Tìm và xem đơn</text></a><a href="#g6-gửi-lại-email-cùng-đơn" aria-label="Mở G6: Gửi lại email"><rect class="api-gf" x="700" y="304" width="165" height="45"/><text x="782.5" y="323">G6</text><text class="map-sub" x="782.5" y="339">Gửi lại email</text></a><a href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" aria-label="Mở G7: Webhook kết quả"><rect class="api-gf" x="890" y="159" width="165" height="45"/><text x="972.5" y="178">G7</text><text class="map-sub" x="972.5" y="194">Webhook kết quả</text></a><a href="#g8-đọc-số-dư-tài-khoản-giftronaut" aria-label="Mở G8: Đọc số dư"><rect class="api-gf" x="890" y="246" width="165" height="45"/><text x="972.5" y="265">G8</text><text class="map-sub" x="972.5" y="281">Đọc số dư</text></a><rect class="api-core" x="470" y="156" width="180" height="110"/><text x="560" y="187">Lưu yêu cầu đổi quà</text><text class="map-sub" x="560" y="209">giữ / chốt / trả điểm</text><text class="map-sub" x="560" y="231">lưu trạng thái và lịch sử</text><rect class="api-store" x="890" y="72" width="165" height="45"/><text x="972" y="91">Portal Giftronaut</text><text class="map-sub" x="972" y="107">App, webhook, nạp tiền</text></svg><p class="map-note"><strong>Cách đọc:</strong> bắt đầu ở các ô xanh (API Ohmyhotel Đề xuất). Backend ở giữa gọi các ô tím (API Giftronaut). Bấm vào từng ô để mở đặc tả API. Ví dụ đổi quà: <a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a> → <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a> → <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> → <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> → <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> hoặc <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> → <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a>.</p>
+<h3 id="30-bản-đồ-quan-hệ-api">3.0. Bản đồ quan hệ API</h3>
+
+<p>Trong HTML, sơ đồ PlantUML ở source được thay bằng <strong>bản đồ API tương tác</strong>: bấm vào từng ô I/G để đi thẳng tới đặc tả API. Bản đồ không dính khi cuộn như sơ đồ flow.</p>
+<p>Đây là bản đồ để đọc phần API. API bắt đầu bằng <strong>I</strong> là API nội bộ Ohmyhotel, toàn bộ là <strong>Đề xuất</strong>. API bắt đầu bằng <strong>G</strong> là API Giftronaut. Một lượt đổi quà bình thường đi theo: <strong><a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a> xem quà → <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a> tính điểm → <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> tạo yêu cầu/giữ điểm → <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> tạo đơn quà → <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> hoặc <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a> xác nhận kết quả → <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> xem kết quả</strong>. Khi có lỗi chưa rõ kết quả thì dùng <a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> để tìm lại đơn; khi email bị trả về thì dùng <a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a>/<a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a> rồi <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Nhu cầu</th>
+<th>API Ohmyhotel — Đề xuất</th>
+<th>API Giftronaut</th>
+<th>Điều cần nhớ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mở danh sách quà</td>
+<td><a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a></td>
+<td><a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a> được dùng khi Ops cấu hình, không gọi trực tiếp từ browser</td>
+<td>OP chỉ thấy option đã duyệt</td>
+</tr>
+<tr>
+<td>Đổi điểm</td>
+<td><a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a>, <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a>, <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a></td>
+<td><a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a>, <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> và <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a></td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> giữ điểm trước; COMPLETE mới chốt điểm</td>
+</tr>
+<tr>
+<td>Không rõ create đã thành công chưa</td>
+<td><a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> / <a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7">I7</a> để xem tiến độ</td>
+<td><a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> rồi <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a></td>
+<td>Không đổi mã chống trùng, không tạo đơn mới</td>
+</tr>
+<tr>
+<td>Email bounce / resend</td>
+<td><a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a> hoặc <a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a></td>
+<td><a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a>, <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>, <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a></td>
+<td>Dùng lại cùng đơn; không trừ điểm thêm</td>
+</tr>
+<tr>
+<td>Cấu hình và tài chính</td>
+<td><a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a>, <a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a></td>
+<td><a class="api-ref" href="#g1-lấy-access-token" title="Mở đặc tả G1">G1</a>, <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a>, <a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a></td>
+<td>ELLIS/Ops/Finance sử dụng theo quyền</td>
+</tr>
+</tbody>
+</table>
+<h3 id="31-quy-ước-kết-nối-và-độ-chắc-chắn-của-ví-dụ">3.1. Quy ước kết nối và độ chắc chắn của ví dụ</h3>
+<p>Host chính thức: <code>https://api.giftronaut.com</code>; business API có tiền tố <code>/api/v1</code>; OAuth không có tiền tố này. Sandbox/production dùng cùng host, phân biệt bằng credentials. Mọi API <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a>–<a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a>/<a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a> cần <code>Authorization: Bearer &lt;GF access token&gt;</code>; POST JSON dùng <code>Content-Type: application/json</code>. Chỉ backend giữ credentials. Nguồn: <a href="https://api.giftronaut.com/docs/reference">API reference</a>, <a href="https://api.giftronaut.com/docs/guides/authentication">Authentication</a>.</p>
+<p>Các JSON bên dưới là <strong>ví dụ với dữ liệu giả</strong>, không phải response đã chạy sandbox. Những response ghi “trích trường” chỉ thể hiện phần cần dùng; không phải full schema. Response wrapper/field còn thiếu phải xác nhận trong sandbox theo mục 9. Không lấy cấu trúc response branded card làm contract chắc chắn của Choice Card.</p>
+<h3 id="g1-lấy-access-token">G1. Lấy access token</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/guides/authentication">G1 — tài liệu chính thức</a>.</p>
+<p><code>POST https://api.giftronaut.com/oauth2/token</code> — backend gọi trước khi dùng business API hoặc khi token hết hạn.</p>
+<pre><code class="language-http">Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials&amp;client_id={client_id}&amp;client_secret={client_secret}&amp;scope=orders.read%20orders.write%20catalog.read%20balance.read
+</code></pre>
+<p>Request gồm bốn trường bắt buộc trong contract tích hợp: <code>grant_type</code> cố định, hai credentials được cấp, <code>scope</code> theo quyền app. Response thành công <code>200</code> theo <a href="https://api.giftronaut.com/docs/guides/authentication">Authentication</a>:</p>
+<pre><code class="language-json">{&quot;access_token&quot;:&quot;&lt;token&gt;&quot;,&quot;token_type&quot;:&quot;Bearer&quot;,&quot;expires_in&quot;:3600,&quot;scope&quot;:&quot;orders.read orders.write catalog.read balance.read&quot;}
+</code></pre>
+<p>Backend lưu token và hạn dùng theo <code>expires_in</code>, không trả token GF về UI. Production chưa được duyệt server-to-server có thể trả <code>unauthorized_client</code> — xem <a href="https://api.giftronaut.com/docs/guides/sandbox">Sandbox &amp; Production</a>. Các lỗi OAuth khác chưa được liệt kê đủ; lưu HTTP và <code>error/error_description</code> nếu có, không tự gán mã GF. Xin token thất bại thì dừng gọi business API, đưa lỗi cấu hình cho Engineering.</p>
+<h4 id="field-requestresponse">Field request/response</h4>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Request form</td>
+<td><code>grant_type</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Luôn là <code>client_credentials</code> cho kết nối server-to-server</td>
+</tr>
+<tr>
+<td>Request form</td>
+<td><code>client_id</code></td>
+<td>string</td>
+<td>Có</td>
+<td>ID ứng dụng do Giftronaut cấp</td>
+</tr>
+<tr>
+<td>Request form</td>
+<td><code>client_secret</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Secret ứng dụng; chỉ backend giữ</td>
+</tr>
+<tr>
+<td>Request form</td>
+<td><code>scope</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Các quyền cách nhau bằng khoảng trắng, ví dụ <code>orders.read orders.write catalog.read</code></td>
+</tr>
+<tr>
+<td>Response 200</td>
+<td><code>access_token</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Token đặt vào header <code>Authorization: Bearer ...</code> khi gọi <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a>–<a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a>/<a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a></td>
+</tr>
+<tr>
+<td>Response 200</td>
+<td><code>token_type</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Dự kiến <code>Bearer</code></td>
+</tr>
+<tr>
+<td>Response 200</td>
+<td><code>expires_in</code></td>
+<td>integer (giây)</td>
+<td>Có</td>
+<td>Thời gian token còn dùng được</td>
+</tr>
+<tr>
+<td>Response 200</td>
+<td><code>scope</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Quyền token thực tế được cấp</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g2-đọc-choice-card-để-cấu-hình-quà">G2. Đọc Choice Card để cấu hình quà</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/reference/catalog">G2 — tài liệu chính thức</a>.</p>
+<p><code>GET https://api.giftronaut.com/api/v1/catalog/choice-cards?page=1&amp;pageSize=100</code> — scope <code>catalog.read</code>, không có body. <code>search</code> tùy chọn; đọc các trang còn lại nếu có.</p>
+<p>Response <code>200</code>, <strong>trích một item</strong>; các giá trị chỉ minh họa:</p>
+<pre><code class="language-json">{&quot;productId&quot;:&quot;55&quot;,&quot;priceType&quot;:&quot;RANGE&quot;,&quot;prices&quot;:[10,500],&quot;priceStep&quot;:1}
+</code></pre>
+<p>Lưu <code>productId</code> (string), <code>prices</code> (array min/max), <code>priceStep</code> (number), thời điểm xác nhận. Chỉ publish mệnh giá nằm trong range và đúng step. API chi tiết tùy chọn: <code>GET https://api.giftronaut.com/api/v1/catalog/choice-cards/{productId}</code>; trường hợp không có design trả <code>404 NOT_FOUND</code>. List có phân trang; wrapper chính xác cần lấy từ sandbox. Lỗi chung: E01/E02/E03/E07/E08 ở mục 5. Nguồn: <a href="https://api.giftronaut.com/docs/reference/catalog">Catalog</a>.</p>
+<h4 id="field-requestresponse-2">Field request/response</h4>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Query</td>
+<td><code>page</code></td>
+<td>integer</td>
+<td>Không</td>
+<td>Trang cần đọc, mặc định 1</td>
+</tr>
+<tr>
+<td>Query</td>
+<td><code>pageSize</code></td>
+<td>integer, 1–100</td>
+<td>Không</td>
+<td>Số item mỗi trang, dùng tối đa 100 để kiểm tra đủ catalog</td>
+</tr>
+<tr>
+<td>Query</td>
+<td><code>search</code></td>
+<td>string</td>
+<td>Không</td>
+<td>Lọc theo tên design</td>
+</tr>
+<tr>
+<td>Response item</td>
+<td><code>productId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>ID phải đưa vào <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> <code>productId</code></td>
+</tr>
+<tr>
+<td>Response item</td>
+<td><code>priceType</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Với Choice Card là <code>RANGE</code></td>
+</tr>
+<tr>
+<td>Response item</td>
+<td><code>prices</code></td>
+<td>number[]</td>
+<td>Có</td>
+<td><code>[min,max]</code>, khoảng USD được phép nạp vào card của organization</td>
+</tr>
+<tr>
+<td>Response item</td>
+<td><code>priceStep</code></td>
+<td>number</td>
+<td>Có</td>
+<td>Bước giá; Choice Card theo docs là 1 USD</td>
+</tr>
+<tr>
+<td>Response list</td>
+<td>wrapper/phân trang</td>
+<td>object</td>
+<td>Cần xác nhận sandbox</td>
+<td>Dùng để biết còn trang tiếp theo; reference công khai không chốt schema wrapper</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g3-tạo-đơn-choice-card">G3. Tạo đơn Choice Card</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/reference/orders">G3 — tài liệu chính thức</a>.</p>
+<p><code>POST https://api.giftronaut.com/api/v1/orders/choice-cards</code> — scope <code>orders.write</code>.</p>
+<pre><code class="language-json">{
+  &quot;idempotencyKey&quot;:&quot;rdm_20261018_0001&quot;,
+  &quot;productId&quot;:&quot;55&quot;,
+  &quot;sendTiming&quot;:{&quot;type&quot;:&quot;IMMEDIATE&quot;},
+  &quot;emailSetting&quot;:{&quot;senderName&quot;:&quot;Ohmyhotel Rewards&quot;,&quot;subject&quot;:&quot;Your OP Points reward&quot;,&quot;message&quot;:&quot;Thank you for choosing Ohmyhotel.&quot;},
+  &quot;recipients&quot;:[{&quot;email&quot;:&quot;an@example.com&quot;,&quot;firstName&quot;:&quot;An&quot;,&quot;lastName&quot;:&quot;Nguyen&quot;,&quot;amount&quot;:20}],
+  &quot;refundOption&quot;:false
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Trường request [GF]</th>
+<th>Type / bắt buộc</th>
+<th>Mapping [OMH — Đề xuất]</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>idempotencyKey</code></td>
+<td>string / có, tối đa 64 ký tự</td>
+<td><code>redemptionId</code>, giữ nguyên khi retry; dùng lại làm query <code>clientOrderId</code></td>
+</tr>
+<tr>
+<td><code>productId</code></td>
+<td>string / có</td>
+<td>Product đã duyệt trong snapshot của quote</td>
+</tr>
+<tr>
+<td><code>sendTiming.type</code></td>
+<td>string / có</td>
+<td><code>IMMEDIATE</code>; không gửi lịch/timezone</td>
+</tr>
+<tr>
+<td><code>emailSetting.senderName</code>, <code>.subject</code></td>
+<td>string / có</td>
+<td>Cấu hình template của OMH</td>
+</tr>
+<tr>
+<td><code>emailSetting.message</code>, <code>.templateId</code></td>
+<td>string / không</td>
+<td>Nội dung/template đã duyệt, không nhận tùy ý từ UI</td>
+</tr>
+<tr>
+<td><code>recipients</code></td>
+<td>array / có</td>
+<td>MVP chính xác một item</td>
+</tr>
+<tr>
+<td><code>recipients[].email</code>, <code>.amount</code></td>
+<td>string, number / có</td>
+<td>Email OP xác nhận; giftAmountUsd từ quote, ví dụ 20 USD</td>
+</tr>
+<tr>
+<td><code>recipients[].firstName</code>, <code>.lastName</code>, <code>.company</code>, <code>.department</code></td>
+<td>string / không</td>
+<td>Chỉ gửi thông tin cần cho email; không dùng làm ID chủ điểm</td>
+</tr>
+<tr>
+<td><code>refundOption</code></td>
+<td>boolean / không</td>
+<td>OMH đề xuất <code>false</code>; lưu snapshot</td>
+</tr>
+</tbody>
+</table>
+<p>Thành công tạo mới: <code>201</code>; phần dữ liệu cần lấy là <code>orderId</code> và <code>status</code>. <strong>Ví dụ trích trường kỳ vọng, cần xác nhận schema Choice Card trong sandbox:</strong></p>
+<pre><code class="language-json">{&quot;orderId&quot;:&quot;OT-example-001&quot;,&quot;status&quot;:&quot;PENDING&quot;}
+</code></pre>
+<p>Lưu ID ngay khi nhận; trạng thái chưa hoàn tất thì tiếp tục <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>/<a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a>. Không gửi điểm, tỷ giá, OP ID hay company ID nội bộ sang GF. <code>clientOrderId</code> là tham số <strong>tra cứu</strong>, không thêm vào body create vì request được tài liệu định nghĩa bằng <code>idempotencyKey</code>.</p>
+<p>Lỗi: E01–E08; riêng <code>402 INSUFFICIENT_BALANCE</code> và <code>409 DUPLICATE_IDEMPOTENCY_KEY</code> xử lý khác nhau hoàn toàn. Nguồn: <a href="https://api.giftronaut.com/docs/reference/orders">Orders</a>, <a href="https://api.giftronaut.com/docs/guides/idempotency">Idempotency</a>, <a href="https://api.giftronaut.com/docs/guides/balance">Balance guide</a>.</p>
+<h4 id="field-requestresponse-3">Field request/response</h4>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Request</td>
+<td><code>idempotencyKey</code></td>
+<td>string, ≤64 ký tự</td>
+<td>Có</td>
+<td>Mã duy nhất cho một ý định tạo đơn; OMH dùng <code>redemptionId</code> đã lưu</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>productId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Choice Card từ <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a> và snapshot cấu hình</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>sendTiming.type</code></td>
+<td>enum</td>
+<td>Có</td>
+<td><code>IMMEDIATE</code> cho MVP; <code>SCHEDULED</code> ngoài scope</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>emailSetting.senderName</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Tên người gửi hiển thị trong email</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>emailSetting.subject</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Tiêu đề email</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>emailSetting.message</code></td>
+<td>string</td>
+<td>Không</td>
+<td>Nội dung email</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>emailSetting.templateId</code></td>
+<td>string</td>
+<td>Không</td>
+<td>Template tại Giftronaut nếu dùng</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients</code></td>
+<td>array</td>
+<td>Có</td>
+<td>MVP chỉ có đúng 1 người nhận</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients[].email</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Email nhận quà đã được OP xác nhận</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients[].amount</code></td>
+<td>number, USD nguyên</td>
+<td>Có</td>
+<td>Giá trị quà; phải nằm trong range <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a></td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients[].firstName</code>, <code>.lastName</code></td>
+<td>string</td>
+<td>Không</td>
+<td>Cá nhân hóa email, không dùng để xác định chủ điểm</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients[].company</code>, <code>.department</code></td>
+<td>string</td>
+<td>Không</td>
+<td>Metadata tùy chọn của Giftronaut</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>refundOption</code></td>
+<td>boolean</td>
+<td>Không</td>
+<td>MVP đề xuất <code>false</code>; ảnh hưởng expiry/refund của card</td>
+</tr>
+<tr>
+<td>Response 201</td>
+<td><code>orderId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>ID đơn, lưu để gọi <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>/<a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> và ghép webhook <a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a></td>
+</tr>
+<tr>
+<td>Response 201</td>
+<td><code>status</code></td>
+<td>enum</td>
+<td>Có</td>
+<td><code>PENDING</code> hoặc <code>IN_PROGRESS</code>; chưa đủ để chốt điểm</td>
+</tr>
+<tr>
+<td>Response 201</td>
+<td>Các trường khác</td>
+<td>object</td>
+<td>Cần xác nhận sandbox</td>
+<td>Không phụ thuộc vào wrapper khi chưa có response sandbox đã che dữ liệu</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình">G4. Tìm lại đơn theo mã yêu cầu của mình</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/reference/orders">G4 — tài liệu chính thức</a>.</p>
+<p><code>GET https://api.giftronaut.com/api/v1/orders?clientOrderId=rdm_20261018_0001&amp;page=1&amp;pageSize=100</code> — scope <code>orders.read</code>; không body. <code>clientOrderId</code> bằng <strong>chính giá trị idempotencyKey đã gửi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></strong>.</p>
+<p>Response <code>200</code> là danh sách phân trang; tìm item có mã tham chiếu tương ứng rồi lấy <code>orderId</code>, <code>status</code> để gọi <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>. Phần item tối thiểu cần dùng:</p>
+<pre><code class="language-json">{&quot;orderId&quot;:&quot;OT-example-001&quot;,&quot;status&quot;:&quot;IN_PROGRESS&quot;}
+</code></pre>
+<p>Đây là trích trường, không khẳng định wrapper của danh sách. Danh sách rỗng khác lỗi HTTP: chưa thấy đơn thì tiếp tục F3; nhiều đơn bất thường thì chuyển Ops, không tự chọn. Lỗi E01/E02/E03/E07/E08. Nguồn: <a href="https://api.giftronaut.com/docs/reference/orders">List orders</a>.</p>
+<h4 id="field-requestresponse-4">Field request/response</h4>
+<p><code>GET /api/v1/orders?clientOrderId={idempotencyKey}</code>; không có request body.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td><code>Authorization</code></td>
+<td>Bearer token</td>
+<td>Có</td>
+<td>Token có scope <code>orders.read</code></td>
+</tr>
+<tr>
+<td>Query</td>
+<td><code>clientOrderId</code></td>
+<td>string</td>
+<td>Có trong flow tìm lại đơn</td>
+<td>Chính là <code>idempotencyKey</code> đã gửi ở <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+</tr>
+<tr>
+<td>Query</td>
+<td><code>page</code>, <code>pageSize</code></td>
+<td>integer</td>
+<td>Không</td>
+<td>Phân trang danh sách đơn; <code>pageSize</code> tối đa 100</td>
+</tr>
+<tr>
+<td>Response item</td>
+<td><code>orderId</code></td>
+<td>string</td>
+<td>Có khi tìm thấy</td>
+<td>Đưa sang <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> hoặc <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a></td>
+</tr>
+<tr>
+<td>Response item</td>
+<td><code>status</code></td>
+<td>enum</td>
+<td>Có khi tìm thấy</td>
+<td>Trạng thái hiện tại của đơn</td>
+</tr>
+<tr>
+<td>Response list</td>
+<td><code>data/items</code>, pagination wrapper</td>
+<td>object</td>
+<td>Cần xác nhận sandbox</td>
+<td>Reference chưa chốt tên wrapper; Dev cần mapping theo response thật</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g5-xem-kết-quả-đơn">G5. Xem kết quả đơn</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/reference/orders">G5 — tài liệu chính thức</a>.</p>
+<p><code>GET https://api.giftronaut.com/api/v1/orders/{orderId}</code> — scope <code>orders.read</code>, path bắt buộc; không body.</p>
+<p>Response <code>200</code>, ví dụ <strong>trích trường cần sử dụng</strong>:</p>
+<pre><code class="language-json">{&quot;orderId&quot;:&quot;OT-example-001&quot;,&quot;status&quot;:&quot;COMPLETE&quot;,&quot;sentCount&quot;:1,&quot;bouncedCount&quot;:0,&quot;recipients&quot;:[{&quot;email&quot;:&quot;an@example.com&quot;}]}
+</code></pre>
+<p><code>PENDING/IN_PROGRESS</code>: tiếp tục giữ điểm; <code>COMPLETE</code>: chốt điểm; <code>CANCELED</code>: cần xác nhận không phát quà trước khi trả điểm. Với một recipient, thông tin sent/bounced dùng để cập nhật email; nếu số đếm thiếu hoặc không khớp thì để <code>UNKNOWN</code> và hỗ trợ xác minh. Không suy ra người nhận đã sử dụng quà từ COMPLETE. Lỗi E02/E03/E04/E07/E08. Nguồn: <a href="https://api.giftronaut.com/docs/reference/orders">Orders</a>, <a href="https://api.giftronaut.com/docs/quickstart">Quickstart — kiểm tra trạng thái</a>.</p>
+<h4 id="field-requestresponse-5">Field request/response</h4>
+<p><code>GET /api/v1/orders/{orderId}</code>; không có request body.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td><code>Authorization</code></td>
+<td>Bearer token</td>
+<td>Có</td>
+<td>Token có scope <code>orders.read</code></td>
+</tr>
+<tr>
+<td>Path</td>
+<td><code>orderId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>ID nhận từ <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a>/<a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>orderId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>ID đơn trả về</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>status</code></td>
+<td>enum</td>
+<td>Có</td>
+<td><code>PENDING</code>, <code>IN_PROGRESS</code>, <code>COMPLETE</code> hoặc <code>CANCELED</code></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>sentCount</code></td>
+<td>integer</td>
+<td>Có điều kiện</td>
+<td>Số email gửi thành công; MVP mong đợi 0 hoặc 1</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>bouncedCount</code></td>
+<td>integer</td>
+<td>Có điều kiện</td>
+<td>Số email bounce; MVP mong đợi 0 hoặc 1</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>recipients[].email</code></td>
+<td>string/email</td>
+<td>Có điều kiện</td>
+<td>Email provider đang có; chỉ log/display dạng che</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>recipients[]</code> và field chi tiết khác</td>
+<td>array/object</td>
+<td>Cần xác nhận sandbox</td>
+<td>Không dựa vào field chưa được tài liệu Choice Card công khai mô tả rõ</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g6-gửi-lại-email-cùng-đơn">G6. Gửi lại email cùng đơn</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/reference/orders">G6 — tài liệu chính thức</a>.</p>
+<p><code>POST https://api.giftronaut.com/api/v1/orders/{orderId}/resend</code> — scope <code>orders.write</code>.</p>
+<pre><code class="language-json">{&quot;recipients&quot;:[{&quot;email&quot;:&quot;an@example.com&quot;,&quot;updatedEmail&quot;:&quot;an.corrected@example.com&quot;}]}
+</code></pre>
+<p><code>recipients</code> và email hiện tại là bắt buộc; <code>updatedEmail</code> tùy chọn, bỏ khi giữ địa chỉ cũ. Response thành công, <strong>trích trường theo reference</strong>:</p>
+<pre><code class="language-json">{&quot;orderId&quot;:&quot;OT-example-001&quot;,&quot;requeued&quot;:1,&quot;resentToEmails&quot;:[&quot;an.corrected@example.com&quot;]}
+</code></pre>
+<p>Chỉ xác nhận đã xếp hàng gửi lại, chưa phải giao email thành công. Lưu địa chỉ provider đã chấp nhận từ <code>resentToEmails</code>; giữ lịch sử email cũ. Reference chưa nêu rõ success HTTP status/wrapper ở phần resend; cần xác nhận bằng sandbox. Lỗi chung E01/E02/E03/E04/E05/E07/E08; mã lỗi đặc thù resend chưa được liệt kê đầy đủ, không tự đặt tên dưới nhãn GF. Nguồn: <a href="https://api.giftronaut.com/docs/reference/orders">Resend order</a>.</p>
+<h4 id="field-requestresponse-6">Field request/response</h4>
+<p><code>POST /api/v1/orders/{orderId}/resend</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td><code>Authorization</code></td>
+<td>Bearer token</td>
+<td>Có</td>
+<td>Token có scope <code>orders.write</code></td>
+</tr>
+<tr>
+<td>Path</td>
+<td><code>orderId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Đơn đã phát quà cần gửi lại email</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients</code></td>
+<td>array</td>
+<td>Có</td>
+<td>Danh sách người nhận gửi lại; MVP đúng 1 item</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients[].email</code></td>
+<td>string/email</td>
+<td>Có</td>
+<td>Email hiện tại đang lưu ở Giftronaut</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>recipients[].updatedEmail</code></td>
+<td>string/email</td>
+<td>Không</td>
+<td>Email mới nếu OP/Ops sửa địa chỉ</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>orderId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Đơn đã được đưa vào xử lý gửi lại</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>requeued</code></td>
+<td>integer</td>
+<td>Có</td>
+<td>MVP mong đợi <code>1</code>; <code>0</code> nghĩa là chưa có recipient nào được nhận gửi lại</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>resentToEmails</code></td>
+<td>string[]</td>
+<td>Có</td>
+<td>Email Giftronaut thực sự đưa vào hàng đợi</td>
+</tr>
+<tr>
+<td>Response</td>
+<td>HTTP success status/wrapper</td>
+<td>—</td>
+<td>Cần xác nhận sandbox</td>
+<td>Reference công khai nêu fields nhưng không chốt đầy đủ status/wrapper</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất">G7. Nhận webhook từ Giftronaut — endpoint OMH Đề xuất</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/reference/webhooks">G7 — tài liệu chính thức</a>.</p>
+<p>GF gọi <strong>Đề xuất:</strong> <code>POST https://{omh-api-host}/webhooks/giftronaut/v1</code> — <strong>URL do OMH đề xuất</strong>, đăng ký trên portal cho từng môi trường. Header <code>Content-Type: application/json</code>, <code>X-Giftronaut-Signature: sha256={hex}</code>.</p>
+<pre><code class="language-json">{
+  &quot;eventId&quot;:&quot;4e594bed-5bc9-4bc1-b863-3d526667ad32&quot;,
+  &quot;eventType&quot;:&quot;order.delivery_complete&quot;,
+  &quot;createdAt&quot;:&quot;2026-10-18T09:00:00Z&quot;,
+  &quot;data&quot;:{&quot;orderId&quot;:&quot;OT-example-001&quot;,&quot;cardType&quot;:&quot;CHOICE_CARD&quot;,&quot;recipientCount&quot;:1,&quot;sandbox&quot;:true,&quot;occurredAt&quot;:&quot;2026-10-18T09:00:00Z&quot;}
+}
+</code></pre>
+<p>Các trường envelope: <code>eventId</code> để chống xử lý trùng; <code>eventType</code> để phân loại; <code>createdAt</code> thời gian event; <code>data</code> thay đổi theo loại. Bounce dùng <code>data.items[].recipientEmail</code>, <code>data.orderId</code> và khoảng thời gian <code>from/to</code>. Lưu cả lúc nhận và lúc event xảy ra.</p>
+<p>Khi đăng ký endpoint, GF gửi <code>{&quot;challengeToken&quot;:&quot;...&quot;}</code> và yêu cầu response <code>200</code> cùng token; đây là bước setup riêng, không dùng ACK 204 của event. Xem <a href="https://api.giftronaut.com/docs/guides/webhooks">Webhook setup</a>.</p>
+<p>Với event, OMH <strong>Đề xuất</strong> response <code>204</code> không body sau khi xác thực chữ ký và lưu event; event trùng vẫn <code>204</code>, không chốt điểm lại. Sai chữ ký: <code>401</code>; JSON/envelope không hợp lệ: <code>400</code>; không lưu được: <code>503</code> để không báo nhận thành công giả. Event chưa tìm được redemption vẫn lưu chờ ghép theo <code>orderId</code>.</p>
+<p>Theo dõi <code>order.delivery_complete</code>, <code>order.delivery_partial</code>, <code>order.bounced</code>; event là tín hiệu để <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> xác minh phát hành. Callback có thể đến sai thứ tự; resend có event ID mới. Không dùng <code>recipient.redeemed</code> để quyết định điểm vì còn ở mục “Coming soon”. Nguồn: <a href="https://api.giftronaut.com/docs/reference/webhooks">Webhook events</a>.</p>
+<h4 id="field-requestresponse-7">Field request/response</h4>
+<p><code>POST {OMH webhook URL đề xuất}</code>. Đây là request Giftronaut gửi vào Ohmyhotel; không phải API browser gọi.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td><code>Content-Type</code></td>
+<td>string</td>
+<td>Có</td>
+<td><code>application/json</code></td>
+</tr>
+<tr>
+<td>Header</td>
+<td><code>X-Giftronaut-Signature</code></td>
+<td>string</td>
+<td>Có với business event</td>
+<td>Chữ ký HMAC để Ohmyhotel xác thực nguồn gửi</td>
+</tr>
+<tr>
+<td>Event body</td>
+<td><code>eventId</code></td>
+<td>UUID string</td>
+<td>Có</td>
+<td>ID event; lưu unique để không xử lý/chốt điểm hai lần</td>
+</tr>
+<tr>
+<td>Event body</td>
+<td><code>eventType</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Ví dụ <code>order.delivery_complete</code>, <code>order.delivery_partial</code>, <code>order.bounced</code>, <code>test.ping</code></td>
+</tr>
+<tr>
+<td>Event body</td>
+<td><code>createdAt</code></td>
+<td>ISO-8601 datetime</td>
+<td>Có</td>
+<td>Thời điểm Giftronaut tạo event</td>
+</tr>
+<tr>
+<td>Event data</td>
+<td><code>data.orderId</code></td>
+<td>string</td>
+<td>Có với event order</td>
+<td>Ghép event với đơn/redemption nội bộ</td>
+</tr>
+<tr>
+<td>Bounce data</td>
+<td><code>data.items[].recipientEmail</code></td>
+<td>string/email</td>
+<td>Có với bounce</td>
+<td>Email bị bounce; chỉ lưu/hiển thị dạng che</td>
+</tr>
+<tr>
+<td>Setup body</td>
+<td><code>challengeToken</code></td>
+<td>string</td>
+<td>Có ở bước đăng ký</td>
+<td>Không phải event nghiệp vụ; Ohmyhotel trả 200 kèm token này</td>
+</tr>
+<tr>
+<td>Response OMH</td>
+<td><code>204</code></td>
+<td>no body</td>
+<td>Đề xuất</td>
+<td>Xác thực chữ ký, lưu event thành công thì ACK nhanh</td>
+</tr>
+</tbody>
+</table>
+<h3 id="g8-đọc-số-dư-tài-khoản-giftronaut">G8. Đọc số dư tài khoản Giftronaut</h3>
+<p><strong>Nguồn Giftronaut:</strong> <a href="https://api.giftronaut.com/docs/reference/balance">G8 — tài liệu chính thức</a>.</p>
+<p><code>GET https://api.giftronaut.com/api/v1/balance</code> — scope <code>balance.read</code>, không body/query bắt buộc.</p>
+<p>Response <code>200</code>, ví dụ:</p>
+<pre><code class="language-json">{&quot;data&quot;:{&quot;availableBalance&quot;:{&quot;amount&quot;:500,&quot;currency&quot;:&quot;USD&quot;},&quot;pendingBalance&quot;:{&quot;amount&quot;:0,&quot;currency&quot;:&quot;USD&quot;}}}
+</code></pre>
+<p>Lưu số dư, đồng tiền và thời điểm đọc để ELLIS hiển thị. Pending không được coi là tiền có thể chi. Lỗi E02/E03/E07/E08: báo không cập nhật được và giữ timestamp dữ liệu cũ; không hiển thị 0 thay cho lỗi. Nguồn: <a href="https://api.giftronaut.com/docs/reference/balance">Balance API</a>, <a href="https://api.giftronaut.com/docs/guides/balance">Balance guide</a>.</p>
+<h4 id="field-requestresponse-8">Field request/response</h4>
+<p><code>GET /api/v1/balance</code>; không có request body/query bắt buộc.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td><code>Authorization</code></td>
+<td>Bearer token</td>
+<td>Có</td>
+<td>Token có scope <code>balance.read</code></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>data.availableBalance.amount</code></td>
+<td>number</td>
+<td>Có</td>
+<td>USD dùng được ngay để đặt quà</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>data.availableBalance.currency</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Mã tiền ISO, dự kiến <code>USD</code></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>data.pendingBalance.amount</code></td>
+<td>number</td>
+<td>Có</td>
+<td>Tiền đang chờ, chưa dùng để đặt quà</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>data.pendingBalance.currency</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Mã tiền của pending balance</td>
+</tr>
+</tbody>
+</table>
+</div><h2 id="4-api-nội-bộ-ohmyhotel-đề-xuất">4. API nội bộ Ohmyhotel đề xuất</h2>
+<p>Toàn bộ mục này là <strong>[OMH — Đề xuất]</strong>, chưa khẳng định endpoint có sẵn. URL đầy đủ = <code>https://{omh-api-host}</code> + path. Trừ webhook, cần token đăng nhập OMH; body POST/PATCH dùng JSON. OP/company/actor lấy từ phiên đăng nhập và quyền server, không tin ID do client tự khai.</p>
+<h3 id="41-danh-mục-và-requestresponse">4.1. Danh mục và request/response</h3>
+<table>
+<thead>
+<tr>
+<th>ID / method + path</th>
+<th>Input</th>
+<th>Response thành công / dữ liệu chính</th>
+<th>Quyền / lỗi</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a> <strong>Đề xuất:</strong> <code>GET /v1/op-points/redemption-options</code></td>
+<td>Không body</td>
+<td><code>200 {availablePoints, options:[{optionId,giftAmountUsd,currency,estimatedPoints,policyVersion}]}</code></td>
+<td>OP; <code>401/403/503</code></td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a> <strong>Đề xuất:</strong> <code>POST /v1/op-points/redemptions/quote</code></td>
+<td><code>{optionId}</code></td>
+<td><code>201</code> quote tại 4.2</td>
+<td>OP; <code>400/404/409/503</code></td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> <strong>Đề xuất:</strong> <code>POST /v1/op-points/redemptions</code></td>
+<td>Header <code>Idempotency-Key</code>; <code>{quoteId,delivery:{email}}</code></td>
+<td><code>202</code> redemption; replay cùng key/body trả <code>200</code> bản ghi cũ</td>
+<td>OP; validation/quote/điểm/idempotency tại mục 5.2</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> <strong>Đề xuất:</strong> <code>GET /v1/op-points/redemptions/{id}</code></td>
+<td>Path ID</td>
+<td><code>200</code> chi tiết tại 4.3, email hiển thị đã che</td>
+<td>Chủ giao dịch; <code>401/404</code></td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i5-lịch-sử-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I5">I5</a> <strong>Đề xuất:</strong> <code>GET /v1/op-points/redemptions?page=1&amp;pageSize=20</code></td>
+<td>Page ≥1, size 1–100; status tùy chọn</td>
+<td><code>200 {items:[redemption],page,pageSize,totalCount}</code></td>
+<td>Chỉ lịch sử của OP đăng nhập</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a> <strong>Đề xuất:</strong> <code>POST /v1/op-points/redemptions/{id}/resend</code></td>
+<td>Header <code>Idempotency-Key</code>; <code>{email}</code></td>
+<td><code>202 {resendRequestId,redemptionId,deliveryStatus:&quot;RESEND_REQUESTED&quot;}</code>; replay <code>200</code></td>
+<td>Chủ giao dịch, SUCCEEDED + BOUNCED; <code>400/404/409/429</code></td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7">I7</a> <strong>Đề xuất:</strong> <code>GET /v1/ellis/redemptions</code> và <strong>Đề xuất:</strong> <code>GET /v1/ellis/redemptions/{id}</code></td>
+<td>List: page/size, OP, company, status, date, redemptionId/orderId</td>
+<td><code>200</code> danh sách hoặc chi tiết + actor, lỗi GF, timeline</td>
+<td>Ops trong phạm vi; <code>401/403/404</code></td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a> <strong>Đề xuất:</strong> <code>POST /v1/ellis/redemptions/{id}/resend</code></td>
+<td>Header <code>Idempotency-Key</code>; <code>{email,reason,caseId?}</code></td>
+<td>Như <a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a>; lưu actor từ đăng nhập</td>
+<td>Support; cùng điều kiện <a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a>, reason bắt buộc</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a> <strong>Đề xuất:</strong> <code>GET /v1/ellis/redemption-config</code> và <strong>Đề xuất:</strong> <code>PUT /v1/ellis/redemption-config</code></td>
+<td>PUT: <code>{expectedVersion,productId,amountsUsd,usdToKrw,krwPerPoint,minPoints,refundOption,emailSetting,enabled}</code></td>
+<td><code>200 {version,updatedAt,updatedBy,...config}</code></td>
+<td>Product Ops; <code>400/403/409 CONFIG_VERSION_CONFLICT/422 CONFIG_NOT_VERIFIED</code></td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#i9-số-dư-provider-cho-ellis--đề-xuất" title="Mở đặc tả I9">I9</a> <strong>Đề xuất:</strong> <code>GET /v1/ellis/provider-balance</code></td>
+<td>Không body</td>
+<td><code>200 {availableBalance,pendingBalance,checkedAt,stale}</code></td>
+<td>Finance/Ops; chưa từng đọc được thì <code>503</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="i1-danh-sách-quà-op-có-thể-đổi--đề-xuất">I1. Danh sách quà OP có thể đổi — Đề xuất</h3>
+<p><code>GET /v1/op-points/redemption-options</code> không có body. Response <code>200</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Field response</th>
+<th>Kiểu</th>
+<th>Luôn có?</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>availablePoints</code></td>
+<td>decimal</td>
+<td>Có</td>
+<td>Điểm OP đang có thể dùng; không bao gồm điểm đang giữ</td>
+</tr>
+<tr>
+<td><code>options</code></td>
+<td>array</td>
+<td>Có</td>
+<td>Danh sách quà đã publish cho OP/company</td>
+</tr>
+<tr>
+<td><code>options[].optionId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>ID dùng khi gọi <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a></td>
+</tr>
+<tr>
+<td><code>options[].giftAmountUsd</code></td>
+<td>decimal</td>
+<td>Có</td>
+<td>Giá trị Choice Card bằng USD</td>
+</tr>
+<tr>
+<td><code>options[].currency</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Mã tiền, MVP là <code>USD</code></td>
+</tr>
+<tr>
+<td><code>options[].estimatedPoints</code></td>
+<td>decimal</td>
+<td>Có</td>
+<td>Điểm dự kiến theo policy hiện hành; con số chốt nằm trong <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a></td>
+</tr>
+<tr>
+<td><code>options[].policyVersion</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Phiên bản policy làm ra lựa chọn đó</td>
+</tr>
+</tbody>
+</table>
+<p>Không có request field. Backend lấy OP/company từ access token; không nhận <code>opId</code> từ browser.</p>
+<h3 id="i2-tính-báo-giá-đổi-điểm--đề-xuất">I2. Tính báo giá đổi điểm — Đề xuất</h3>
+<p><code>POST /v1/op-points/redemptions/quote</code>, response <code>201</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Request</td>
+<td><code>optionId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Quà OP chọn từ <a class="api-ref" href="#i1-danh-sách-quà-op-có-thể-đổi--đề-xuất" title="Mở đặc tả I1">I1</a></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>quoteId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>ID báo giá, dùng một lần khi gọi <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>optionId</code>, <code>giftAmountUsd</code>, <code>currency</code></td>
+<td>string, decimal, string</td>
+<td>Có</td>
+<td>Quà mà báo giá áp dụng</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>pointsRequired</code></td>
+<td>decimal</td>
+<td>Có</td>
+<td>Điểm được giữ nếu OP xác nhận; đã áp dụng làm tròn</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>conversion.usdToKrw</code>, <code>conversion.krwPerPoint</code>, <code>conversion.pointsPerUsd</code></td>
+<td>decimal</td>
+<td>Có</td>
+<td>Snapshot tỷ lệ dùng để tính điểm</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>conversion.rounding</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Quy tắc làm tròn, ví dụ <code>CEILING_1_DECIMAL</code></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>policyVersion</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Policy đã dùng để tính quote</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>expiresAt</code></td>
+<td>ISO-8601 datetime</td>
+<td>Có</td>
+<td>Sau mốc này OP phải lấy quote mới</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i3-tạo-yêu-cầu-đổi-điểm--đề-xuất">I3. Tạo yêu cầu đổi điểm — Đề xuất</h3>
+<p><code>POST /v1/op-points/redemptions</code>, response mới <code>202</code>, replay cùng key/body <code>200</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Header</td>
+<td><code>Authorization</code></td>
+<td>Bearer token</td>
+<td>Có</td>
+<td>Xác định OP và company; server kiểm tra quyền</td>
+</tr>
+<tr>
+<td>Header</td>
+<td><code>Idempotency-Key</code></td>
+<td>UUID/string</td>
+<td>Có</td>
+<td>Chống double-click và retry tạo hai yêu cầu</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>quoteId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Quote hợp lệ từ <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a></td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>delivery.email</code></td>
+<td>string/email</td>
+<td>Có</td>
+<td>Email OP xác nhận để gửi Choice Card</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>redemptionId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Mã yêu cầu nội bộ; cũng là key khi gọi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>status</code></td>
+<td>enum</td>
+<td>Có</td>
+<td><code>PROCESSING</code>, <code>VERIFYING</code>, <code>SUCCEEDED</code>, <code>FAILED</code></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>pointStatus</code></td>
+<td>enum</td>
+<td>Có</td>
+<td><code>HELD</code>, <code>SPENT</code>, <code>RELEASED</code></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>deliveryStatus</code></td>
+<td>enum</td>
+<td>Có</td>
+<td><code>NOT_SENT</code>, <code>SENT</code>, <code>BOUNCED</code>, <code>RESEND_REQUESTED</code>, <code>UNKNOWN</code></td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>giftAmountUsd</code>, <code>currency</code>, <code>pointsRequired</code>, <code>pointsHeld</code></td>
+<td>decimal/string</td>
+<td>Có</td>
+<td>Giá trị quà và số điểm của yêu cầu này</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>policyVersion</code>, <code>createdAt</code></td>
+<td>string, ISO-8601 datetime</td>
+<td>Có</td>
+<td>Dựng lại policy và thời điểm tạo</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất">I4. Xem một yêu cầu đổi điểm — Đề xuất</h3>
+<p><code>GET /v1/op-points/redemptions/{id}</code>, response <code>200</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path</td>
+<td><code>id</code></td>
+<td>string</td>
+<td>Có</td>
+<td><code>redemptionId</code> mà OP sở hữu</td>
+</tr>
+<tr>
+<td>Response</td>
+<td>Các field của <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a></td>
+<td>object</td>
+<td>Có</td>
+<td>Trạng thái, điểm, giá trị quà và policy snapshot</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>updatedAt</code></td>
+<td>ISO-8601 datetime</td>
+<td>Có</td>
+<td>Lần thay đổi gần nhất</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>deliveryEmailMasked</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Email đã che, an toàn để hiển thị cho OP</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>failureCode</code></td>
+<td>string/null</td>
+<td>Có điều kiện</td>
+<td>Mã thân thiện khi thất bại; không lộ lỗi/secret của provider</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>canResend</code></td>
+<td>boolean</td>
+<td>Có</td>
+<td>Có được hiện nút gửi lại hay không</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>conversion</code></td>
+<td>object</td>
+<td>Có</td>
+<td>Snapshot tỷ lệ từ <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a>, dùng để giải thích số điểm</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i5-lịch-sử-yêu-cầu-đổi-điểm--đề-xuất">I5. Lịch sử yêu cầu đổi điểm — Đề xuất</h3>
+<p><code>GET /v1/op-points/redemptions</code>, response <code>200</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Query</td>
+<td><code>page</code></td>
+<td>integer ≥1</td>
+<td>Không</td>
+<td>Trang, mặc định 1</td>
+</tr>
+<tr>
+<td>Query</td>
+<td><code>pageSize</code></td>
+<td>integer 1–100</td>
+<td>Không</td>
+<td>Số dòng/trang</td>
+</tr>
+<tr>
+<td>Query</td>
+<td><code>status</code></td>
+<td>enum</td>
+<td>Không</td>
+<td>Lọc theo trạng thái chính</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>items</code></td>
+<td>array</td>
+<td>Có</td>
+<td>Mỗi item dùng schema <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> nhưng có thể rút gọn email/timeline</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>page</code>, <code>pageSize</code>, <code>totalCount</code></td>
+<td>integer</td>
+<td>Có</td>
+<td>Thông tin phân trang</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i6-op-gửi-lại-email--đề-xuất">I6. OP gửi lại email — Đề xuất</h3>
+<p><code>POST /v1/op-points/redemptions/{id}/resend</code>, response mới <code>202</code>, replay <code>200</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Path</td>
+<td><code>id</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Redemption của chính OP</td>
+</tr>
+<tr>
+<td>Header</td>
+<td><code>Idempotency-Key</code></td>
+<td>UUID/string</td>
+<td>Có</td>
+<td>Chống OP bấm gửi lại nhiều lần</td>
+</tr>
+<tr>
+<td>Request</td>
+<td><code>email</code></td>
+<td>string/email</td>
+<td>Có</td>
+<td>Email giữ nguyên hoặc email OP sửa</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>resendRequestId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Mã lần gửi lại để support/audit</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>redemptionId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Giao dịch đang được gửi lại</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>deliveryStatus</code></td>
+<td>enum</td>
+<td>Có</td>
+<td><code>RESEND_REQUESTED</code>; không có nghĩa email đã đến</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất">I7. ELLIS tra cứu và gửi lại email hỗ trợ — Đề xuất</h3>
+<p><code>GET /v1/ellis/redemptions</code> / <code>GET /v1/ellis/redemptions/{id}</code> và <code>POST /v1/ellis/redemptions/{id}/resend</code>.</p>
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>List query</td>
+<td><code>page</code>, <code>pageSize</code></td>
+<td>integer</td>
+<td>Không</td>
+<td>Phân trang kết quả cho Ops</td>
+</tr>
+<tr>
+<td>List query</td>
+<td><code>op</code>, <code>company</code>, <code>status</code>, <code>date</code>, <code>redemptionId</code>, <code>orderId</code></td>
+<td>string/date/enum</td>
+<td>Không</td>
+<td>Các điều kiện tìm kiếm; server giới hạn theo phạm vi quyền</td>
+</tr>
+<tr>
+<td>List response</td>
+<td><code>items</code>, <code>page</code>, <code>pageSize</code>, <code>totalCount</code></td>
+<td>array/integer</td>
+<td>Có</td>
+<td>Danh sách redemption và phân trang</td>
+</tr>
+<tr>
+<td>Detail response</td>
+<td><a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> fields + <code>timeline</code></td>
+<td>object/array</td>
+<td>Có</td>
+<td>Thời gian giữ/chốt/trả điểm, gọi provider và action support</td>
+</tr>
+<tr>
+<td>Detail response</td>
+<td><code>providerHttpStatus</code>, <code>providerErrorCode</code>, <code>providerOrderId</code></td>
+<td>integer/string</td>
+<td>Có điều kiện</td>
+<td>Chỉ ELLIS có quyền xem để tra lỗi với provider</td>
+</tr>
+<tr>
+<td>Resend header</td>
+<td><code>Idempotency-Key</code></td>
+<td>UUID/string</td>
+<td>Có</td>
+<td>Chống action support lặp</td>
+</tr>
+<tr>
+<td>Resend request</td>
+<td><code>email</code></td>
+<td>string/email</td>
+<td>Có</td>
+<td>Email muốn gửi đến</td>
+</tr>
+<tr>
+<td>Resend request</td>
+<td><code>reason</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Lý do hỗ trợ, phục vụ audit</td>
+</tr>
+<tr>
+<td>Resend request</td>
+<td><code>caseId</code></td>
+<td>string</td>
+<td>Không</td>
+<td>Mã ticket nếu đã có case</td>
+</tr>
+<tr>
+<td>Resend response</td>
+<td>giống <a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a></td>
+<td>object</td>
+<td>Có</td>
+<td>Trạng thái yêu cầu gửi lại</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i8-cấu-hình-quà-trên-ellis--đề-xuất">I8. Cấu hình quà trên ELLIS — Đề xuất</h3>
+<p><code>GET /v1/ellis/redemption-config</code> và <code>PUT /v1/ellis/redemption-config</code>, response <code>200</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Vị trí</th>
+<th>Field</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PUT request</td>
+<td><code>expectedVersion</code></td>
+<td>integer/string</td>
+<td>Có</td>
+<td>Version người sửa đang xem; chống ghi đè người khác</td>
+</tr>
+<tr>
+<td>PUT request</td>
+<td><code>productId</code></td>
+<td>string</td>
+<td>Có</td>
+<td>Choice Card từ <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a></td>
+</tr>
+<tr>
+<td>PUT request</td>
+<td><code>amountsUsd</code></td>
+<td>integer[]</td>
+<td>Có</td>
+<td>Mệnh giá OMH muốn publish; từng giá trị phải hợp lệ theo <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a></td>
+</tr>
+<tr>
+<td>PUT request</td>
+<td><code>usdToKrw</code>, <code>krwPerPoint</code>, <code>minPoints</code></td>
+<td>decimal</td>
+<td>Có</td>
+<td>Giá trị để tính điểm và mức đổi tối thiểu</td>
+</tr>
+<tr>
+<td>PUT request</td>
+<td><code>refundOption</code></td>
+<td>boolean</td>
+<td>Có</td>
+<td>MVP chỉ chấp nhận <code>false</code></td>
+</tr>
+<tr>
+<td>PUT request</td>
+<td><code>emailSetting</code></td>
+<td>object</td>
+<td>Có</td>
+<td>senderName/subject/message/template được duyệt</td>
+</tr>
+<tr>
+<td>PUT request</td>
+<td><code>enabled</code></td>
+<td>boolean</td>
+<td>Có</td>
+<td>Bật/tắt quà; chỉ bật sau khi xác minh product/range</td>
+</tr>
+<tr>
+<td>Response</td>
+<td><code>version</code>, <code>updatedAt</code>, <code>updatedBy</code></td>
+<td>string/datetime</td>
+<td>Có</td>
+<td>Dấu vết version và người sửa</td>
+</tr>
+<tr>
+<td>Response</td>
+<td>Các field cấu hình đã lưu</td>
+<td>object</td>
+<td>Có</td>
+<td>Bản cấu hình có hiệu lực sau update</td>
+</tr>
+</tbody>
+</table>
+<h3 id="i9-số-dư-provider-cho-ellis--đề-xuất">I9. Số dư provider cho ELLIS — Đề xuất</h3>
+<p><code>GET /v1/ellis/provider-balance</code>, response <code>200</code> khi có dữ liệu mới hoặc cache.</p>
+<table>
+<thead>
+<tr>
+<th>Field response</th>
+<th>Kiểu</th>
+<th>Bắt buộc</th>
+<th>Ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>availableBalance.amount</code>, <code>.currency</code></td>
+<td>number, string</td>
+<td>Có</td>
+<td>Số tiền có thể dùng ngay theo <a class="api-ref" href="#g8-đọc-số-dư-tài-khoản-giftronaut" title="Mở đặc tả G8">G8</a></td>
+</tr>
+<tr>
+<td><code>pendingBalance.amount</code>, <code>.currency</code></td>
+<td>number, string</td>
+<td>Có</td>
+<td>Tiền đang chờ, không dùng đặt quà</td>
+</tr>
+<tr>
+<td><code>checkedAt</code></td>
+<td>ISO-8601 datetime</td>
+<td>Có</td>
+<td>Lần backend đọc GF thành công gần nhất</td>
+</tr>
+<tr>
+<td><code>stale</code></td>
+<td>boolean</td>
+<td>Có</td>
+<td><code>true</code> khi API GF lỗi nhưng OMH còn dữ liệu cũ</td>
+</tr>
+</tbody>
+</table>
+<p><a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a> phải kiểm tra <a class="api-ref" href="#g2-đọc-choice-card-để-cấu-hình-quà" title="Mở đặc tả G2">G2</a> trước khi bật <code>enabled=true</code>; các amount phải là số USD nguyên hợp lệ, tỷ lệ &gt;0, <code>refundOption=false</code> trong MVP. Mỗi lần sửa tạo version mới; quote còn hạn giữ snapshot cũ, trừ khi option/chương trình bị dừng. Cấu hình hạ tầng/secret do Engineering quản lý, không đưa vào API này.</p>
+<p><strong>Không cần thêm public API giữ/trừ/hoàn điểm.</strong> Đó là thao tác nội bộ của backend khi xử lý <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a>/kết quả <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>; client không được gọi trực tiếp. Nếu kiến trúc tách dịch vụ điểm, Dev có thể tách API service-to-service nhưng phải giữ các quy tắc một lần và cùng redemption.</p>
+<h3 id="42-báo-giá-và-tỷ-lệ-quy-đổi">4.2. Báo giá và tỷ lệ quy đổi</h3>
+<p>Request <a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a>:</p>
+<pre><code class="language-json">{&quot;optionId&quot;:&quot;choice-usd-20&quot;}
+</code></pre>
+<p>Response <code>201</code> đề xuất; dùng <strong>tỷ lệ demo của spec, không phải tỷ giá hiện tại</strong>:</p>
+<pre><code class="language-json">{
+  &quot;quoteId&quot;:&quot;qte_20261018_001&quot;,&quot;optionId&quot;:&quot;choice-usd-20&quot;,
+  &quot;giftAmountUsd&quot;:20,&quot;currency&quot;:&quot;USD&quot;,&quot;pointsRequired&quot;:29.6,
+  &quot;conversion&quot;:{&quot;usdToKrw&quot;:1480,&quot;krwPerPoint&quot;:1000,&quot;pointsPerUsd&quot;:1.48,&quot;rounding&quot;:&quot;CEILING_1_DECIMAL&quot;},
+  &quot;policyVersion&quot;:&quot;policy-demo-v1&quot;,&quot;expiresAt&quot;:&quot;2026-10-18T09:05:00Z&quot;
+}
+</code></pre>
+<p><code>pointsRequired = ceil((giftAmountUsd × usdToKrw ÷ krwPerPoint) × 10) ÷ 10</code>. Quote đề xuất có hiệu lực 5 phút, gắn OP/company và chưa giữ điểm. Khi xác nhận, kiểm tra lại số dư, minimum và option còn được phép; không tính lại tỷ lệ của quote còn hiệu lực. Quote hết hạn phải lấy quote mới và cho OP xác nhận giá mới. Một quote chỉ tạo một redemption; dùng key khác với quote đã dùng trả <code>409 QUOTE_ALREADY_USED</code> cùng ID cũ nếu đúng chủ sở hữu.</p>
+<h3 id="43-tạo-yêu-cầu-đổi-điểm-trước-khi-gọi-đối-tác">4.3. Tạo yêu cầu đổi điểm trước khi gọi đối tác</h3>
+<pre><code class="language-http"># OMH — Đề xuất
+POST https://{omh-api-host}/v1/op-points/redemptions
+Authorization: Bearer &lt;OMH user token&gt;
+Idempotency-Key: 5665e44a-17d6-4be1-b9d8-61e88e947fe1
+Content-Type: application/json
+</code></pre>
+<pre><code class="language-json">{&quot;quoteId&quot;:&quot;qte_20261018_001&quot;,&quot;delivery&quot;:{&quot;email&quot;:&quot;an@example.com&quot;}}
+</code></pre>
+<p><code>quoteId</code> string và email hợp lệ bắt buộc; không nhận <code>pointsRequired</code>, <code>productId</code>, tỷ giá hay <code>createdBy</code> từ client. Backend lấy chúng từ quote/session. Response sau khi lưu và giữ điểm:</p>
+<pre><code class="language-json">{
+  &quot;redemptionId&quot;:&quot;rdm_20261018_0001&quot;,&quot;status&quot;:&quot;PROCESSING&quot;,
+  &quot;pointStatus&quot;:&quot;HELD&quot;,&quot;deliveryStatus&quot;:&quot;NOT_SENT&quot;,
+  &quot;giftAmountUsd&quot;:20,&quot;currency&quot;:&quot;USD&quot;,&quot;pointsRequired&quot;:29.6,&quot;pointsHeld&quot;:29.6,
+  &quot;policyVersion&quot;:&quot;policy-demo-v1&quot;,&quot;createdAt&quot;:&quot;2026-10-18T09:01:00Z&quot;
+}
+</code></pre>
+<p><a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a> trả các trường trên, thêm <code>updatedAt</code>, <code>deliveryEmailMasked</code>, <code>failureCode</code> an toàn, <code>canResend</code> và snapshot conversion. Khi hoàn tất: <code>status=SUCCEEDED</code>, <code>pointStatus=SPENT</code>, <code>pointsHeld=0</code>; khi thất bại đã trả điểm: <code>FAILED/RELEASED/0</code>. Lịch sử hiển thị cả điểm đã dùng/trả bằng trạng thái và timeline, không hiểu <code>pointsHeld=0</code> là không từng giữ điểm.</p>
+<p><strong>Chống trùng [OMH — Đề xuất]:</strong> key duy nhất theo OP và hành động; cùng key và body trả resource cũ, khác body trả 409. Kiểm tra replay trước khi đánh giá lại quote hết hạn. Mất response <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> thì client gửi lại <strong>cùng key/body</strong>. Với <a class="api-ref" href="#i6-op-gửi-lại-email--đề-xuất" title="Mở đặc tả I6">I6</a>/<a class="api-ref" href="#i7-ellis-tra-cứu-và-gửi-lại-email-hỗ-trợ--đề-xuất" title="Mở đặc tả I7-resend">I7-resend</a>, key chống gửi lặp ở OMH, không được suy ra GF có bảo đảm tương tự.</p>
+<h2 id="5-exception-và-mã-lỗi">5. Exception và mã lỗi</h2>
+<h3 id="51-mã-lỗi-từ-giftronaut-và-cách-omh-xử-lý">5.1. Mã lỗi từ Giftronaut và cách OMH xử lý</h3>
+<p>HTTP và tên mã là hai thông tin riêng: giữ nguyên cả hai. Các HTTP gắn với nhóm mã chung là mapping theo Errors guide; cần xác nhận tổ hợp cụ thể theo endpoint trong sandbox. Lỗi chưa có tên mã được ghi rõ, không tự đặt mã dưới nhãn GF.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>HTTP / mã GF [GF]</th>
+<th>Khi nào xảy ra</th>
+<th>Xử lý OMH đề xuất / điểm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>E01</td>
+<td><code>400 VALIDATION_ERROR</code></td>
+<td>Thiếu/sai trường request</td>
+<td>Sửa mapping/config. Nếu xác nhận create bị từ chối và chưa từng có lần gửi bất định: FAILED + trả hold; không retry nguyên dữ liệu sai</td>
+</tr>
+<tr>
+<td>E02</td>
+<td><code>401</code>, tên mã token chưa được guide xác định</td>
+<td>Token thiếu/sai/hết hạn</td>
+<td>Xin token mới một lần, gọi lại với cùng key/body; vẫn lỗi thì Engineering xử lý</td>
+</tr>
+<tr>
+<td>E03</td>
+<td><code>403 INSUFFICIENT_SCOPE</code> / <code>ORG_MISMATCH</code></td>
+<td>Thiếu quyền hoặc resource thuộc org khác</td>
+<td>Dừng retry tự động, kiểm tra credential/org; không tìm đơn bằng credential của môi trường khác</td>
+</tr>
+<tr>
+<td>E04</td>
+<td><code>404 RESOURCE_NOT_FOUND</code>; catalog detail dùng <code>NOT_FOUND</code></td>
+<td>Không thấy resource / design</td>
+<td>Catalog: không publish. Query đơn: giữ VERIFYING, kiểm tra ID/org; không hoàn điểm chỉ vì 404</td>
+</tr>
+<tr>
+<td>E05</td>
+<td><code>422 BUSINESS_RULE_VIOLATION</code></td>
+<td>Vi phạm quy tắc/trạng thái cho thao tác</td>
+<td>Ghi tình huống và đọc lại đơn. Resend lỗi không làm mất trạng thái SUCCEEDED, không trả điểm</td>
+</tr>
+<tr>
+<td>E06a</td>
+<td><code>402 INSUFFICIENT_BALANCE</code></td>
+<td>Tiền tài khoản GF không đủ tạo đơn</td>
+<td>Nếu chắc chắn chưa có đơn: FAILED + trả hold; ELLIS báo Finance nạp thủ công; không tự tạo lại yêu cầu đã FAILED</td>
+</tr>
+<tr>
+<td>E06b</td>
+<td><code>409 DUPLICATE_IDEMPOTENCY_KEY</code></td>
+<td>Đã có order dùng key này</td>
+<td><a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> → <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a>, dùng đơn gốc; giữ điểm đến kết quả cuối</td>
+</tr>
+<tr>
+<td>E07</td>
+<td><code>429</code>, body <code>error=rate_limit_exceeded</code></td>
+<td>Vượt giới hạn API</td>
+<td>Chờ <code>X-RateLimit-Reset</code>, giảm nhịp gọi, giữ điểm nếu đang xử lý</td>
+</tr>
+<tr>
+<td>E08</td>
+<td><code>500 INTERNAL_ERROR</code>; 502/503/504 có thể do hạ tầng, chưa có mã GF được xác nhận</td>
+<td>Sự cố xử lý/kết nối</td>
+<td>Nếu đang create: VERIFYING → <a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> trước khi retry; giữ điểm. Ghi <code>X-Request-Id</code> nếu có để tra cứu</td>
+</tr>
+</tbody>
+</table>
+<p>Nguồn mã chung và envelope: <a href="https://api.giftronaut.com/docs/guides/errors">Errors guide</a>; E04 catalog: <a href="https://api.giftronaut.com/docs/reference/catalog">Catalog</a>; E06a: <a href="https://api.giftronaut.com/docs/guides/balance">Balance guide</a>; E06b: <a href="https://api.giftronaut.com/docs/guides/idempotency">Idempotency</a>.</p>
+<p>Ví dụ lỗi GF; message minh họa, không dùng message để rẽ nhánh:</p>
+<pre><code class="language-json">{&quot;code&quot;:&quot;VALIDATION_ERROR&quot;,&quot;message&quot;:&quot;Invalid input&quot;,&quot;details&quot;:{&quot;email&quot;:&quot;Invalid email&quot;}}
+</code></pre>
+<p>Riêng 429 có envelope khác:</p>
+<pre><code class="language-json">{&quot;error&quot;:&quot;rate_limit_exceeded&quot;,&quot;error_description&quot;:&quot;Request limit reached&quot;}
+</code></pre>
+<p><strong>Nguyên tắc áp dụng cho mọi dòng:</strong> lỗi của GET/resend không chứng minh create thất bại. Nếu trước đó từng timeout/mất response <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a>, không dùng lỗi lần gọi sau để kết luận không có đơn; phải tra cứu theo key. Lỗi xác thực/quyền kéo dài có thể đóng FAILED nếu chứng minh chưa có request create nào được chấp nhận, còn bất định thì giữ VERIFYING.</p>
+<h3 id="52-mã-lỗi-api-nội-bộ-omh--đề-xuất">5.2. Mã lỗi API nội bộ [OMH — Đề xuất]</h3>
+<p>Response lỗi đồng nhất, độc lập tên mã GF:</p>
+<pre><code class="language-json">{&quot;code&quot;:&quot;INSUFFICIENT_POINTS&quot;,&quot;message&quot;:&quot;Số điểm khả dụng không đủ.&quot;,&quot;details&quot;:{&quot;requiredPoints&quot;:29.6,&quot;availablePoints&quot;:20},&quot;correlationId&quot;:&quot;corr_example_001&quot;}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>HTTP / mã OMH đề xuất</th>
+<th>Điều kiện</th>
+<th>UI / tác động</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>400 INVALID_REQUEST</code></td>
+<td>Thiếu quote/email/key, email sai, dữ liệu cấu hình sai</td>
+<td>Yêu cầu sửa; không giữ điểm</td>
+</tr>
+<tr>
+<td><code>401 UNAUTHENTICATED</code></td>
+<td>Chưa đăng nhập/hết phiên</td>
+<td>Đăng nhập lại</td>
+</tr>
+<tr>
+<td><code>403 FORBIDDEN</code></td>
+<td>Không có quyền tính năng/admin</td>
+<td>Không thực hiện action</td>
+</tr>
+<tr>
+<td><code>404 REDEMPTION_NOT_FOUND</code></td>
+<td>ID không tồn tại hoặc không thuộc OP</td>
+<td>Không lộ giao dịch người khác</td>
+</tr>
+<tr>
+<td><code>404 OPTION_NOT_FOUND</code> / <code>QUOTE_NOT_FOUND</code></td>
+<td>Không tìm được option/quote của OP</td>
+<td>Tải lại danh sách</td>
+</tr>
+<tr>
+<td><code>409 QUOTE_EXPIRED</code></td>
+<td>Quote quá hạn</td>
+<td>Lấy quote mới và xác nhận lại</td>
+</tr>
+<tr>
+<td><code>409 QUOTE_ALREADY_USED</code></td>
+<td>Quote đã tạo redemption bằng key khác</td>
+<td>Mở giao dịch cũ, không giữ thêm điểm</td>
+</tr>
+<tr>
+<td><code>409 INSUFFICIENT_POINTS</code> / <code>BELOW_MINIMUM_REDEMPTION</code></td>
+<td>Số dư thiếu hoặc số điểm đổi dưới minimum</td>
+<td>Không giữ điểm, không gọi GF</td>
+</tr>
+<tr>
+<td><code>409 IDEMPOTENCY_PAYLOAD_MISMATCH</code></td>
+<td>Key cũ nhưng request khác</td>
+<td>Không tạo/gửi lại</td>
+</tr>
+<tr>
+<td><code>409 RESEND_NOT_ALLOWED</code></td>
+<td>Chưa SUCCEEDED, chưa BOUNCED hoặc đang có lần resend chưa rõ kết quả</td>
+<td>Hiển thị trạng thái hiện tại</td>
+</tr>
+<tr>
+<td><code>429 RESEND_LIMIT_EXCEEDED</code></td>
+<td>Vượt hạn mức gửi lại do OMH quy định</td>
+<td>Hiển thị lúc có thể thử lại; ngưỡng cần chốt</td>
+</tr>
+<tr>
+<td><code>503 REDEMPTION_UNAVAILABLE</code></td>
+<td>Chương trình/option bị tắt trước giữ điểm</td>
+<td>Tạm ngừng, không gọi GF</td>
+</tr>
+<tr>
+<td><code>500 INTERNAL_ERROR</code></td>
+<td>Lỗi lưu/giữ điểm trước khi xác nhận thành công</td>
+<td>Client retry cùng key; backend phải kiểm tra có record cũ trước khi giữ tiếp</td>
+</tr>
+</tbody>
+</table>
+<p>Lỗi GF đến <strong>sau</strong> response 202 của <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> phải phản ánh qua <a class="api-ref" href="#i4-xem-một-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I4">I4</a>/timeline, không thể đổi response đã trả. Dùng <code>failureCode=PROVIDER_REJECTED</code> với thông điệp an toàn cho OP; chi tiết <code>providerHttpStatus/providerErrorCode/providerMessage</code> chỉ ELLIS có quyền xem. <code>CONFIG_VERSION_CONFLICT</code> và <code>CONFIG_NOT_VERIFIED</code> của <a class="api-ref" href="#i8-cấu-hình-quà-trên-ellis--đề-xuất" title="Mở đặc tả I8">I8</a> không ảnh hưởng redemption đã có snapshot.</p>
+<h3 id="53-ngoại-lệ-không-có-mã-lỗi-gf">5.3. Ngoại lệ không có mã lỗi GF</h3>
+<table>
+<thead>
+<tr>
+<th>Tình huống</th>
+<th>Mã ghi nhận OMH đề xuất</th>
+<th>Cách xử lý</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Network timeout/mất kết nối</td>
+<td><code>PROVIDER_RESULT_UNKNOWN</code></td>
+<td>F3; không giả định HTTP/mã GF khi không nhận response</td>
+</tr>
+<tr>
+<td>Webhook sai chữ ký</td>
+<td><code>INVALID_WEBHOOK_SIGNATURE</code></td>
+<td>Từ chối; không đổi điểm/trạng thái</td>
+</tr>
+<tr>
+<td>Webhook trùng</td>
+<td>Không coi là lỗi nghiệp vụ</td>
+<td>Trả ACK, xử lý một lần theo eventId</td>
+</tr>
+<tr>
+<td>Event ngược thứ tự/cũ sau resend</td>
+<td><code>DELIVERY_EVENT_REVIEW_REQUIRED</code> nếu không xác định được</td>
+<td>So thời điểm, địa chỉ và lịch sử lần gửi; không để event cũ ghi đè lần mới; thiếu bằng chứng thì UNKNOWN + Ops</td>
+</tr>
+<tr>
+<td>Provider COMPLETE nhưng ghi điểm nội bộ lỗi</td>
+<td><code>POINT_FINALIZATION_PENDING</code></td>
+<td>Giữ PROCESSING; retry chốt cùng redemption, không gọi create mới</td>
+</tr>
+<tr>
+<td>Provider bị từ chối nhưng trả điểm nội bộ lỗi</td>
+<td><code>POINT_RELEASE_PENDING</code></td>
+<td>Chưa báo FAILED/đã trả điểm cho OP; tiếp tục hoàn tất release</td>
+</tr>
+<tr>
+<td>Đơn đã SPENT nhưng nhận kết quả trái ngược</td>
+<td><code>PROVIDER_STATE_CONFLICT</code></td>
+<td>Giữ lịch sử, đưa Ops/Finance kiểm tra; không tự hoàn hoặc lùi state</td>
+</tr>
+<tr>
+<td>Delivery partial trong MVP một người nhận</td>
+<td><code>UNEXPECTED_PARTIAL_DELIVERY</code></td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> + Ops; không tự trả điểm</td>
+</tr>
+<tr>
+<td>Quá 15 phút chưa kết luận</td>
+<td><code>VERIFICATION_OVERDUE</code></td>
+<td>Gắn owner Ops; giữ trạng thái và điểm, tiếp tục điều tra</td>
+</tr>
+</tbody>
+</table>
+<h2 id="6-state-machine-của-yêu-cầu-đổi-điểm">6. State machine của yêu cầu đổi điểm</h2><a class="back-map" href="#integration-map">↑ Về bản đồ tổng quan</a><div class="flow-pair"><figure class="diagram-panel"><a href="assets/17-ba-redemption-states.svg" target="_blank" rel="noopener" aria-label="Mở sơ đồ kích thước gốc"><img src="assets/17-ba-redemption-states.svg" alt="State machine yêu cầu đổi điểm" /></a><figcaption>Bấm hình để mở kích thước gốc · OMH API/mapping: Đề xuất</figcaption></figure><div class="flow-notes" tabindex="0" aria-label="Giải thích và ví dụ, cuộn độc lập"><details open><summary>Giải thích flow · bấm để đóng / mở</summary><div class="detail-body"><p class="plain-read"><strong>Cách đọc nhanh:</strong> “I” là API nội bộ Ohmyhotel (Đề xuất); “G” là API Giftronaut. Mũi tên là hệ thống này gọi hệ thống kia. Các từ như <em>hold</em>, <em>spend</em>, <em>release</em> nghĩa là giữ điểm, chốt trừ điểm và trả điểm.</p>
+<p>Chỉ có <strong>bốn trạng thái nghiệp vụ</strong> của redemption. <code>pointStatus</code> và <code>deliveryStatus</code> là thông tin đi kèm, tránh phải tạo một trạng thái chính cho mỗi bước kỹ thuật.</p>
+
+<h3 id="61-chuyển-trạng-thái-chính-omh--đề-xuất">6.1. Chuyển trạng thái chính [OMH — Đề xuất]</h3>
+<table>
+<thead>
+<tr>
+<th>Từ</th>
+<th>Sự kiện / điều kiện</th>
+<th>Sang</th>
+<th>Điểm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Chưa có yêu cầu</td>
+<td><a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> hợp lệ, lưu redemption + giữ điểm thành công</td>
+<td><code>PROCESSING</code></td>
+<td><code>HELD</code></td>
+</tr>
+<tr>
+<td><code>PROCESSING</code></td>
+<td><a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> đã nhận, <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> PENDING/IN_PROGRESS</td>
+<td><code>PROCESSING</code></td>
+<td>Giữ nguyên HELD</td>
+</tr>
+<tr>
+<td><code>PROCESSING</code></td>
+<td>Timeout/5xx/409 hoặc không xác định được kết quả</td>
+<td><code>VERIFYING</code></td>
+<td>Giữ HELD</td>
+</tr>
+<tr>
+<td><code>VERIFYING</code></td>
+<td><a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a>/<a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> tìm thấy đơn PENDING/IN_PROGRESS</td>
+<td><code>PROCESSING</code></td>
+<td>Giữ HELD</td>
+</tr>
+<tr>
+<td><code>PROCESSING</code> hoặc <code>VERIFYING</code></td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> COMPLETE + chốt điểm thành công</td>
+<td><code>SUCCEEDED</code></td>
+<td><code>SPENT</code>, hết hold</td>
+</tr>
+<tr>
+<td><code>PROCESSING</code> hoặc <code>VERIFYING</code></td>
+<td>Có bằng chứng không phát quà + trả hold thành công</td>
+<td><code>FAILED</code></td>
+<td><code>RELEASED</code>, điểm về khả dụng</td>
+</tr>
+<tr>
+<td><code>SUCCEEDED</code></td>
+<td>Bounce/resend/callback mới</td>
+<td><code>SUCCEEDED</code></td>
+<td>Không đổi SPENT</td>
+</tr>
+<tr>
+<td><code>FAILED</code></td>
+<td>OP muốn thử lại sau khi đã xử lý nguyên nhân</td>
+<td>Tạo yêu cầu mới, giữ nguyên bản FAILED</td>
+<td>Kiểm tra và giữ điểm cho yêu cầu mới</td>
+</tr>
+</tbody>
+</table>
+<p>Không cần lưu trạng thái <code>REQUESTED/HELD/SUBMITTING/RELEASED</code> vào state machine chính. Ghi các bước đó vào timeline. Khi bị từ chối trước khi giữ điểm, chỉ ghi log rejection, không trả một redemption thành công. SUCCEEDED/FAILED là kết quả cuối; điều chỉnh ngoại lệ sau đó cần case riêng có bằng chứng/audit.</p>
+<h3 id="62-điểm-và-email">6.2. Điểm và email</h3>
+<table>
+<thead>
+<tr>
+<th>Nhóm</th>
+<th>Trạng thái</th>
+<th>Khi chuyển</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Điểm</td>
+<td><code>HELD</code></td>
+<td>Lưu <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> thành công, điểm không còn khả dụng cho yêu cầu khác</td>
+</tr>
+<tr>
+<td>Điểm</td>
+<td><code>SPENT</code></td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> COMPLETE và chốt điểm nội bộ thành công</td>
+</tr>
+<tr>
+<td>Điểm</td>
+<td><code>RELEASED</code></td>
+<td>Chắc chắn không phát quà và trả hold thành công</td>
+</tr>
+<tr>
+<td>Email</td>
+<td><code>NOT_SENT</code></td>
+<td>Yêu cầu vừa tạo, chưa có kết quả gửi</td>
+</tr>
+<tr>
+<td>Email</td>
+<td><code>SENT</code></td>
+<td>Provider xác nhận gửi thành công cho recipient; không có nghĩa đã mở/sử dụng quà</td>
+</tr>
+<tr>
+<td>Email</td>
+<td><code>BOUNCED</code></td>
+<td>Provider báo không giao được email</td>
+</tr>
+<tr>
+<td>Email</td>
+<td><code>RESEND_REQUESTED</code></td>
+<td>OMH đã nhận yêu cầu gửi lại; lần gửi đang chờ/xử lý</td>
+</tr>
+<tr>
+<td>Email</td>
+<td><code>UNKNOWN</code></td>
+<td>Kết quả thiếu, mâu thuẫn hoặc lần resend chưa xác minh</td>
+</tr>
+</tbody>
+</table>
+<p>BOUNCED → RESEND_REQUESTED → SENT hoặc BOUNCED; timeout có thể chuyển UNKNOWN đến khi xác minh. Không thay trạng thái email dựa đơn thuần vào thứ tự callback đến. Trên UI, PROCESSING = “Đang xử lý”, VERIFYING = “Đang xác minh”, SUCCEEDED + SENT = “Đã gửi”, SUCCEEDED + BOUNCED = “Email lỗi — kiểm tra và gửi lại”, SUCCEEDED + UNKNOWN = “Đã phát quà — đang kiểm tra email”, FAILED = “Không thành công — điểm đã được trả”.</p>
+<p>Nếu <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> từ chối chắc chắn hoặc <code>requeued=0</code>, ghi lần resend là thất bại và trả delivery về BOUNCED nếu vẫn còn bằng chứng bounce hiện hành; kết quả không rõ thì UNKNOWN để Ops kiểm tra. Không cập nhật <code>currentProviderEmail</code> chỉ vì người dùng vừa nhập địa chỉ mới. <code>canResend</code> chỉ bật lại khi xác định không còn lần gửi đang xử lý và vẫn thỏa điều kiện/giới hạn gửi lại.</p>
+
+</div></details><details open><summary>Ví dụ cụ thể · bấm để đóng / mở</summary><div class="detail-body"><p><strong>Ví dụ:</strong> <code>rdm_001</code> đi PROCESSING → VERIFYING sau timeout → SUCCEEDED khi tìm được đơn COMPLETE và chốt điểm. Email bounce sau đó chỉ đổi deliveryStatus, không chuyển SUCCEEDED thành FAILED. Toàn bộ state/mapping OMH là <strong>Đề xuất</strong>.</p></div></details></div></div><h2 id="7-đề-xuất-dữ-liệu-và-mapping-omh--giftronaut">7. Đề xuất dữ liệu và mapping OMH ↔ Giftronaut</h2>
+<p>Đây là data dictionary nghiệp vụ [OMH — Đề xuất], Dev tự chọn bảng/kiểu lưu vật lý. Mọi số điểm/tiền phải dùng độ chính xác cố định; timestamp ISO-8601 UTC, UI đổi sang múi giờ người dùng. “Có điều kiện” nghĩa là null trước khi sự kiện tương ứng xảy ra.</p>
+<h3 id="71-redemption--yêu-cầu-đổi-điểm-của-mình">7.1. Redemption — yêu cầu đổi điểm của mình</h3>
+<table>
+<thead>
+<tr>
+<th>Nhóm / field OMH</th>
+<th>Kiểu / bắt buộc</th>
+<th>Nguồn / ý nghĩa</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>redemptionId</code></td>
+<td>string ≤64 / có</td>
+<td>Server sinh; mã yêu cầu, đồng thời GF idempotencyKey</td>
+</tr>
+<tr>
+<td><code>clientRequestKey</code>, <code>quoteId</code></td>
+<td>string / có</td>
+<td>Header và quote; chống tạo trùng</td>
+</tr>
+<tr>
+<td><code>opId</code>, <code>companyId</code>, <code>createdBy</code></td>
+<td>string / có</td>
+<td>Session; ai sở hữu điểm, thuộc đơn vị nào, ai tạo yêu cầu</td>
+</tr>
+<tr>
+<td><code>createdByType</code></td>
+<td>enum / có</td>
+<td><code>OP</code> cho create trong MVP; actor support lưu riêng theo action</td>
+</tr>
+<tr>
+<td><code>optionId</code>, <code>policyVersion</code></td>
+<td>string / có</td>
+<td>Option và policy tại lúc xác nhận</td>
+</tr>
+<tr>
+<td><code>pointsRequired</code></td>
+<td>decimal(1 chữ số lẻ) / có</td>
+<td>Ví dụ 29.6P; không nhận từ client</td>
+</tr>
+<tr>
+<td><code>giftAmountUsd</code>, <code>currency</code></td>
+<td>decimal, string / có</td>
+<td>Ví dụ 20, USD; tiền phát quà, khác điểm</td>
+</tr>
+<tr>
+<td><code>usdToKrw</code>, <code>krwPerPoint</code>, <code>pointsPerUsd</code></td>
+<td>decimal / có</td>
+<td>Ví dụ demo 1480, 1000, 1.48; snapshot tại quote</td>
+</tr>
+<tr>
+<td><code>rateSource</code>, <code>rateEffectiveAt</code>, <code>rounding</code>, <code>minPoints</code></td>
+<td>string/datetime/decimal / có</td>
+<td>Nguồn tỷ giá/cấu hình được duyệt; thời điểm hiệu lực; cách tính và mức tối thiểu</td>
+</tr>
+<tr>
+<td><code>originalEmail</code>, <code>currentProviderEmail</code></td>
+<td>string / có; current có thể chưa xác nhận</td>
+<td>Email gốc OP xác nhận; email hiện đang được GF ghi nhận; không ghi đè mất lịch sử</td>
+</tr>
+<tr>
+<td><code>recipientFirstName</code>, <code>recipientLastName</code></td>
+<td>string / không</td>
+<td>Profile nếu cần cá nhân hóa email</td>
+</tr>
+<tr>
+<td><code>providerProductId</code>, <code>emailSettingSnapshot</code>, <code>refundOption</code></td>
+<td>string/object/bool / có</td>
+<td>Payload gửi GF đã chốt, không thay đổi khi retry</td>
+</tr>
+<tr>
+<td><code>eligibleMarkets</code>, <code>availabilityVerifiedAt</code></td>
+<td>string[]/datetime / có điều kiện</td>
+<td>Thị trường được phép hiển thị option và thời điểm Ops xác nhận khả dụng</td>
+</tr>
+<tr>
+<td><code>status</code>, <code>pointStatus</code>, <code>deliveryStatus</code></td>
+<td>enum / có</td>
+<td>Theo mục 6</td>
+</tr>
+<tr>
+<td><code>createdAt</code>, <code>updatedAt</code></td>
+<td>datetime / có</td>
+<td>Thời điểm tạo/cập nhật</td>
+</tr>
+<tr>
+<td><code>completedAt</code>, <code>failedAt</code>, <code>lastVerifiedAt</code></td>
+<td>datetime / có điều kiện</td>
+<td>Mốc kết quả cuối và lần kiểm tra gần nhất</td>
+</tr>
+<tr>
+<td><code>failureCode</code>, <code>reviewReason</code>, <code>reviewOwner</code>, <code>correlationId</code></td>
+<td>string / có điều kiện; correlation có</td>
+<td>Lý do an toàn, lý do hỗ trợ, người phụ trách và truy vết</td>
+</tr>
+</tbody>
+</table>
+<h3 id="72-đề-xuất-mapping-thông-tin-giftronaut-cần-giữ-tại-omh">7.2. Đề xuất mapping thông tin Giftronaut cần giữ tại OMH</h3>
+<table>
+<thead>
+<tr>
+<th>Field OMH</th>
+<th>Nguồn GF</th>
+<th>Khi có / cách dùng</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>providerEnvironment</code>, <code>providerOrganizationRef</code></td>
+<td>Cấu hình kết nối</td>
+<td>Có trước create; phân biệt sandbox/production/organization</td>
+</tr>
+<tr>
+<td><code>providerIdempotencyKey</code></td>
+<td>Body <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a> <code>idempotencyKey</code></td>
+<td>Bằng redemptionId; duy nhất trong org/môi trường</td>
+</tr>
+<tr>
+<td><code>providerOrderId</code></td>
+<td><a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a>/<a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a>/<a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> <code>orderId</code></td>
+<td>Null khi chưa nhận được; dùng để query/resend</td>
+</tr>
+<tr>
+<td><code>providerStatus</code></td>
+<td><a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a>/<a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> <code>status</code></td>
+<td>Lưu nguyên giá trị GF, không đổi tên thành state OMH</td>
+</tr>
+<tr>
+<td><code>providerTotalCost</code></td>
+<td>Response order nếu có</td>
+<td>Giá trị/đồng tiền thực trả; đối chiếu mệnh giá dự kiến, lệch thì chuyển review</td>
+</tr>
+<tr>
+<td><code>providerExpiryAt</code>, <code>usageStatus</code>, <code>usageUpdatedAt</code></td>
+<td>Response/event GF khi có</td>
+<td>Hạn dùng và usage; nếu chưa có usage thì lưu UNKNOWN, không suy đoán</td>
+</tr>
+<tr>
+<td><code>sentCount</code>, <code>bouncedCount</code></td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> nếu có</td>
+<td>Xác minh delivery cho một người nhận</td>
+</tr>
+<tr>
+<td><code>providerHttpStatus</code>, <code>providerErrorCode</code>, <code>providerMessage</code>, <code>providerRequestId</code></td>
+<td>HTTP, body lỗi, <code>X-Request-Id</code> nếu có</td>
+<td>Mỗi lần gọi; không thay bằng mã OMH rồi mất mã gốc</td>
+</tr>
+<tr>
+<td><code>providerEventId</code>, <code>eventType</code>, <code>eventCreatedAt</code>, <code>receivedAt</code>, <code>eventData</code></td>
+<td><a class="api-ref" href="#g7-nhận-webhook-từ-giftronaut--endpoint-omh-đề-xuất" title="Mở đặc tả G7">G7</a></td>
+<td>Chống xử lý trùng, truy vết event đến trễ; lưu riêng mỗi event</td>
+</tr>
+<tr>
+<td><code>resendRequestId</code>, <code>oldEmail</code>, <code>requestedEmail</code>, <code>resentToEmails</code>, <code>requeued</code></td>
+<td>OMH action + <a class="api-ref" href="#g6-gửi-lại-email-cùng-đơn" title="Mở đặc tả G6">G6</a> response</td>
+<td>Lưu từng lần gửi; phân biệt email yêu cầu với email GF chấp nhận</td>
+</tr>
+<tr>
+<td><code>resendStatus</code>, <code>requestedBy</code>, <code>reason</code>, <code>requestedAt</code>, <code>resolvedAt</code></td>
+<td>OMH action</td>
+<td>Theo dõi pending/accepted/unknown/failed; không trộn vào state phát quà</td>
+</tr>
+</tbody>
+</table>
+<p>Tên wrapper response của một số API chưa có schema đầy đủ trong trang reference; bảng này mô tả <strong>dữ liệu phải map</strong>, không tự khẳng định tất cả field luôn xuất hiện ở mọi response.</p>
+<h3 id="73-sổ-điểm-và-lịch-sử-thao-tác">7.3. Sổ điểm và lịch sử thao tác</h3>
+<table>
+<thead>
+<tr>
+<th>Bản ghi</th>
+<th>Trường tối thiểu</th>
+<th>Ràng buộc</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Giao dịch điểm</td>
+<td><code>transactionId, redemptionId, opId, type, points, createdAt, actor</code></td>
+<td><code>type=HOLD/SPEND/RELEASE</code>; SPEND hoặc RELEASE cùng khoản hold, không cả hai</td>
+</tr>
+<tr>
+<td>Audit</td>
+<td><code>actionId, redemptionId, action, actorId, actorRole, timestamp, oldValue, newValue, reason, correlationId</code></td>
+<td>Ghi tạo yêu cầu, kết quả GF, chốt/trả điểm, resend, thay đổi config</td>
+</tr>
+<tr>
+<td>Cấu hình quà</td>
+<td><code>version, productId, amountsUsd, conversion, minPoints, emailSetting, refundOption, enabled, verifiedAt, updatedBy</code></td>
+<td>Version cũ giữ để dựng lại lịch sử; không sửa quote/redemption đã chốt</td>
+</tr>
+<tr>
+<td>Tổng hợp vận hành</td>
+<td><code>reportPeriod, issuedUsd, succeededCount, processingCount, failedCount, lowBalanceThreshold, availableBalance, checkedAt</code></td>
+<td>Issued chỉ cộng giao dịch SUCCEEDED; số dư và ngưỡng phục vụ cảnh báo, không thay thế kết quả create order</td>
+</tr>
+</tbody>
+</table>
+<p>Ví dụ 20 USD ở tỷ lệ demo: giữ 29.6P → thành công chốt chính 29.6P; thất bại trả chính 29.6P. Không tính lại theo tỷ giá mới ở lúc complete/release. Quy tắc điểm hết hạn trong thời gian đang giữ cần chốt trước production. Email và payload người nhận chỉ cho người có quyền; UI/log thông thường che email, không lưu access token/client secret trong bản ghi nghiệp vụ.</p>
+<h2 id="8-checklist-nghiệm-thu-ba--qa">8. Checklist nghiệm thu BA / QA</h2>
+<table>
+<thead>
+<tr>
+<th>Case</th>
+<th>Kỳ vọng để nghiệm thu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Happy path 20 USD</td>
+<td><a class="api-ref" href="#i2-tính-báo-giá-đổi-điểm--đề-xuất" title="Mở đặc tả I2">I2</a> tính 29.6P theo dữ liệu demo; <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a> lưu trước <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a>; <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> COMPLETE chốt đúng 29.6P một lần</td>
+</tr>
+<tr>
+<td>Quote hết hạn / policy đổi</td>
+<td>Hết hạn phải xác nhận lại; quote còn hạn dùng snapshot cũ nếu option còn được phép</td>
+</tr>
+<tr>
+<td>Không đủ điểm / hai yêu cầu đồng thời</td>
+<td>Không âm available; request bị từ chối không gọi <a class="api-ref" href="#g3-tạo-đơn-choice-card" title="Mở đặc tả G3">G3</a></td>
+</tr>
+<tr>
+<td>Double click / mất response <a class="api-ref" href="#i3-tạo-yêu-cầu-đổi-điểm--đề-xuất" title="Mở đặc tả I3">I3</a></td>
+<td>Cùng key trả cùng redemption; quote không tạo hai redemption bằng key khác</td>
+</tr>
+<tr>
+<td>GF 402 ở lần đầu</td>
+<td>FAILED chỉ sau khi trả hold; OP thấy điểm được trả, ELLIS thấy mã GF</td>
+</tr>
+<tr>
+<td>GF 409 / timeout sau khi đã tạo</td>
+<td><a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> tìm đơn gốc; không đổi key, không tạo quà thứ hai</td>
+</tr>
+<tr>
+<td><a class="api-ref" href="#g4-tìm-lại-đơn-theo-mã-yêu-cầu-của-mình" title="Mở đặc tả G4">G4</a> rỗng / <a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> 404 sau timeout</td>
+<td>Giữ VERIFYING, không tự release</td>
+</tr>
+<tr>
+<td>401 / 403 / 429 / 500</td>
+<td>Xin token tối đa một lần; sai scope chuyển Engineering; 429 đọc envelope riêng; 5xx xác minh</td>
+</tr>
+<tr>
+<td>Callback mất / trùng / sai chữ ký</td>
+<td><a class="api-ref" href="#g5-xem-kết-quả-đơn" title="Mở đặc tả G5">G5</a> vẫn hoàn tất đơn; trùng không chốt hai lần; sai chữ ký không đổi dữ liệu</td>
+</tr>
+<tr>
+<td>COMPLETE nhưng chốt điểm lỗi</td>
+<td>Không báo thành công giả, không tạo order mới; retry chốt cùng redemption</td>
+</tr>
+<tr>
+<td>Bounce sau complete</td>
+<td>SUCCEEDED + BOUNCED, vẫn SPENT; cho sửa email/resend cùng order</td>
+</tr>
+<tr>
+<td>Resend timeout / callback cũ</td>
+<td>Không tự resend liên tục; không ghi đè trạng thái lần gửi mới bằng event cũ</td>
+</tr>
+<tr>
+<td>Quốc gia/lựa chọn quà chưa xác nhận</td>
+<td>Không hiển thị option tại thị trường đó; không giữ điểm; ELLIS yêu cầu xác nhận trước khi publish</td>
+</tr>
+<tr>
+<td>Số dư thấp</td>
+<td>Cảnh báo Finance/Ops theo ngưỡng đã duyệt; pending không tính vào số dư dùng được</td>
+</tr>
+<tr>
+<td>Báo cáo Issued Total</td>
+<td>Chỉ tính SUCCEEDED trong khoảng thời gian đã chọn; không cộng FAILED/PROCESSING/VERIFYING</td>
+</tr>
+<tr>
+<td>Usage hoặc expiry chưa có dữ liệu</td>
+<td>Hiển thị usage là Chưa rõ; không suy đoán quà đã dùng; báo cáo hết hạn chỉ dựa vào expiry đã xác nhận</td>
+</tr>
+<tr>
+<td>Truy cập giao dịch OP khác</td>
+<td>Không xem được, không resend được</td>
+</tr>
+<tr>
+<td>Thay đổi tỷ giá sau khi đổi</td>
+<td>Giao dịch cũ giữ nguyên điểm, tiền, tỷ lệ, người tạo và policy version</td>
+</tr>
+<tr>
+<td>Số dư GF lỗi khi tải ELLIS</td>
+<td>Hiển thị dữ liệu cũ kèm thời điểm/stale hoặc lỗi, không giả số dư bằng 0</td>
+</tr>
+</tbody>
+</table>
+<h2 id="9-các-điểm-cần-chốt-trước-khi-build--go-live">9. Các điểm cần chốt trước khi build / go-live</h2>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Nội dung còn mở</th>
+<th>Owner / thời điểm</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>D1</td>
+<td>Product ID/range thực, mệnh giá publish; credentials/scopes đúng môi trường; production server-to-server approval và IP allowlist</td>
+<td>Partnerships + Engineering, trước contract test/go-live</td>
+</tr>
+<tr>
+<td>D2</td>
+<td>Nguồn tỷ giá, giá trị 1P, minimum, cách làm tròn, hiệu lực quote, điểm hết hạn khi đang hold</td>
+<td>Product + Finance, trước chốt tính điểm production</td>
+</tr>
+<tr>
+<td>D3</td>
+<td>Chốt điểm khi COMPLETE; refundOption=false; nội dung điều kiện quà/hạn dùng với người nhận</td>
+<td>Product + Finance, trước UAT</td>
+</tr>
+<tr>
+<td>D4</td>
+<td>Ngưỡng xác minh 15 phút, owner/SLA hỗ trợ, giới hạn resend và xử lý không có kết quả</td>
+<td>Ops + Engineering, trước pilot</td>
+</tr>
+<tr>
+<td>D5</td>
+<td>Schema đầy đủ/wrapper và success status cho Choice Card create, list/detail, catalog, resend; response mẫu lỗi theo từng endpoint; OAuth error codes</td>
+<td>Engineering + GF, trước khóa API adapter; bổ sung bằng response sandbox đã che thông tin</td>
+</tr>
+<tr>
+<td>D6</td>
+<td><strong>Rate-limit đang mâu thuẫn:</strong> Quickstart ghi production 60/phút, sandbox 300/phút theo client; Rate limits guide ghi ngược lại và theo organization</td>
+<td>GF xác nhận quota thực; backend đọc headers, không hardcode con số chưa thống nhất</td>
+</tr>
+<tr>
+<td>D7</td>
+<td>GF chưa mô tả đầy đủ cách liên kết delivery event với từng lần resend; xác nhận cách phân biệt event cũ/mới và tra cứu trạng thái recipient</td>
+<td>Engineering + GF, trước nghiệm thu resend</td>
+</tr>
+<tr>
+<td>D8</td>
+<td><a href="https://api.giftronaut.com/docs/guides/webhooks">Guide webhook</a> nêu tối đa 5 lần gửi và ACK trong 5 giây; cần kiểm thử lại tenant, kết quả COMPLETE khi bounce, bằng chứng không phát hành để trả hold và quy trình xử lý đơn bất định</td>
+<td>Engineering + Ops + GF, trước pilot</td>
+</tr>
+<tr>
+<td>D9</td>
+<td>Xác nhận header/chữ ký áp dụng cho challenge đăng ký; kiểm thử challenge → active → test.ping. Không coi challenge là business event hoặc mở ngoại lệ bỏ auth cho mọi request</td>
+<td>Engineering + GF, trước bật webhook</td>
+</tr>
+<tr>
+<td>D10</td>
+<td>Danh sách thị trường, mệnh giá và lựa chọn quà có thể dùng; source country của OP; rule khi thị trường chưa được xác nhận</td>
+<td>Product + Partnerships + Giftronaut, trước mở redemption theo thị trường</td>
+</tr>
+<tr>
+<td>D11</td>
+<td>Quota tổng giá trị quà theo ngày/tháng, mã lỗi khi vượt quota, ngưỡng cảnh báo số dư, người nhận cảnh báo và lịch kiểm tra</td>
+<td>Finance + Giftronaut + Ops, trước pilot</td>
+</tr>
+<tr>
+<td>D12</td>
+<td>Field hạn dùng, khả năng lấy usage/recipient.redeemed, định nghĩa Issued Total, chu kỳ báo cáo và đối soát</td>
+<td>Product + Finance + Giftronaut, trước UAT báo cáo</td>
+</tr>
+</tbody>
+</table>
+<p>Nguồn cho D6: <a href="https://api.giftronaut.com/docs/quickstart">Quickstart</a> và <a href="https://api.giftronaut.com/docs/guides/rate-limits">Rate limits guide</a>, đối chiếu ngày 18/10/2026. Các quyết định còn mở không ngăn Dev hiểu và chia task theo bản BA này, nhưng không được xem ví dụ là contract sandbox đã xác nhận.</p>
+<h2 id="10-nguồn-và-phạm-vi-bản-cập-nhật">10. Nguồn và phạm vi bản cập nhật</h2>
+<ul>
+<li><a href="sources/SOURCE-NOTES.md">Source notes</a>: danh sách nguồn chính thức và nguồn nội bộ.</li>
+<li><a href="../../02-domain-specifications/op-points/OP-Points-BRD-PRD.md">OP Points BRD/PRD</a>: sở hữu điểm, mệnh giá, công thức demo, nguyên tắc giữ/chốt/trả và resend.</li>
+<li><a href="../../02-domain-specifications/ellis-config/ELLIS-BRD-PRD.md">ELLIS BRD/PRD</a>: cấu hình, phân quyền, vận hành.</li>
+<li><a href="https://api.giftronaut.com/docs/guides/errors">API Errors</a>, <a href="https://api.giftronaut.com/docs/reference/orders">Orders</a>, <a href="https://api.giftronaut.com/docs/reference/catalog">Catalog</a>, <a href="https://api.giftronaut.com/docs/reference/webhooks">Webhooks</a>: nguồn đối chiếu API/error.</li>
+</ul>
+<p>Bản 2.1 giữ API spec của v2.0 và bổ sung sáu sơ đồ chi tiết cho 5 nhóm flow (F2 tách tạo đơn và nhận kết quả). Mỗi flow có hệ thống tham gia, method/path, điều kiện và edge case. State chính vẫn gồm 4 trạng thái. Sơ đồ 16–23 phục vụ bản hiện hành; các sơ đồ kỹ thuật 00–15 và bản 1.4 được giữ để tra cứu lịch sử, <strong>không phải contract hiện hành</strong>. Những lựa chọn triển khai như queue, database locking và cấu trúc service thuộc thiết kế kỹ thuật của Dev.</p>
+<p>Cập nhật v2.2: bổ sung setup F0, bản đồ điều hướng và cách đọc sơ đồ/giải thích song song. Tất cả API, dữ liệu và mapping OMH được gắn nhãn <strong>Đề xuất</strong>; không đồng nghĩa đã được triển khai.</p>
+</main><script>
+let printClosed=[];
+window.addEventListener('beforeprint',()=>{printClosed=[...document.querySelectorAll('details:not([open])')];printClosed.forEach(d=>d.open=true)});
+window.addEventListener('afterprint',()=>printClosed.forEach(d=>d.open=false));
+</script></body></html>
