@@ -1,0 +1,40 @@
+@startuml
+title Stakeholder & ownership - ai quyết định, ai vận hành, ai xây dựng
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam ArrowColor #506477
+skinparam rectangleBorderColor #7891AA
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam nodesep 45
+skinparam ranksep 45
+top to bottom direction
+
+actor "OP\nNgười đổi điểm" as OP
+
+rectangle "PRODUCT — Accountable cho trải nghiệm & policy\n\n• OP Points UI\n• Point conversion policy\n• Choice Card US$10 / 20 / 50 / 100\n• Nội dung và trạng thái khách hàng" as PRODUCT
+
+rectangle "OPERATIONS — Responsible cho hỗ trợ hằng ngày\n\n• ELLIS Admin\n• Tra cứu redemption/order\n• Hỗ trợ resend và giao dịch bị lỗi\n• Daily manual control" as OPS
+
+rectangle "ENGINEERING — Responsible cho hệ thống & tích hợp\n\n• Internal API\n• Redemption Service\n• Point Ledger\n• Giftronaut Adapter\n• Order Worker / Callback Handler\n• Audit & Monitoring" as ENG
+
+rectangle "FINANCE / PARTNERSHIPS / SECURITY — Accountable cho kiểm soát\n\n• Funding và lịch kiểm tra balance\n• Hợp đồng / SLA / escalation\n• Secrets, scopes và webhook security" as GOV
+
+cloud "GIFTRONAUT — Nhà cung cấp quà\n\n• OAuth\n• Choice Card config\n• Orders / Resend\n• Webhooks\n• Balance / Ledger" as GIFT
+
+OP --> PRODUCT : Chọn mệnh giá / xem trạng thái / tự resend
+PRODUCT --> ENG : Policy và yêu cầu sản phẩm
+OPS --> ENG : Tra cứu / action hỗ trợ
+GOV --> ENG : Quyền, security và control
+ENG --> GIFT : API request
+GIFT --> ENG : Callback / provider result
+ENG --> PRODUCT : Trạng thái cho OP Points
+ENG --> OPS : Dữ liệu vận hành cho ELLIS
+GOV ..> GIFT : Funding / contract / escalation
+
+legend bottom
+  Accountable = quyết định và phê duyệt
+  Responsible = trực tiếp thực hiện hoặc vận hành
+  System component detail nằm trong từng ownership block
+endlegend
+@enduml

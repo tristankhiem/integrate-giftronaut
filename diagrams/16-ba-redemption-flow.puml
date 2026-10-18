@@ -1,0 +1,33 @@
+@startuml
+title Đổi điểm thành Choice Card — tổng quan
+skinparam backgroundColor white
+skinparam defaultFontName Segoe UI
+skinparam shadowing false
+skinparam sequenceMessageAlign center
+hide footbox
+actor "OP" as op
+participant "OP Points" as ui
+participant "Backend Ohmyhotel\n(yêu cầu + điểm)" as omh
+participant "Giftronaut" as gf
+op -> ui: Chọn quà, xác nhận email và điểm
+ui -> omh: Đề xuất: I2 báo giá → I3 tạo yêu cầu
+omh -> omh: Kiểm tra → lưu redemption → giữ điểm
+omh --> ui: 202 PROCESSING + redemptionId
+omh -> gf: G3 tạo Choice Card\nkey = redemptionId
+gf --> omh: orderId + PENDING / IN_PROGRESS
+gf -> omh: G7 webhook kết quả
+omh -> gf: G5 xem trạng thái đơn\n(cũng dùng khi thiếu webhook)
+gf --> omh: COMPLETE + kết quả email
+omh -> omh: Chốt điểm một lần\nSUCCEEDED + trạng thái email
+ui -> omh: Đề xuất: I4 xem yêu cầu
+omh --> ui: Kết quả đã lưu
+note over omh,gf
+Timeout / mất response: VERIFYING → G4 tìm đơn cũ.
+Chắc chắn không phát quà: trả điểm → FAILED.
+Email bounce: giữ SPENT, resend cùng order qua G6.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

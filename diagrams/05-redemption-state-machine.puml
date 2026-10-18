@@ -1,0 +1,42 @@
+@startuml
+title State model nội bộ cho một redemption
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+
+state "Issuance axis" as Issuance {
+  [*] --> REQUESTED
+  REQUESTED --> HELD : hold điểm thành công
+  HELD --> SUBMITTING : outbox được xử lý
+  SUBMITTING --> VERIFYING : timeout / kết quả chưa rõ
+  SUBMITTING --> PROVIDER_ACCEPTED : nhận orderId
+  VERIFYING --> PROVIDER_ACCEPTED : tìm thấy đơn gốc
+  VERIFYING --> FAILED : xác nhận không có đơn
+  PROVIDER_ACCEPTED --> ISSUED : provider COMPLETE
+  PROVIDER_ACCEPTED --> FAILED : lỗi cuối cùng / canceled hợp lệ
+  FAILED --> RELEASED : release hold
+  ISSUED --> [*]
+  RELEASED --> [*]
+}
+
+state "Delivery axis" as Delivery {
+  [*] --> NOT_SENT
+  NOT_SENT --> SENT : delivery_complete
+  SENT --> BOUNCED : bounced có thể đến muộn
+  BOUNCED --> RESEND_REQUESTED : OP tự resend / Ops hỗ trợ
+  RESEND_REQUESTED --> SENT : resend cùng order/gift
+}
+
+state "Usage axis" as Usage {
+  [*] --> UNKNOWN
+  note right of UNKNOWN
+    recipient.redeemed đang được tài liệu
+    Giftronaut ghi là “coming soon”.
+  end note
+}
+
+note bottom
+Điểm chuyển sang SPENT khi issuance được xác nhận.
+Bounce không release điểm và resend không tạo redemption mới.
+end note
+@enduml

@@ -1,0 +1,112 @@
+@startuml
+title Mô hình dữ liệu nghiệp vụ tối thiểu
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+hide methods
+hide stereotypes
+
+entity PointAccount {
+  * account_id : UUID
+  --
+  owner_user_id
+  company_id
+  version
+}
+entity PointLot {
+  * lot_id : UUID
+  --
+  account_id
+  earned_points
+  remaining_points
+  expires_at
+}
+entity PointTransaction {
+  * transaction_id : UUID
+  --
+  account_id
+  type : EARN/HOLD/SPEND/RELEASE
+  points
+  reference_type
+  reference_id
+}
+entity Redemption {
+  * redemption_id : UUID
+  --
+  account_id
+  client_request_id
+  points
+  gift_amount
+  currency
+  issuance_status
+  delivery_status
+  usage_status
+  policy_snapshot_id
+}
+entity ProviderOrder {
+  * provider_order_row_id : UUID
+  --
+  redemption_id
+  provider
+  idempotency_key
+  provider_order_id
+  provider_status
+  last_synced_at
+}
+entity ProviderEvent {
+  * event_row_id : UUID
+  --
+  provider_event_id : UNIQUE
+  provider_order_id
+  event_type
+  event_time
+  received_at
+  payload_hash
+}
+entity DeliveryAttempt {
+  * attempt_id : UUID
+  --
+  redemption_id
+  type : INITIAL/RESEND
+  masked_email
+  requested_by
+  result
+}
+entity PolicySnapshot {
+  * policy_snapshot_id : UUID
+  --
+  product_id
+  point_cost
+  amount
+  currency
+  refund_policy
+}
+entity ReconciliationCase {
+  * case_id : UUID
+  --
+  redemption_id
+  mismatch_type
+  financial_value
+  status
+  owner
+}
+entity BalanceSnapshot {
+  * snapshot_id : UUID
+  --
+  available_amount
+  pending_amount
+  currency
+  captured_at
+}
+
+PointAccount ||--o{ PointLot
+PointAccount ||--o{ PointTransaction
+PointAccount ||--o{ Redemption
+Redemption ||--o{ PointTransaction
+Redemption ||--|| PolicySnapshot
+Redemption ||--o| ProviderOrder
+ProviderOrder ||--o{ ProviderEvent
+Redemption ||--o{ DeliveryAttempt
+Redemption ||--o{ ReconciliationCase
+BalanceSnapshot }o..o{ ReconciliationCase : supports analysis
+@enduml

@@ -1,0 +1,44 @@
+@startuml
+title F0 — Setup môi trường, xác thực và webhook
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+hide footbox
+actor "Engineering / Admin" as eng
+participant "Giftronaut Portal" as portal
+participant "Backend OMH\nĐề xuất cấu hình tích hợp" as omh
+participant "Giftronaut API" as gf
+eng -> portal: Tạo App theo môi trường + chọn scopes
+alt Sandbox
+portal --> eng: Credentials sandbox
+else Production
+eng -> portal: Yêu cầu server-to-server + IP allowlist
+portal --> eng: Kết quả review / quyền client_credentials
+end
+eng -> omh: Đề xuất: lưu credential và signing secret\ntách theo môi trường, không đưa xuống UI
+omh -> gf: G1 POST /oauth2/token\nclient_credentials + scopes
+alt Token hợp lệ
+gf --> omh: access_token, expires_in, scope
+omh -> gf: G2 GET /api/v1/catalog/choice-cards\nAuthorization: Bearer token
+gf --> omh: Catalog đúng organization / môi trường
+else Token lỗi / unauthorized_client
+gf --> omh: Lỗi auth; kiểm tra App / quyền production
+note over omh,gf: Chưa tiếp tục kiểm thử tạo đơn
+end
+eng -> portal: Đăng ký HTTPS callback theo credential
+gf -> omh: Đề xuất URL OMH: POST /webhooks/giftronaut/v1\nChallenge đăng ký: {challengeToken}
+omh --> gf: 200 + {challengeToken} tương ứng
+eng -> portal: Chọn event + Send Test
+gf -> omh: G7 → endpoint OMH (Đề xuất)\ntest.ping + signature
+omh -> omh: Đề xuất: kiểm tra chữ ký, lưu event
+omh --> gf: Đề xuất: 204 khi đã lưu thành công
+note over eng,gf
+Sandbox → F1/F2 kiểm thử; chưa chứng minh email giao thật.
+Production: credential riêng + quyền + allowlist + số dư thật.
+Token hết hạn: xin token mới bằng G1; không dùng refresh_token.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

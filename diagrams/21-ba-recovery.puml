@@ -1,0 +1,50 @@
+@startuml
+title F3 — Từ chối, timeout và tìm lại đơn gốc
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+hide footbox
+participant "Backend OMH\n(redemption + sổ điểm)" as be
+participant "Giftronaut API" as gf
+participant ELLIS as el
+actor "Ops / Finance" as ops
+be -> gf: G3 POST /api/v1/orders/choice-cards
+alt Từ chối chắc chắn: ví dụ 402 INSUFFICIENT_BALANCE lần đầu
+gf --> be: HTTP + mã lỗi GF
+be -> be: Lưu lỗi → trả hold đúng một lần
+note right of be
+Trả điểm thành công → FAILED + RELEASED.
+Trả điểm lỗi → POINT_RELEASE_PENDING,
+chưa báo FAILED / đã trả điểm.
+end note
+else Timeout / 5xx / 409 DUPLICATE_IDEMPOTENCY_KEY
+be -> be: VERIFYING; giữ HELD
+be -> gf: G4 GET /api/v1/orders?clientOrderId={key}
+alt Tìm thấy đơn
+gf --> be: orderId + status
+be -> gf: G5 GET /api/v1/orders/{orderId}
+gf --> be: Trạng thái hiện tại
+note over be,gf: Tiếp tục F2b trên đơn gốc
+else Chưa thấy / 404 / query lỗi
+be -> be: Giữ VERIFYING; tra cứu lại theo lịch
+opt Retry create sau khi tra cứu, trong giới hạn xử lý
+be -> gf: G3 POST /api/v1/orders/choice-cards\nCÙNG key và payload đã lưu
+end
+end
+end
+opt Quá ngưỡng hỗ trợ, ví dụ 15 phút (đề xuất)
+ops -> el: Xem danh sách cần xử lý
+el -> be: Đề xuất: I7 GET /v1/ellis/redemptions\nstatus=VERIFYING
+be --> el: Yêu cầu + tuổi giao dịch + mã lỗi + bằng chứng
+el --> ops: Tiếp nhận case, xác minh với GF
+note over be,ops
+Không tự hoàn điểm theo thời gian.
+Không có API resolve thủ công trong scope hiện tại:
+kết quả điều tra được xử lý theo runbook có audit.
+end note
+end
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

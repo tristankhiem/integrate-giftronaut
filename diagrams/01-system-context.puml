@@ -1,0 +1,67 @@
+@startuml
+title Bối cảnh tích hợp OP Points - ELLIS - Giftronaut
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam ArrowColor #3B4A5A
+skinparam packageBorderColor #8AA4C2
+skinparam packageBackgroundColor #F7FAFD
+
+actor "OP\n(Nhân viên đại lý)" as OP
+actor "Operations / Support" as OPS
+actor "Finance" as FIN
+
+package "Ohmyhotel" {
+  [OP Points UI] as OPU
+  [ELLIS Admin UI] as ELLIS
+  [Internal API / BFF] as API
+  [Redemption Orchestrator] as ORCH
+  [Point Ledger] as LEDGER
+  [Provider Adapter] as ADAPTER
+  [Worker / Scheduler] as WORKER
+  database "Loyalty & Integration DB" as DB
+  [Reconciliation Engine] as RECON
+  [Audit / Observability] as AUDIT
+}
+
+cloud "Giftronaut API (Beta)" {
+  [OAuth2 Token]
+  [Catalog]
+  [Orders]
+  [Balance & Ledger]
+  [Webhooks]
+}
+
+OP --> OPU : Xem điểm / đổi quà
+OPS --> ELLIS : Tra cứu / resend / xử lý exception
+FIN --> ELLIS : Theo dõi balance / đối soát
+OPU --> API : API nội bộ
+ELLIS --> API : API nội bộ + RBAC
+API --> ORCH
+ORCH --> LEDGER : Hold / spend / release
+ORCH --> DB : Redemption + outbox
+ORCH --> ADAPTER : Lệnh theo provider-neutral contract
+ADAPTER --> [OAuth2 Token] : Client Credentials
+ADAPTER --> [Catalog]
+ADAPTER --> [Orders]
+[Webhooks] --> API : HTTPS + HMAC signature
+WORKER --> ADAPTER : Poll / retry có kiểm soát
+RECON --> LEDGER
+RECON --> DB
+RECON --> [Orders]
+RECON --> [Balance & Ledger]
+API --> AUDIT
+ORCH --> AUDIT
+RECON --> AUDIT
+
+note bottom of ADAPTER
+  Chỉ backend gọi Giftronaut.
+  Secret và access token không vào browser.
+end note
+
+legend bottom
+  API Giftronaut = capability đã xác minh từ tài liệu chính thức.
+  Thành phần Ohmyhotel = kiến trúc target được đề xuất.
+endlegend
+@enduml

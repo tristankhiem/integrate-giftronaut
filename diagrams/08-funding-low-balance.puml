@@ -1,0 +1,33 @@
+@startuml
+title Theo dõi balance và nạp tiền theo functional spec hiện tại
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+actor Finance
+participant "ELLIS" as ELLIS
+participant "ELLIS Balance Panel" as MON
+participant "Giftronaut API" as GIFT
+participant "Redemption Orchestrator" as ORCH
+
+Finance -> ELLIS : Mở panel theo lịch vận hành
+ELLIS -> MON : Yêu cầu số dư hiện tại
+MON -> GIFT : GET /api/v1/balance
+GIFT --> MON : available + pending
+MON --> ELLIS : Hiển thị balance; không gửi alert tự động
+alt Số dư cần bổ sung
+  Finance -> GIFT : Nạp chuyển khoản qua portal
+  Finance -> ELLIS : Kiểm tra lại sau thời gian xử lý
+  ELLIS -> MON : Refresh balance
+  MON -> GIFT : GET /api/v1/balance
+  GIFT --> MON : Funds available/pending
+else Order bị 402 INSUFFICIENT_BALANCE
+  GIFT --> ORCH : Từ chối; không tạo order
+  ORCH -> ORCH : FAILED + RELEASE điểm
+  ORCH --> ELLIS : Hiển thị lý do nội bộ cho Ops
+end
+
+note over ELLIS,GIFT
+Alert tự động và ACH funding API là change request/P3,
+không thuộc functional spec hiện tại.
+end note
+@enduml

@@ -1,0 +1,53 @@
+@startuml
+title F2b — Nhận kết quả, chốt điểm và hiển thị trạng thái
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+hide footbox
+participant "Giftronaut" as gf
+participant "Backend OMH\n(redemption + sổ điểm)" as be
+participant "OP Points" as ui
+participant ELLIS as el
+alt Có webhook
+gf -> be: G7 → OMH (Đề xuất) POST /webhooks/giftronaut/v1\neventId, eventType, data.orderId + signature
+alt Chữ ký sai
+be --> gf: 401 — không cập nhật giao dịch
+else Event hợp lệ, đã lưu được
+be --> gf: 204 — đã nhận (event trùng cũng ACK)
+note right of be: Event trùng không tạo tác động điểm lần hai
+else Không lưu được event
+be --> gf: 503 — không báo nhận thành công
+end
+else Callback thiếu hoặc trễ
+be -> be: Chủ động kiểm tra đơn theo lịch
+end
+group Event hợp lệ chưa xử lý hoặc đến lịch kiểm tra
+be -> gf: G5 GET /api/v1/orders/{orderId}
+gf --> be: Trạng thái đơn + thông tin delivery
+alt COMPLETE
+be -> be: Chốt điểm đúng một lần
+alt Chốt điểm thành công
+be -> be: SUCCEEDED + SPENT\nEmail SENT / BOUNCED / UNKNOWN theo bằng chứng
+else Lỗi ghi điểm
+be -> be: PROCESSING + POINT_FINALIZATION_PENDING\nThử lại chốt điểm, không tạo đơn mới
+end
+else PENDING / IN_PROGRESS
+be -> be: PROCESSING; giữ HELD; kiểm tra tiếp
+else CANCELED / kết quả mâu thuẫn / GET lỗi
+be -> be: Xác minh theo F3; không tự trả điểm
+end
+end
+ui -> be: Đề xuất: I4 GET /v1/op-points/redemptions/{id}
+be --> ui: Trạng thái + điểm + email + canResend
+el -> be: Đề xuất: I7 GET /v1/ellis/redemptions/{id}
+be --> el: Cùng giao dịch + lỗi GF + timeline
+note over be,el
+Event đến sớm chưa ghép được order: lưu chờ ghép, không bỏ.
+Event đến ngược thứ tự: đối chiếu thời điểm/lần gửi.
+SUCCEEDED + bounce → F4; không hoàn điểm vì email lỗi.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

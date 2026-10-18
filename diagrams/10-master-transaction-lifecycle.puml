@@ -1,0 +1,67 @@
+@startuml
+title Master flow - từ zero setup đến redemption hoàn tất
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam activity {
+  BackgroundColor #F7FAFC
+  BorderColor #52677B
+  DiamondBackgroundColor #FFF4D6
+  DiamondBorderColor #B47B00
+}
+start
+partition "A. Setup integration [P0]" {
+  :Thống nhất hợp đồng và tạo Sandbox app;
+  :Cấp đúng quyền kết nối cần thiết;
+  :Lưu khóa kết nối an toàn ở backend;
+  :Đăng ký địa chỉ nhận callback;
+  :Kiểm tra kết nối thành công;
+}
+partition "B. Setup Choice Card [P0]" {
+  :Lấy Choice Card productId và giới hạn mệnh giá;
+  :Xác nhận option US$10 / 20 / 50 / 100;
+  :Gắn số điểm cần dùng và ngày hiệu lực;
+  :Xuất bản bốn option trên OP Points;
+}
+partition "C. Create redemption [P0]" {
+  :OP chọn option và xác nhận email;
+  :Ohmyhotel kiểm tra món quà và số điểm;
+  :Tạm giữ điểm và tạo redemption;
+  :Gửi yêu cầu phát quà sang Giftronaut;
+  if (Có mã order?) then (Có)
+    :Lưu mã order Giftronaut;
+  else (Timeout / không rõ)
+    :Hỏi lại bằng mã redemption;
+    if (Tìm thấy đơn gốc?) then (Có)
+      :Lưu mã order Giftronaut;
+    else (Chưa)
+      :Giữ điểm và tiếp tục xác minh;
+    endif
+  endif
+}
+partition "D. Complete transaction [P0]" {
+  :Nhận callback hoặc chủ động hỏi trạng thái;
+  :Xác minh callback hợp lệ và chưa xử lý;
+  :Order COMPLETE -> chốt trừ điểm;
+  :Cập nhật phát quà và giao email riêng;
+  :OP Points hiển thị kết quả cuối;
+}
+partition "E. Support [P1]" {
+  if (Email bounced?) then (Có)
+    :OP tự kiểm tra / sửa email;
+    :Resend cùng provider order;
+  else (Không)
+    :Không cần action;
+  endif
+}
+partition "F. Batch control [P2]" {
+  :Đối soát và báo cáo định kỳ;
+}
+stop
+
+legend bottom
+P0 = bắt buộc để phát redemption an toàn end-to-end
+P1 = vận hành sau khi core ổn định
+P2 = kiểm soát theo lô, triển khai sau core
+endlegend
+@enduml

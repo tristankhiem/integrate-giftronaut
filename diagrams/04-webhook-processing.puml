@@ -1,0 +1,42 @@
+@startuml
+title Xử lý webhook an toàn và không phụ thuộc thứ tự
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+start
+:Nhận HTTPS request;
+if (Có raw body và signature?) then (Có)
+  :Tính HMAC-SHA256 bằng webhook secret;
+  if (Constant-time compare hợp lệ?) then (Có)
+    :Parse envelope và validate schema;
+    if (eventId đã xử lý?) then (Có)
+      :Trả 2xx; bỏ qua side effect;
+    else (Chưa)
+      :Ghi raw event, event time, received time;
+      :Trả 2xx sớm;
+      :Worker xử lý bất đồng bộ;
+      if (Transition hợp lệ?) then (Có)
+        :Cập nhật issuance/delivery độc lập;
+        :Ghi audit và metric;
+      else (Không / chưa đủ dữ liệu)
+        :Query order hiện tại;
+        if (Reconcile được?) then (Có)
+          :Áp dụng trạng thái canonical;
+        else (Không)
+          :Đưa exception queue / DLQ;
+        endif
+      endif
+    endif
+  else (Không)
+    :Từ chối 401/403 và security log;
+  endif
+else (Không)
+  :Từ chối request;
+endif
+stop
+
+legend bottom
+order.bounced có thể đến sau delivery_complete.
+Resend có thể tạo thêm delivery event; eventId là khóa dedupe.
+endlegend
+@enduml

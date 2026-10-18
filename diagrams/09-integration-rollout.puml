@@ -1,0 +1,35 @@
+@startuml
+title Lộ trình tích hợp và cổng kiểm soát
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+start
+:Phase 0 - Contract & policy\nChốt product, country, amount, refund, SLA, DPA;
+if (Business/Finance/Security approve?) then (Có)
+  :Phase 1 - Sandbox foundation\nOAuth, Choice Card config, order, query, webhook, ledger;
+else (Chưa)
+  :Giữ ở discovery; không đặt production order;
+  stop
+endif
+:Contract tests + golden mapping;
+:Failure tests\ntimeout, 409, 429, 5xx, duplicate, out-of-order;
+if (Không có duplicate financial effect?) then (Đạt)
+  :Phase 2 - UAT / shadow operations\nELLIS queue, reconciliation, runbook;
+else (Không đạt)
+  :Sửa orchestration và chạy lại;
+  stop
+endif
+if (Go-live checklist ký duyệt?) then (Có)
+  :Phase 3 - Controlled production pilot\ncohort + budget cap + kill switch;
+else (Chưa)
+  :Giữ sandbox/UAT;
+  stop
+endif
+:Theo dõi KPI, balance, mismatch, support;
+if (Guardrail đạt?) then (Có)
+  :Mở rộng dần theo cohort;
+else (Không)
+  :Dừng submit mới; xử lý giao dịch đang dở;
+endif
+stop
+@enduml

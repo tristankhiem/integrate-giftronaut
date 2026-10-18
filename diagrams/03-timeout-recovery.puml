@@ -1,0 +1,40 @@
+@startuml
+title Timeout, retry và chống phát quà trùng
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+autonumber
+participant "Orchestrator" as ORCH
+database "Point Ledger" as LEDGER
+participant "Giftronaut Adapter" as ADP
+participant "Giftronaut API" as GIFT
+participant "Recovery Worker" as WORKER
+participant "ELLIS" as ELLIS
+
+ORCH -> LEDGER : HOLD điểm
+ORCH -> ADP : Submit(providerKey=redemptionId)
+ADP -> GIFT : POST /orders/choice-cards\nidempotencyKey=redemptionId
+GIFT --> ADP : Mất response / timeout
+ADP --> ORCH : OUTCOME_UNKNOWN
+ORCH -> ORCH : trạng thái VERIFYING\nGiữ nguyên HOLD
+ORCH --> ELLIS : Hiện case đang xác minh
+
+WORKER -> GIFT : GET /orders?clientOrderId=redemptionId
+alt Tìm thấy order
+  GIFT --> WORKER : orderId + status
+  WORKER -> ORCH : Link order, tiếp tục poll/webhook
+else Không tìm thấy nhưng còn trong cửa sổ bất định
+  GIFT --> WORKER : empty
+  WORKER -> WORKER : Backoff + thử lại cùng key
+else Xác nhận chắc chắn chưa tạo order
+  GIFT --> WORKER : no order theo policy/SLA
+  WORKER -> ORCH : DEFINITIVE_NOT_CREATED
+  ORCH -> LEDGER : RELEASE hold
+  ORCH --> ELLIS : FAILED_RELEASED
+end
+
+note right of ADP
+409 DUPLICATE_IDEMPOTENCY_KEY không phải lý do tạo key mới.
+Tra cứu đơn gốc bằng clientOrderId.
+end note
+@enduml

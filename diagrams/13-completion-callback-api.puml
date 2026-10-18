@@ -1,0 +1,56 @@
+@startuml
+title Flow D [P0] - callback/poll đến transaction complete
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+autonumber
+participant "Giftronaut Webhook" as GWH
+participant "Webhook Ingress" as IN
+database "Provider Event Store" as EVENT
+participant "Event Worker" as WORKER
+participant "Giftronaut Orders" as ORDERS
+database "Redemption DB" as DB
+database "Point Ledger" as LEDGER
+participant "OP Points API" as OPAPI
+participant "OP Points UI" as UI
+
+GWH -> IN : POST /webhooks/giftronaut/v1\nX-Giftronaut-Signature\nraw event body
+IN -> IN : HMAC-SHA256(rawBody)\nconstant-time compare
+alt Signature invalid
+  IN --> GWH : 401/403
+else Signature valid
+  IN -> EVENT : INSERT eventId UNIQUE + raw evidence
+  alt Duplicate eventId
+    EVENT --> IN : unique conflict / already handled
+    IN --> GWH : 2xx, no side effect
+  else New event
+    EVENT --> IN : durable persisted
+    IN --> GWH : 2xx immediately
+    EVENT -> WORKER : Async event
+    WORKER -> DB : Load provider order + current state
+    alt Event đủ để xác nhận canonical state
+      WORKER -> DB : Apply monotonic transition
+    else Event muộn/ngược thứ tự/không rõ
+      WORKER -> ORDERS : GET /api/v1/orders/{orderId}
+      ORDERS --> WORKER : Current canonical order
+      WORKER -> DB : Apply canonical state
+    end
+    alt Provider order COMPLETE and not spent
+      WORKER -> LEDGER : Idempotent HOLD -> SPEND
+      WORKER -> DB : issuance=ISSUED\ndelivery theo sent/bounced/event
+    else Chưa COMPLETE
+      WORKER -> DB : Keep HOLD; schedule poll
+    end
+  end
+end
+
+UI -> OPAPI : GET /v1/op-points/redemptions/{id}
+OPAPI -> DB : Read user-scoped redemption
+DB --> OPAPI : issuance/delivery/usage
+OPAPI --> UI : Current state + safe reason
+
+note over WORKER,LEDGER
+Completion phải idempotent: webhook và poll cùng đến
+cũng chỉ tạo một SPEND transaction.
+end note
+@enduml

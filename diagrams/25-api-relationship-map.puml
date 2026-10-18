@@ -1,0 +1,34 @@
+@startuml
+title Bản đồ API — Ohmyhotel và Giftronaut
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+skinparam componentStyle rectangle
+skinparam component {
+  BackgroundColor #EDF7F6
+  BorderColor #006C70
+}
+actor "Người dùng OP" as op
+actor "Ops / Finance" as ops
+rectangle "OP Points" as ui
+rectangle "ELLIS" as ellis
+component "API Ohmyhotel\n(Đề xuất)" as omh
+database "Sổ điểm +\nRedemption" as db
+cloud "Giftronaut API" as gf
+cloud "Giftronaut Portal" as portal
+
+op --> ui
+ops --> ellis
+ui --> omh : I1 Danh sách quà\nI2 Báo giá\nI3 Tạo yêu cầu\nI4/I5 Xem giao dịch\nI6 Gửi lại email
+ellis --> omh : I7 Tra cứu hỗ trợ\nI7-resend Gửi lại email\nI8 Cấu hình quà\nI9 Xem số dư
+omh --> db : Lưu yêu cầu, giữ/chốt/trả điểm\nLưu trạng thái và lịch sử
+omh --> gf : G1 Lấy token\nG2 Đọc Choice Card\nG3 Tạo đơn quà\nG4/G5 Tìm và xem đơn\nG6 Gửi lại email\nG8 Đọc số dư
+gf --> omh : G7 Webhook: kết quả gửi email
+portal --> gf : Tạo App, đăng ký webhook,\nkiểm tra lịch sử / nạp tiền
+
+note bottom of omh
+I = API nội bộ Ohmyhotel, đều là Đề xuất.
+G = API do Giftronaut cung cấp.
+Một yêu cầu đổi điểm nối I3 → G3 → G5/G7.
+end note
+@enduml

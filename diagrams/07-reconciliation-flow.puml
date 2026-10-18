@@ -1,0 +1,35 @@
+@startuml
+title Đối soát ledger - redemption - Giftronaut
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+start
+:Chốt as-of time và correlation window;
+fork
+  :Đọc Point Ledger\nHOLD / SPEND / RELEASE;
+fork again
+  :Đọc Redemption + ProviderOrder nội bộ;
+fork again
+  :GET Giftronaut orders theo khoảng thời gian;
+fork again
+  :GET Giftronaut balance ledger;
+end fork
+:Chuẩn hóa currency, orderId, clientOrderId;
+:Match 1:1 theo redemptionId / idempotencyKey;
+if (Khớp trạng thái và giá trị?) then (Có)
+  :Đóng kỳ / lưu reconciliation evidence;
+else (Không)
+  :Phân loại mismatch;
+  if (Provider có đơn, nội bộ thiếu?) then (Có)
+    :Backfill link; giữ/commit điểm theo trạng thái;
+  elseif (Nội bộ SPENT, provider thiếu?) then (Có)
+    :Case tài chính P0; không tự phát đơn mới;
+  elseif (HOLD quá SLA?) then (Có)
+    :Query lại; manual review nếu vẫn bất định;
+  else
+    :Case amount/status/balance ledger;
+  endif
+  :Gán owner, SLA, evidence và action log;
+endif
+stop
+@enduml

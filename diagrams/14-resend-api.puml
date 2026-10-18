@@ -1,0 +1,42 @@
+@startuml
+title Flow E [P1] - bounce và resend cùng gift
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+autonumber
+participant "Giftronaut" as GIFT
+participant "Webhook Handler" as WH
+database "Redemption DB" as DB
+actor "Ops" as OPS
+actor "OP" as OP
+participant "OP Points UI" as OPUI
+participant "ELLIS" as ELLIS
+participant "Internal Action API" as API
+participant "Giftronaut Orders" as ORDERS
+database "Audit Log" as AUDIT
+
+GIFT -> WH : order.bounced(eventId, orderId)
+WH -> WH : Verify HMAC + dedupe
+WH -> DB : delivery=BOUNCED\nissuance remains ISSUED
+alt OP tự xử lý (luồng chính)
+  OP -> OPUI : Check email and resend
+  OPUI -> API : POST /v1/op-points/redemptions/{id}/resend\n{email}
+else Ops hỗ trợ khi cần
+  OPS -> ELLIS : Mở giao dịch và xác nhận email mới
+  ELLIS -> API : POST /v1/ellis/redemptions/{id}/resend\n{email, reasonCode, caseId}
+end
+API -> DB : Validate ISSUED + BOUNCED + providerOrderId
+API -> API : Kiểm tra chủ giao dịch/quyền Ops\nemail + giới hạn resend
+API -> ORDERS : POST /api/v1/orders/{orderId}/resend\n{updated email if supported}
+ORDERS --> API : Accepted/current order
+API -> DB : delivery=RESEND_REQUESTED
+API -> AUDIT : actor + reason + masked old/new + result
+API --> ELLIS : 202/200 action result
+GIFT -> WH : delivery event mới
+WH -> DB : delivery=SENT/BOUNCED
+
+note over API,DB
+Không tạo redemption/order mới.
+Không HOLD/SPEND/RELEASE điểm lần nữa.
+end note
+@enduml

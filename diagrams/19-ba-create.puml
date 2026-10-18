@@ -1,0 +1,42 @@
+@startuml
+title F2a — Xác nhận đổi điểm và tạo đơn quà
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+hide footbox
+actor OP as op
+participant "OP Points" as ui
+participant "Backend OMH\n(redemption + sổ điểm)" as be
+participant "Giftronaut API" as gf
+op -> ui: Chọn mệnh giá
+ui -> be: Đề xuất: I2 POST /v1/op-points/redemptions/quote\n{optionId}
+be --> ui: 201 — quoteId, pointsRequired, conversion, expiresAt
+op -> ui: Xác nhận số điểm và email
+ui -> be: Đề xuất: I3 POST /v1/op-points/redemptions\nIdempotency-Key + {quoteId, delivery.email}
+alt Key đã dùng, body giống
+be --> ui: 200 — trả redemption cũ, không giữ thêm điểm
+else Quote hết hạn / thiếu điểm / key cũ nhưng body khác
+be --> ui: 409 QUOTE_EXPIRED / INSUFFICIENT_POINTS\n/ IDEMPOTENCY_PAYLOAD_MISMATCH
+note right of be: Không gọi Giftronaut
+else Request mới hợp lệ
+be -> be: Lưu redemption + snapshot và giữ điểm cùng một thao tác
+be --> ui: 202 PROCESSING + redemptionId\npointStatus=HELD
+be -> gf: G3 POST /api/v1/orders/choice-cards\nidempotencyKey=redemptionId\nproductId + email + amount từ snapshot
+alt Nhận đơn thành công
+gf --> be: 201 — orderId + PENDING / IN_PROGRESS
+be -> be: Lưu orderId; tiếp tục giữ điểm
+note over be,gf: Sang F2b để xác minh và chốt kết quả
+else 402 / timeout / 5xx / 409 duplicate
+gf --> be: Lỗi hoặc không nhận được response
+note over be,gf: Sang F3: phân biệt từ chối chắc chắn và chưa rõ kết quả
+end
+end
+note over ui,be
+Mất response I3: UI gửi lại cùng key/body.
+Lưu hoặc giữ điểm thất bại: không gửi G3; kiểm tra bản ghi cũ khi retry.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

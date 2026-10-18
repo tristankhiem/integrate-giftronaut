@@ -1,0 +1,77 @@
+@startuml
+title High-level system sequence - từ chuẩn bị đến hoàn tất đổi điểm
+
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+skinparam sequence {
+  ArrowColor #43586B
+  ActorBorderColor #43586B
+  LifeLineBorderColor #78909C
+  LifeLineBackgroundColor #F7FAFC
+  ParticipantBorderColor #43586B
+  ParticipantBackgroundColor #EAF4F4
+  BoxBorderColor #B8C7D1
+}
+
+autonumber
+actor "OMH Admin /\nFinance" as ADMIN
+actor OP
+participant "OP Points" as POINTS
+participant "OMH Backend\nRedemption + Point Ledger" as CORE
+participant ELLIS
+participant Giftronaut as GIFT
+
+== 1. Chuẩn bị trước khi OP đổi điểm [P0/P1] ==
+ADMIN -> ELLIS : Cấu hình Choice Card, mệnh giá,\ntỷ lệ quy đổi và thời gian áp dụng
+ELLIS -> CORE : Publish reward options cho OP Points
+CORE -> GIFT : Kiểm tra Choice Card và mệnh giá được hỗ trợ
+GIFT --> CORE : Xác nhận cấu hình hợp lệ
+ADMIN -> GIFT : Nạp trước tiền thật vào balance\n(manual wire qua portal)
+GIFT --> ADMIN : Balance sẵn sàng để phát quà
+
+note over ADMIN,GIFT
+Admin/Finance duyệt chính sách, ngân sách và việc nạp tiền trước.
+Không duyệt thủ công từng lượt đổi điểm.
+end note
+
+== 2. OP tạo yêu cầu đổi điểm [P0] ==
+OP -> POINTS : Chọn mệnh giá và bấm Đổi điểm
+POINTS -> CORE : Gửi yêu cầu redemption
+CORE -> CORE : Kiểm tra điều kiện và tạm giữ điểm
+CORE -> GIFT : Tạo Choice Card order
+
+break Balance không đủ / yêu cầu bị từ chối
+  GIFT --> CORE : Không tạo order thành công
+  CORE -> CORE : Trả lại điểm đã tạm giữ
+  CORE --> POINTS : Hiển thị Không thành công
+  CORE --> ELLIS : Ghi nhận lỗi để Operations xử lý
+  POINTS --> OP : Thông báo chưa đổi được quà
+end
+
+GIFT --> CORE : Trả mã order + trạng thái đang xử lý
+CORE --> POINTS : Hiển thị Đang xử lý
+POINTS --> OP : Thông báo yêu cầu đã được ghi nhận
+
+== 3. Giftronaut hoàn tất phát quà [P0] ==
+GIFT -> OP : Gửi email Choice Card
+GIFT -> CORE : Callback báo order hoàn tất
+CORE -> CORE : Chốt điểm từ HOLD sang SPENT\nvà lưu kết quả giao dịch
+CORE --> POINTS : Cập nhật redemption thành công
+CORE --> ELLIS : Cập nhật order để tra cứu / hỗ trợ
+POINTS --> OP : Hiển thị Đổi điểm thành công
+
+== 4. Hỗ trợ sau giao dịch [P1] ==
+opt Email bị bounce hoặc OP chưa nhận được
+  OP -> POINTS : Kiểm tra / sửa email và yêu cầu gửi lại
+  POINTS -> CORE : Gửi yêu cầu resend cho order cũ
+  CORE -> GIFT : Resend cùng gift, không trừ thêm điểm
+  GIFT --> OP : Gửi lại email Choice Card
+  CORE --> ELLIS : Lưu lịch sử resend để hỗ trợ
+end
+
+legend bottom
+P0 = luồng bắt buộc để đổi điểm và phát quà end-to-end
+P1 = cấu hình tài chính, giám sát và hỗ trợ vận hành pilot
+endlegend
+@enduml

@@ -1,0 +1,39 @@
+@startuml
+title Luồng đổi điểm thành Choice Card - happy path
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+autonumber
+actor OP
+participant "OP Points UI" as UI
+participant "Internal API" as API
+participant "Redemption\nOrchestrator" as ORCH
+database "Point Ledger" as LEDGER
+participant "Giftronaut\nAdapter" as ADP
+participant "Giftronaut API" as GIFT
+participant "Webhook Handler" as WH
+
+OP -> UI : Chọn mệnh giá, xác nhận email
+UI -> API : POST /op-points/redemptions\nIdempotency-Key: clientRequestId
+API -> ORCH : Validate user, policy, Choice Card config
+ORCH -> LEDGER : Atomic HOLD(points, redemptionId)
+LEDGER --> ORCH : Hold thành công
+ORCH -> ORCH : Lưu redemption + outbox\nproviderKey = redemptionId
+ORCH --> UI : 202 PROCESSING + redemptionId
+ORCH -> ADP : Submit Choice Card
+ADP -> GIFT : POST /api/v1/orders/choice-cards\nOAuth Bearer + idempotencyKey
+GIFT --> ADP : PENDING/IN_PROGRESS + orderId
+ADP --> ORCH : Ghi provider order
+GIFT -> WH : order.delivery_complete\nX-Giftronaut-Signature
+WH -> WH : Verify HMAC + dedupe eventId
+WH -> ORCH : Apply provider event
+ORCH -> LEDGER : HOLD -> SPEND
+ORCH -> ORCH : issuance=ISSUED\ndelivery=DELIVERED
+UI -> API : GET /op-points/redemptions/{id}
+API --> UI : ISSUED / DELIVERED
+UI --> OP : Hiển thị kết quả
+
+note over ORCH,LEDGER
+Một redemption MVP tương ứng một recipient để tránh partial outcome.
+end note
+@enduml

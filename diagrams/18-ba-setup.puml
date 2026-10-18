@@ -1,0 +1,44 @@
+@startuml
+title F1 — Cấu hình và mở quà cho OP
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+hide footbox
+actor "Product Ops" as ops
+participant ELLIS as el
+participant "Backend OMH" as be
+participant "Giftronaut API" as gf
+participant "OP Points" as ui
+ops -> el: Nhập product, mệnh giá, tỷ lệ quy đổi
+el -> be: Đề xuất: I8 PUT /v1/ellis/redemption-config\nexpectedVersion + cấu hình + enabled=true
+be -> be: Kiểm tra quyền và version
+break Version đã bị người khác sửa
+be --> el: 409 CONFIG_VERSION_CONFLICT\nTải lại cấu hình trước khi sửa tiếp
+end
+opt Chưa có token hợp lệ
+be -> gf: G1 POST /oauth2/token
+gf --> be: access_token / lỗi xác thực
+end
+break Không lấy được token hợp lệ
+be --> el: Không xác minh được cấu hình; chưa publish
+end
+be -> gf: G2 GET /api/v1/catalog/choice-cards\npage, pageSize (đọc đủ các trang)
+alt Product và mệnh giá hợp lệ
+gf --> be: productId, prices [min,max], priceStep
+be -> be: Lưu version + người sửa + thời điểm xác nhận
+be --> el: 200 — cấu hình được bật
+ui -> be: Đề xuất: I1 GET /v1/op-points/redemption-options
+be --> ui: Option đã publish + điểm ước tính
+else Catalog lỗi / chưa xác nhận được product hoặc range
+be --> el: 422 CONFIG_NOT_VERIFIED\nKhông bật cấu hình chưa xác minh
+end
+note over be,gf
+Token/catalog lỗi: không publish cấu hình mới.
+401: xin token mới một lần; 403: kiểm tra scope/org.
+429: chờ reset; 5xx: thử lại sau, không báo publish thành công.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

@@ -1,0 +1,35 @@
+@startuml
+title Flow A/B [P0] - setup integration và Choice Card options
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+autonumber
+actor "Platform Admin" as ADMIN
+actor "Product / Finance" as PF
+participant "Secret Manager" as SECRET
+participant "Choice Card Sync" as SYNC
+participant "Giftronaut OAuth" as AUTH
+participant "Giftronaut Catalog API" as GCAT
+database "Provider Config Snapshot" as STAGE
+participant "ELLIS Point Policy" as ELLIS
+database "Published Redemption Options" as PUB
+participant "OP Points API" as OPAPI
+
+ADMIN -> SECRET : Lưu sandbox client_id/client_secret
+ADMIN -> SYNC : Cấu hình secret ref + environment
+SYNC -> AUTH : POST /oauth2/token\ngrant_type=client_credentials\nscope=catalog.read
+AUTH --> SYNC : access_token + expires_in
+SYNC -> GCAT : GET /api/v1/catalog/choice-cards\nAuthorization: Bearer token
+GCAT --> SYNC : Choice Card productId + USD amount range
+SYNC -> STAGE : Lưu snapshot cấu hình provider
+SYNC --> ELLIS : Báo thay đổi cần review
+PF -> ELLIS : Xác nhận US$10/20/50/100\nMap point cost + effective dates
+ELLIS -> PUB : Publish policy version
+OPAPI -> PUB : GET active published options
+PUB --> OPAPI : Bốn option hợp lệ + point cost
+
+note over STAGE,PUB
+Không xây catalog thương hiệu theo quốc gia.
+OP chỉ chọn mệnh giá Choice Card; thương hiệu được chọn trong link email.
+end note
+@enduml

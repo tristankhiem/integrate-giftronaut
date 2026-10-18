@@ -1,0 +1,31 @@
+@startuml
+title Yêu cầu đổi điểm — 4 trạng thái nghiệp vụ
+skinparam backgroundColor white
+skinparam defaultFontName Segoe UI
+skinparam shadowing false
+skinparam stateBackgroundColor #EDF7F6
+skinparam stateBorderColor #006C70
+[*] --> PROCESSING : Lưu yêu cầu + giữ điểm
+PROCESSING --> VERIFYING : Chưa rõ kết quả / timeout / 409
+VERIFYING --> PROCESSING : Tìm thấy đơn đang xử lý
+PROCESSING --> SUCCEEDED : GF COMPLETE + chốt điểm
+VERIFYING --> SUCCEEDED : GF COMPLETE + chốt điểm
+PROCESSING --> FAILED : Chắc chắn không phát quà\n+ trả điểm thành công
+VERIFYING --> FAILED : Chắc chắn không phát quà\n+ trả điểm thành công
+SUCCEEDED --> [*]
+FAILED --> [*]
+note right of SUCCEEDED
+Điểm: SPENT
+Email SENT / BOUNCED / RESEND_REQUESTED / UNKNOWN
+Bounce và resend không đổi trạng thái chính.
+end note
+note left of VERIFYING
+Điểm vẫn HELD.
+Quá SLA → Ops tiếp nhận,
+không tự hoàn điểm.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

@@ -1,0 +1,42 @@
+@startuml
+title F5 — Xem số dư và nạp tiền thủ công
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+hide footbox
+actor Finance as fin
+participant ELLIS as el
+participant "Backend OMH" as be
+participant "Giftronaut API" as gf
+participant "Giftronaut Portal" as portal
+fin -> el: Mở màn hình số dư theo lịch vận hành
+el -> be: Đề xuất: I9 GET /v1/ellis/provider-balance
+be -> gf: G8 GET /api/v1/balance
+alt Đọc được số dư
+gf --> be: 200 — availableBalance, pendingBalance
+be -> be: Lưu snapshot + checkedAt
+be --> el: 200 — số dư + checkedAt + stale=false
+el --> fin: Hiển thị USD khả dụng và pending
+opt Finance quyết định cần nạp tiền
+fin -> portal: Nạp qua quy trình thủ công đã duyệt
+portal --> fin: Theo dõi tình trạng nạp trên portal
+fin -> el: Kiểm tra lại khi tiền được ghi nhận
+el -> be: Đề xuất: I9 GET /v1/ellis/provider-balance
+be -> gf: G8 GET /api/v1/balance
+gf --> be: Số dư cập nhật
+be --> el: Số dư + thời điểm kiểm tra mới
+end
+else Lỗi quyền / 429 / 5xx / timeout
+be --> el: Có cache: 200 + stale=true + checkedAt cũ\nChưa có dữ liệu: 503
+el --> fin: Báo chưa cập nhật được; không giả số dư bằng 0
+end
+note over fin,portal
+Pending không dùng để chi; số dư GF không phải điểm OP.
+G3 vẫn có thể trả 402 sau khi vừa kiểm tra số dư → F3.
+Không tự gọi ACH API hoặc tự tạo lại redemption đã FAILED.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml

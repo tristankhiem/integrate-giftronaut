@@ -1,0 +1,51 @@
+@startuml
+title Flow C [P0] - create redemption và provider order ở API level
+skinparam backgroundColor white
+skinparam defaultFontName Arial
+skinparam shadowing false
+autonumber
+actor OP
+participant "OP Points UI" as UI
+participant "Ohmyhotel API" as API
+participant "Redemption Service" as RED
+database "Point Ledger" as LEDGER
+database "Redemption DB / Outbox" as DB
+participant "Order Worker" as WORKER
+participant "Giftronaut OAuth" as AUTH
+participant "Giftronaut Orders" as ORDERS
+
+OP -> UI : Chọn mệnh giá Choice Card đã bật
+UI -> API : POST /v1/op-points/redemptions/quote
+API -> RED : Validate item, policy, user, email
+RED --> API : quoteId + TTL + points + amount
+API --> UI : 200 quote
+UI -> API : POST /v1/op-points/redemptions\nIdempotency-Key: clientRequestId\n{quoteId, redemptionOptionId, email}
+API -> RED : Authorize + create command
+RED -> LEDGER : BEGIN: reserve point lots (FEFO)
+RED -> DB : INSERT redemption(HELD) + outbox
+RED -> LEDGER : COMMIT
+RED --> API : redemptionId + PROCESSING
+API --> UI : 202 Accepted
+
+WORKER -> DB : Claim outbox with lease
+WORKER -> AUTH : POST /oauth2/token\nscope=orders.write orders.read
+AUTH --> WORKER : Bearer token
+WORKER -> ORDERS : POST /api/v1/orders/choice-cards\n{idempotencyKey=redemptionId,...}
+alt 2xx with orderId
+  ORDERS --> WORKER : PENDING/IN_PROGRESS + orderId
+  WORKER -> DB : Save providerOrderId/status
+else 409 DUPLICATE_IDEMPOTENCY_KEY
+  ORDERS --> WORKER : 409
+  WORKER -> ORDERS : GET /api/v1/orders?clientOrderId=redemptionId
+  ORDERS --> WORKER : Original order
+  WORKER -> DB : Link original order
+else timeout / 5xx / 429
+  ORDERS --> WORKER : Unknown/transient result
+  WORKER -> DB : VERIFYING + nextAttemptAt
+end
+
+note over RED,DB
+HOLD + redemption + outbox phải cùng local transaction.
+HTTP 202 không đồng nghĩa gift đã được phát.
+end note
+@enduml

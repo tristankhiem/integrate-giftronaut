@@ -1,0 +1,45 @@
+@startuml
+title F4 — Bounce, sửa email và gửi lại cùng quà
+skinparam defaultFontName Segoe UI
+skinparam backgroundColor white
+skinparam shadowing false
+hide footbox
+participant "Giao diện khởi tạo\nOP Points hoặc ELLIS" as ui
+participant "Backend OMH" as be
+participant Giftronaut as gf
+gf -> be: G7 → OMH (Đề xuất) POST /webhooks/giftronaut/v1\norder.bounced (hoặc G5 xác nhận bounce)
+be -> be: deliveryStatus=BOUNCED\nNếu đã SUCCEEDED: giữ SPENT
+alt OP tự gửi lại
+ui -> be: Đề xuất: I6 POST /v1/op-points/redemptions/{id}/resend\nIdempotency-Key + {email}
+else Ops hỗ trợ
+ui -> be: Đề xuất: I7-resend POST /v1/ellis/redemptions/{id}/resend\nIdempotency-Key + {email, reason, caseId?}
+end
+alt Không đúng chủ/quyền, sai trạng thái hoặc vượt giới hạn
+be --> ui: 403 (thiếu quyền) / 404 (không thuộc OP)\n409 RESEND_NOT_ALLOWED / 429 (vượt giới hạn)
+else Hợp lệ: SUCCEEDED + BOUNCED, không có lần gửi chưa rõ
+be -> be: Lưu resendRequestId + actor + email cũ/mới
+be --> ui: 202 RESEND_REQUESTED (trả cho bên gọi)
+be -> gf: G6 POST /api/v1/orders/{orderId}/resend\nrecipients[{email hiện tại, updatedEmail nếu đổi}]
+alt requeued=1
+gf --> be: orderId, requeued, resentToEmails
+be -> be: Ghi email GF đã chấp nhận; chờ kết quả delivery
+gf -> be: G7 delivery_complete / bounced (eventId mới)
+be -> be: Cập nhật SENT / BOUNCED theo lần gửi
+else Từ chối chắc chắn / requeued=0
+be -> be: Ghi resend thất bại; BOUNCED nếu còn bằng chứng
+else Timeout / kết quả thiếu hoặc mâu thuẫn
+be -> be: UNKNOWN; khóa gửi tiếp khi chưa xác minh
+be -> gf: G5 GET /api/v1/orders/{orderId}
+note over be,gf: Không đủ bằng chứng về lần resend → Ops hỗ trợ
+end
+end
+note over ui,gf
+Mọi nhánh: không tạo redemption/order mới, không giữ/trừ thêm điểm.
+Duplicate key tại OMH trả lần gửi cũ; không giả định G6 chống trùng.
+Event cũ không được ghi đè email/trạng thái của lần gửi mới.
+end note
+legend bottom
+API, trạng thái và mapping OMH: Đề xuất.
+API Giftronaut: theo nguồn dẫn trong tài liệu.
+endlegend
+@enduml
